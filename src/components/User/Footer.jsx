@@ -106,7 +106,7 @@ function Footer() {
                 </h3>
                 <ul className={`${idx.includes(index) ? "block" : "hidden"} md:block pb-3 space-y-1`}>
                   {
-                    item.items.map((item, index) => <li className={`py-1.5 hover:text-white cursor-pointer `} key={index}>{item}</li>)
+                    item.items.map((item, index) => <li className={`py-1.5 duration-300 hover:text-white cursor-pointer `} key={index}>{item}</li>)
                   }
                 </ul>
               </div>)

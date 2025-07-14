@@ -9,15 +9,15 @@ export const menuItems = ["Store", "News", "FAQ", "Help", "About Epic"];
 
 function Header() {
   const { flag } = useSelector(store => store.bars)
-  const [scroll , setScroll] = useState(false)
+  const [scroll, setScroll] = useState(false)
 
   useEffect(() => {
     const onScroll = () => {
       setScroll(window.scrollY > 50)
     }
-    window.addEventListener("scroll" , onScroll)
+    window.addEventListener("scroll", onScroll)
     return () => window.removeEventListener("scroll", onScroll);
-  },[])
+  }, [])
 
   const dispatch = useDispatch()
   return (
@@ -25,7 +25,9 @@ function Header() {
     <div>
       <header className={` fixed top-0 w-full z-100 px-[1rem] md:px-[1.5rem] ${scroll ? "backdrop-blur-md bg-black/50" : "bg-black"} flex items-center justify-between py-5`}>
         <div className="w-12 h-8 ">
-          <img src="images/logo.png" className="w-full h-full object-contain" />
+          <Link to='/'>
+            <img src="images/logo.png" className="w-full h-full object-contain" />
+          </Link>
         </div>
         <div className="block md:hidden ">
           {
@@ -46,7 +48,7 @@ function Header() {
         </div>
 
       </header>
-      <HamMenu   />
+      <HamMenu />
     </div>
   )
 }

@@ -5,8 +5,18 @@ export const epicApi = createApi({
   reducerPath: 'epicApi',
   baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({
+    login: builder.mutation({
+     
+      query: (patch) => ({
+        url: 'auth/login',
+        method: 'POST',
+        body: patch,
+      }),
     
+    })
+
   }),
+
 })
 
-export const {  } = epicApi
+export const { useLoginMutation } = epicApi

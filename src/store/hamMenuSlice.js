@@ -15,4 +15,4 @@ export const hamMenuSlice = createSlice({
 })
 export const { changeFlag } = hamMenuSlice.actions
 
-export default hamMenuSlice.reducer
+export default hamMenuSlice.reducer 

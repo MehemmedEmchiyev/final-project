@@ -10,6 +10,7 @@ import Browse from "../pages/User/Store/Browse"
 import Discover from "../pages/User/Store/Discover"
 import Login from "../pages/User/Auth/Login"
 import Register from "../pages/User/Auth/Register"
+import VerifyEmail from "../pages/User/Auth/VerifyEmail"
 
 function Router() {
     return (
@@ -32,6 +33,7 @@ function Router() {
             <Route path="/adminlogin" element={<AdminLogin />}/>
             <Route path="/login" element={<Login />}/>
             <Route path="/register" element={<Register />}/>
+            <Route path="/verify-email" element={<VerifyEmail />}/>
         </Routes>
     )
 }

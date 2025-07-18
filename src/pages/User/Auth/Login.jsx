@@ -4,9 +4,9 @@ import { loginschema } from "../../../validation/loginschema"
 import { useState } from "react"
 import toast from "react-hot-toast"
 import { MdKeyboardArrowLeft } from "react-icons/md";
-import { useLoginByGoogleMutation, useLoginMutation } from "../../../store/services/epicApi"
+import { useForgotPasswordMutation, useLoginByGoogleMutation, useLoginMutation } from "../../../store/services/epicApi"
 import Loader from "../../../components/ui/Loader"
-import { auth , googleProvider } from "../../../store/services/firebaseConfig"
+import { auth, googleProvider } from "../../../store/services/firebaseConfig"
 import { signInWithPopup } from "firebase/auth";
 
 function Login() {
@@ -28,7 +28,7 @@ function Login() {
 
             if (res.error) {
                 toast.error(res?.error?.data?.message)
-            }
+            } 
             else {
                 toast.success(res?.data?.message)
                 const payload = JSON.parse(atob(res?.data?.token.accessToken.split('.')[1]));
@@ -51,13 +51,22 @@ function Login() {
     }
     const [loginGoogle] = useLoginByGoogleMutation()
     const handleGoogleLogin = async () => {
-        try {
-            const result = await signInWithPopup(auth, googleProvider);
-            const user = result.user;
-            const token = await user.getIdToken();
-            const response = await loginGoogle(token).unwrap()
-        } catch (error) {
+        const result = await signInWithPopup(auth, googleProvider);
+        const user = result.user;
+        const token = await user.getIdToken();
+        const response = await loginGoogle(token)
+        console.log(response);
+        
+    }
+    const [forgotPassword, { isLoading: forgetLoader }] = useForgotPasswordMutation()
+    const forgetPassword = async () => {
+        const data = {
+            "email": values.email,
+            "callbackURL": "http://localhost:3000/forget-password.html"
         }
+        const res = await forgotPassword(data)
+        if (res?.error) toast.error(res?.error.data.message)
+        else toast.success(res?.data.message)
     }
     return (
         !paswwordPart ?
@@ -104,19 +113,20 @@ function Login() {
                     </p>
 
                     <form onSubmit={handleSubmit}>
-                        <label htmlFor="password" className="text-md font-semibold text-white block mb-1">
+                        <label htmlFor="password" className="flex items-center gap-3 text-md font-semibold text-white mb-1">
                             Password
+                            {errors.password && <span className="text-red-500 flex items-center gap-3">
+                                *
+                            </span>}
                         </label>
                         <div className="relative text-white mb-4">
-                            <input value={values.password} onChange={handleChange} id="password" name="password" type="password" className={`py-3 w-full px-2 mt-2 border outline-0 rounded-xl bg-[#242428] ${errors.password ? "border-red-500" : "border-[#3A3A3E]"}`} />
-                            {errors.password && <p className="text-red-500 flex items-center gap-3">
-                                {errors.password}
-                            </p>}
+                            <input value={values.password} onChange={handleChange} id="password" name="password" type="password" className={`py-3 w-full px-2 mt-2 border outline-0 rounded-xl bg-[#242428] border-[#3A3A3E]`} />
+
                         </div>
 
                         <div className="mb-6">
-                            <span className="text-md underline text-blue-400 hover:underline">
-                                Forgot password?
+                            <span onClick={forgetPassword} className="cursor-pointer text-md underline text-blue-400 hover:underline">
+                                {forgetLoader ? <Loader /> : "Forgot password"}
                             </span>
                         </div>
                         <button

@@ -4,7 +4,7 @@ import baseQueryWithReauth from './baseQuery'
 export const epicApi = createApi({
   reducerPath: 'epicApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Genres', 'Features', 'Events' , 'Types' , 'Platforms' , 'Subscription'],
+  tagTypes: ['Genres', 'Features', 'Events' , 'Types' , 'Platforms' , 'Subscription' , 'Products'],
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (patch) => ({
@@ -221,6 +221,46 @@ export const epicApi = createApi({
         body: { name }
       }),
       invalidatesTags: ['Subscription']
+    }),
+    getProducts: builder.query({
+      query: () => 'products',
+      providesTags: ['Products']
+    }),
+    deleteProduct: builder.mutation({
+      query: (id) => ({
+        url: `products/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Products']
+    }),
+    uploadMedia : builder.mutation({
+      query : (files) => {
+        const formData = new FormData()
+        files.forEach(file => {
+          formData.append("files" , file)
+        });
+        return { 
+          url : "upload/media",
+          method : 'POST',
+          body : formData
+        }
+      }
+    }),
+    createProduct : builder.mutation({
+      query : (patch) => ({
+        url : 'products',
+        method : 'POST',
+        body : patch
+      }),
+      invalidatesTags : ['Products']
+    }),
+    updateProduct : builder.mutation({
+      query : ({id , patch}) => ({
+        url : `products/${id}` ,
+        method : 'POST',
+        body : patch
+      }),
+      invalidatesTags : ['Products']
     })
   }),
 
@@ -257,5 +297,10 @@ export const {
   useGetSubscriptionQuery,
   useCreateSubscriptionMutation,
   useDeleteSubscriptionMutation,
-  useUpdateSubscriptionMutation
+  useUpdateSubscriptionMutation,
+  useGetProductsQuery,
+  useDeleteProductMutation,
+  useUploadMediaMutation,
+  useCreateProductMutation,
+  useUpdateProductMutation
 } = epicApi

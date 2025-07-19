@@ -144,7 +144,7 @@ function Dashboard() {
                         </div>
                         <div className="mb-2 flex items-center gap-3">
                             <h2>IsFree : </h2>
-                            <select value={isFree} onChange={setIsFree} required >
+                            <select value={isFree} onChange={e => setIsFree(e.target.value)} required >
                                 <option value={true}>true</option>
                                 <option value={false}>false</option>
                             </select>
@@ -171,7 +171,7 @@ function Dashboard() {
                         </div>
                         <div className="mb-2 flex items-center gap-3">
                             <h2>IsSilder : </h2>
-                            <select value={isSilder} onChange={setIsSilder} required >
+                            <select value={isSilder} onChange={(e) => setIsSilder(e.target.value)} required >
                                 <option value={true}>true</option>
                                 <option value={false}>false</option>
                             </select>
@@ -275,7 +275,7 @@ function Dashboard() {
 
                     <button onClick={handleSave} disabled={mediaLoader} className="bg-black text-center w-full cursor-pointer text-white py-3 rounded font-semibold">
                         {
-                            loadProduct || mediaLoader || updateLoad ?
+                            loadProduct || mediaLoader || updateLoad  ?
                                 <Loader className="mx-auto animate-spin" />
                                 :
                                 "Save"

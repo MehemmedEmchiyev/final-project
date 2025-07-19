@@ -43,7 +43,7 @@ function Navbar() {
 
 
     return (
-        <div className={`${scroll || statue ? "sticky top-0 mx-auto z-99 right-0 left-0" : ""} w-full lg:w-[70%] mx-auto bg-[#18181C] py-4 px-3 lg:px-0 flex items-center gap-10`}>
+        <div className={`${scroll || statue ? "sticky top-0 mx-auto z-99 right-0 left-0" : ""} w-full lg:w-[75%] mx-auto bg-[#18181C] py-4 px-3 lg:px-0 flex items-center gap-10`}>
             <div className='w-60 h-10 hidden lg:flex items-center gap-3 bg-[#202024] duration-300 rounded-full hover:bg-[#404044] !text-[#B1B1B3]'>
                 <div className="m-2"><CiSearch /></div>
                 <input type="text" placeholder="Search store" className="pr-3.5 border-0 outline-0" />

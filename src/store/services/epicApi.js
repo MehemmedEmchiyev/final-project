@@ -261,7 +261,8 @@ export const epicApi = createApi({
         body : patch
       }),
       invalidatesTags : ['Products']
-    })
+    }),
+    
   }),
 
 })

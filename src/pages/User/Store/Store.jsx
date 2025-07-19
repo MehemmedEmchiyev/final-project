@@ -7,7 +7,7 @@ function Store() {
     <>
       <Navbar />
       <BlackUi />
-      <div className='w-full h-screen mx-auto md:w-[70%]'>
+      <div className='w-full min-h-screen mx-auto lg:w-[75%]'>
         <Outlet />
       </div>
     </>

@@ -1,5 +1,5 @@
 import { Loader } from "lucide-react";
-import { useCreateGenresMutation, useCreateProductMutation, useDeleteProductMutation, useGetEventsQuery, useGetFeaturesQuery, useGetGenresQuery, useGetPlatformsQuery, useGetProductsQuery, useGetSubscriptionQuery, useGetTypesQuery, useUpdateGenresMutation, useUpdateProductMutation, useUploadMediaMutation } from "../../../store/services/epicApi"
+import {useCreateProductMutation, useDeleteProductMutation, useGetEventsQuery, useGetFeaturesQuery, useGetGenresQuery, useGetPlatformsQuery, useGetProductsQuery, useGetSubscriptionQuery, useGetTypesQuery, useUpdateProductMutation, useUploadMediaMutation } from "../../../store/services/epicApi"
 import { MdDeleteOutline } from "react-icons/md";
 import { GrUpdate } from "react-icons/gr";
 import { useState } from "react";
@@ -11,6 +11,7 @@ function Dashboard() {
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
     const [isFree, setIsFree] = useState(false)
+    const [isTopSeller, setIsTopSeller] = useState(false)
     const [price, setPrice] = useState(0)
     const [discount, setDiscount] = useState(0)
     const [developer, setDeveloper] = useState("")
@@ -54,6 +55,7 @@ function Dashboard() {
                 name,
                 description,
                 isFree,
+                // isTopSeller,
                 price,
                 discount,
                 developer,
@@ -77,6 +79,7 @@ function Dashboard() {
                 name,
                 description,
                 isFree,
+                // isTopSeller,
                 price,
                 discount,
                 developer,
@@ -111,6 +114,7 @@ function Dashboard() {
         setName(item?.name || "");
         setDescription(item?.description || "");
         setIsFree(item?.isFree || false);
+        setIsTopSeller(item?.isTopSeller || false);
         setPrice(item?.price || 0);
         setDiscount(item?.discount || 0);
         setDeveloper(item?.developer || "");
@@ -145,6 +149,13 @@ function Dashboard() {
                         <div className="mb-2 flex items-center gap-3">
                             <h2>IsFree : </h2>
                             <select value={isFree} onChange={e => setIsFree(e.target.value)} required >
+                                <option value={true}>true</option>
+                                <option value={false}>false</option>
+                            </select>
+                        </div>
+                        <div className="mb-2 flex items-center gap-3">
+                            <h2>IsTopSeller : </h2>
+                            <select value={isTopSeller} onChange={e => setIsTopSeller(e.target.value)} required >
                                 <option value={true}>true</option>
                                 <option value={false}>false</option>
                             </select>
@@ -324,6 +335,7 @@ function Dashboard() {
                                             <td className="p-3">{item.developer}</td>
                                             <td className="p-3">{item.publisher}</td>
                                             <td className="p-3">{item.soldCount}</td>
+                                            <td className="p-3">{item.isFree ? "Yes" : "No"}</td>
                                             <td className="p-3">{item.isTopSeller ? "Yes" : "No"}</td>
                                             <td className="p-3">{item.isSlider ? "Yes" : "No"}</td>
                                             <td className="p-3">{item.ageRestriction}</td>

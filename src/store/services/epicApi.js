@@ -4,7 +4,7 @@ import baseQueryWithReauth from './baseQuery'
 export const epicApi = createApi({
   reducerPath: 'epicApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Genres', 'Features', 'Events' , 'Types' , 'Platforms' , 'Subscription' , 'Products'],
+  tagTypes: ['Genres', 'Features', 'Events' , 'Types' , 'Platforms' , 'Subscription' , 'Products' , 'Wishlist'],
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (patch) => ({
@@ -223,8 +223,9 @@ export const epicApi = createApi({
       invalidatesTags: ['Subscription']
     }),
     getProducts: builder.query({
-      query: () => 'products',
-      providesTags: ['Products']
+      query: (params = "") => `products?${params}`,
+      providesTags: ['Products'],
+      keepUnusedDataFor : 0
     }),
     deleteProduct: builder.mutation({
       query: (id) => ({

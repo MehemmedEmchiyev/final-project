@@ -53,9 +53,8 @@ function Login() {
     const handleGoogleLogin = async () => {
         const result = await signInWithPopup(auth, googleProvider);
         const user = result.user;
-        const token = await user.getIdToken();
-        const response = await loginGoogle(token)
-        console.log(response);
+        const token = user.accessToken
+        const response = await loginGoogle({token : token})
         
     }
     const [forgotPassword, { isLoading: forgetLoader }] = useForgotPasswordMutation()

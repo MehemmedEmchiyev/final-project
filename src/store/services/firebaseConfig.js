@@ -2,15 +2,14 @@ import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBspVgxt9VBC3acgaAklaqw95Sjljcq6D4",
-  authDomain: "epic-e450a.firebaseapp.com",
-  projectId: "epic-e450a",
-  storageBucket: "epic-e450a.firebasestorage.app",
-  messagingSenderId: "383798869303",
-  appId: "1:383798869303:web:ab1ed82ca1db958fdbeeb2",
-  measurementId: "G-RY5ESNDN7H"
+  apiKey: "AIzaSyBeCax8bjDmVaKanB5g8VWzSX2D2oqezgU",
+  authDomain: "epic-games-f494e.firebaseapp.com",
+  projectId: "epic-games-f494e",
+  storageBucket: "epic-games-f494e.firebasestorage.app",
+  messagingSenderId: "289372212276",
+  appId: "1:289372212276:web:ea92909410e4b0d6570e61",
+  measurementId: "G-VX9S713ZV4"
 };
-
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();

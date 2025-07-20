@@ -68,7 +68,7 @@ function Header() {
           <nav className="ml-4">
             <menu className="text-white" >
               {(pathname.includes('/store') ? menuItems.filter(item => item.location == 'store') : menuItems).map((item, index) => <Link to={item.href} className="py-2.5 px-3 duration-300 hover:text-[#ffffffa6]" key={index}>{(item.title == 'Store' && pathname.includes('store')) ?
-                <img width={54} height={32} src="https://cms-assets.unrealengine.com/AVzjeqAbLRKi3W5jq0CAvz/cmb81xhnx3wl407o5wzb06x28" /> :
+                <img width={54} height={32} src="images/LogoEpic.svg" /> :
                 item.title
               }</Link>)}
             </menu>

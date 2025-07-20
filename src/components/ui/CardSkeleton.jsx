@@ -10,7 +10,6 @@ function CardSkeleton() {
             <div className="py-2 space-y-1">
                 <div className="w-full h-6 rounded dark:bg-gray-500"></div>
                 <div className="w-full h-6 rounded dark:bg-gray-500"></div>
-                
             </div>
         </div>
     </div>

@@ -7,6 +7,8 @@ import HamMenu from "./HamMenu";
 import { useEffect, useState } from "react";
 import { useLazyGetUserByIdQuery } from "../../../store/services/epicApi";
 import toast from "react-hot-toast";
+import { SiEpicgames } from "react-icons/si";
+
 export const menuItems = [
   { title: "Store", href: "/store", location: 'store' },
   { title: "News", href: "/news", location: '' },
@@ -17,6 +19,7 @@ export const menuItems = [
 
 function Header() {
   const { flag } = useSelector(store => store.bars)
+  const dispatch = useDispatch()
   const [scroll, setScroll] = useState(false)
   const [user, setUser] = useState({})
   const { pathname } = useLocation()
@@ -29,7 +32,6 @@ function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [])
 
-  const dispatch = useDispatch()
   const navigator = useNavigate()
   const goToLogin = () => {
     navigator('/login')
@@ -48,15 +50,18 @@ function Header() {
   const signOut = () => {
     localStorage.clear()
     toast.success("Succesfully Sign Out!")
+    navigator('/store/browse')
     setUser({})
   }
+  
+  
   return (
 
     <div>
       <header className={`${pathname.includes('store') ? "relative" : "fixed"} top-0 w-full z-100 px-[1rem] md:px-[1.5rem] ${scroll ? "backdrop-blur-md bg-black/50" : "bg-black"} flex items-center justify-between ${pathname.includes("store") ? "py-5 md:py-0" : "py-5"}`}>
         <div className="w-12 h-8 ">
           <Link to='/'>
-            <img src="images/logo.png" className="w-full h-full object-contain" />
+            <SiEpicgames className="text-2xl text-white w-full h-full"/>
           </Link>
         </div>
         <div className="order-2 block md:hidden ">
@@ -68,7 +73,7 @@ function Header() {
           <nav className="ml-4">
             <menu className="text-white" >
               {(pathname.includes('/store') ? menuItems.filter(item => item.location == 'store') : menuItems).map((item, index) => <Link to={item.href} className="py-2.5 px-3 duration-300 hover:text-[#ffffffa6]" key={index}>{(item.title == 'Store' && pathname.includes('store')) ?
-                <img width={54} height={32} src="images/LogoEpic.svg" /> :
+                <img width={54} height={32} src="/images/LogoEpic.svg" /> :
                 item.title
               }</Link>)}
             </menu>

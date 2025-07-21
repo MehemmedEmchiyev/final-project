@@ -18,6 +18,8 @@ import Events from "../pages/Admin/AdminPages/Events"
 import Types from "../pages/Admin/AdminPages/Types"
 import Platforms from "../pages/Admin/AdminPages/Platforms"
 import Subscription from "../pages/Admin/AdminPages/Subscription"
+import Wishlist from "../pages/User/Store/Wishlist"
+import Basket from "../pages/User/Store/Basket"
 
 function Router() {
     return (
@@ -27,6 +29,8 @@ function Router() {
                 <Route path="store" element={<Store />}>
                     <Route index element={<Discover />} />
                     <Route path="browse" element={<Browse />} />
+                    <Route path="wishlist" element={<Wishlist />} />
+                    <Route path="basket" element={<Basket />} />
                 </Route>
                 <Route path="about" element={<About />} />
             </Route>

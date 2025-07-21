@@ -5,7 +5,6 @@ import blackUiSlice  from './blackUiSlice'
 import searchSlice from './searchSlice'
 import emailSlice  from './emailSlice'
 import priceSlice  from './priceSlice'
-
 export const store = configureStore({
   reducer: {
     bars : hamMenuSlice,

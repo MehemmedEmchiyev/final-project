@@ -4,7 +4,7 @@ import baseQueryWithReauth from './baseQuery'
 export const epicApi = createApi({
   reducerPath: 'epicApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Genres', 'Features', 'Events' , 'Types' , 'Platforms' , 'Subscription' , 'Products' , 'Wishlist'],
+  tagTypes: ['Genres', 'Features', 'Events', 'Types', 'Platforms', 'Subscription', 'Products', 'Wishlist'],
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (patch) => ({
@@ -225,7 +225,7 @@ export const epicApi = createApi({
     getProducts: builder.query({
       query: (params = "") => `products?${params}`,
       providesTags: ['Products'],
-      keepUnusedDataFor : 0
+      keepUnusedDataFor: 0
     }),
     deleteProduct: builder.mutation({
       query: (id) => ({
@@ -234,36 +234,55 @@ export const epicApi = createApi({
       }),
       invalidatesTags: ['Products']
     }),
-    uploadMedia : builder.mutation({
-      query : (files) => {
+    uploadMedia: builder.mutation({
+      query: (files) => {
         const formData = new FormData()
         files.forEach(file => {
-          formData.append("files" , file)
+          formData.append("files", file)
         });
-        return { 
-          url : "upload/media",
-          method : 'POST',
-          body : formData
+        return {
+          url: "upload/media",
+          method: 'POST',
+          body: formData
         }
       }
     }),
-    createProduct : builder.mutation({
-      query : (patch) => ({
-        url : 'products',
-        method : 'POST',
-        body : patch
+    createProduct: builder.mutation({
+      query: (patch) => ({
+        url: 'products',
+        method: 'POST',
+        body: patch
       }),
-      invalidatesTags : ['Products']
+      invalidatesTags: ['Products']
     }),
-    updateProduct : builder.mutation({
-      query : ({id , patch}) => ({
-        url : `products/${id}` ,
-        method : 'POST',
-        body : patch
+    updateProduct: builder.mutation({
+      query: ({ id, patch }) => ({
+        url: `products/${id}`,
+        method: 'POST',
+        body: patch
       }),
-      invalidatesTags : ['Products']
+      invalidatesTags: ['Products']
     }),
-    
+    getWishlist: builder.query({
+      query: () => 'wishlist',
+      providesTags: ['Wishlist'],
+      keepUnusedDataFor : 0
+    }),
+    addToWishlist: builder.mutation({
+      query: (patch) => ({
+        url: 'wishlist/toggle',
+        method: 'POST',
+        body: patch
+      }),
+      invalidatesTags : ['Wishlist']
+    }),
+    deleteWishlist: builder.mutation({
+      query: (id) => ({
+        url: `wishlist/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags : ['Wishlist']
+    }),
   }),
 
 })
@@ -304,5 +323,8 @@ export const {
   useDeleteProductMutation,
   useUploadMediaMutation,
   useCreateProductMutation,
-  useUpdateProductMutation
+  useUpdateProductMutation,
+  useGetWishlistQuery,
+  useAddToWishlistMutation,
+  useDeleteWishlistMutation
 } = epicApi

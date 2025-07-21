@@ -8,8 +8,8 @@ export const blackUiSlice = createSlice({
   name: 'BlackUi',
   initialState,
   reducers: {
-    changeStatue : (state) => {
-        state.statue = !state.statue
+    changeStatue : (state,actions) => {
+        state.statue = actions.payload
     }
   },
 })

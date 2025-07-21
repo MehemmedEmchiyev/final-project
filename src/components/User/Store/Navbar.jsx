@@ -1,39 +1,38 @@
 import { CiSearch } from "react-icons/ci";
-import { NavLink, useLocation } from "react-router";
+import { Link, NavLink, useLocation } from "react-router";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeStatue } from "../../../store/blackUiSlice";
 import { changeSearch } from "../../../store/searchSlice";
 import { IoClose } from "react-icons/io5";
+import { FaRegCheckCircle } from "react-icons/fa";
+import { MdOutlineShoppingCart } from "react-icons/md";
 
 const navbar = [
     { title: 'Discover', href: '' },
     { title: 'Browser', href: 'browse' },
     { title: 'News', href: 'news' },
 ]
+
 function Navbar() {
     const { pathname } = useLocation()
-
     const path = pathname == '/store' ? '' : pathname.replace('/store/', '')
     const { statue } = useSelector(store => store.black)
     const { search } = useSelector(store => store.search)
     const dispatch = useDispatch()
     const [scroll, setScroll] = useState(false)
     useEffect(() => {
-        statue && dispatch(changeStatue())
+        statue && dispatch(changeStatue(false))
     }, [pathname])
     useEffect(() => {
-        const onScroll = () => {
-            setScroll(window.scrollY > 50)
-
-        }
+        const onScroll = () => { setScroll(window.scrollY > 50) }
         window.addEventListener("scroll", onScroll)
         return () => window.removeEventListener("scroll", onScroll);
     }, [])
     const handleOpenMenu = () => {
-        if (statue) dispatch(changeStatue())
-        else dispatch(changeStatue())
+        if (statue) dispatch(changeStatue(false))
+        else dispatch(changeStatue(true))
         setScroll(true)
     }
     const handleOpenSearch = () => {
@@ -43,7 +42,7 @@ function Navbar() {
 
 
     return (
-        <div className={`${scroll || statue ? "sticky top-0 mx-auto z-99 right-0 left-0" : ""} w-full lg:w-[75%] mx-auto bg-[#18181C] py-4 px-3 lg:px-0 flex items-center gap-10`}>
+        <div className={`${scroll || statue ? "sticky top-0 mx-auto z-119 right-0 left-0" : ""} w-full lg:w-[75%] mx-auto bg-[#18181C] py-4 px-3 lg:px-0 flex items-center ${search ? "" : "justify-between"} lg:justify-start gap-10`}>
             <div className='w-60 h-10 hidden lg:flex items-center gap-3 bg-[#202024] duration-300 rounded-full hover:bg-[#404044] !text-[#B1B1B3]'>
                 <div className="m-2"><CiSearch /></div>
                 <input type="text" placeholder="Search store" className="pr-3.5 border-0 outline-0" />
@@ -59,11 +58,20 @@ function Navbar() {
             <div className={`${search ? "block" : "hidden"}`}>
                 <input type="text" className="text-white border-0 outline-0" placeholder="Search Store" />
             </div>
-            <div className={`lg:hidden ${search ? "hidden" : ""}`}>
+            <div className={`lg:hidden block ${search ? "hidden" : ""}`}>
                 {
-                    navbar.map((item, index) => <div onClick={handleOpenMenu} className="relative text-white" key={index}>{path == item.href ? <div className="flex items-center gap-1 p-2.5 cursor-pointer
-                        ">{item.title} <MdOutlineKeyboardArrowDown className="mt-[2px]" /></div> : ""}
-                    </div>)
+                    path == 'wishlist' || path == 'basket' ?
+                        <div onClick={handleOpenMenu} className="relative text-white" >
+                            <div className="flex items-center gap-1 p-2.5 cursor-pointer">
+                                {navbar[0].title} <MdOutlineKeyboardArrowDown className="mt-[2px]" />
+                            </div>
+                        </div> :
+                        navbar.map((item, index) => <div onClick={handleOpenMenu} className="relative text-white" key={index}>{
+                            (path == item.href) ?
+                                <div className="flex items-center gap-1 p-2.5 cursor-pointer">
+                                    {item.title} <MdOutlineKeyboardArrowDown className="mt-[2px]" />
+                                </div> : ""}
+                        </div>)
                 }
                 <div className={`${statue ? "flex" : 'hidden'} flex-col py-7 px-8 bg-[#18181C] w-full h-max absolute top-full left-0`}>
                     {
@@ -77,7 +85,12 @@ function Navbar() {
                     navbar.map((item, index) => <NavLink className={`${path == item.href ? "text-white" : "text-[#9F9FA1]"}  hover:text-white duration-200`} key={index} to={item.href}>{item.title}</NavLink>)
                 }
             </nav>
-
+            <div className={`${search ? "hidden" : "flex"} lg:flex  space-x-3 items-center  text-sm  text-[#9F9FA1] justify-end lg:w-full`}>
+                <Link to='wishlist' className={`${path == "wishlist" ? "text-white" : ""} hidden lg:inline font-semibold hover:text-white`}>Wishlist</Link>
+                <Link to='wishlist' className={`${path == "wishlist" ? "text-white" : ""} inline font-extrabold text-xl  lg:hidden hover:text-white`}><FaRegCheckCircle /></Link>
+                <Link to='basket' className={`${path == "basket" ? "text-white" : ""} hidden lg:inline font-semibold hover:text-white`}>Cart</Link>
+                <Link to='basket' className={`${path == "basket" ? "text-white" : ""} inline  font-extrabold text-xl lg:hidden  hover:text-white`}><MdOutlineShoppingCart /></Link>
+            </div>
         </div>
     )
 }

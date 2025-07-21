@@ -94,7 +94,7 @@ function Browse() {
   const [mobileFilter , setMobileFilter] = useState(false)
 
   return (
-    <main className='px-6 lg:px-0 pt-10'>
+    <main className='pt-10'>
       <GenerSlider />
       <div className='py-10'>
         <div className='flex pb-3 items-center justify-between '>

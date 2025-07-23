@@ -228,6 +228,10 @@ export const epicApi = createApi({
       providesTags: ['Products'],
       keepUnusedDataFor: 0
     }),
+    getProductById : builder.query({
+      query : (id) => `products/${id}`,
+      providesTags : ['Products']
+    }),
     deleteProduct: builder.mutation({
       query: (id) => ({
         url: `products/${id}`,
@@ -379,6 +383,7 @@ export const {
   useDeleteProductMutation,
   useUploadMediaMutation,
   useCreateProductMutation,
+  useGetProductByIdQuery,
   useUpdateProductMutation,
   useGetWishlistQuery,
   useAddToWishlistMutation,

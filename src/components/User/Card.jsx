@@ -15,7 +15,8 @@ function Card({ item }) {
         setIsInWishlist(exists);
     }, [wishlistData, item?.id]);
 
-    const handleWishlist = async (id) => {
+    const handleWishlist = async (e,id) => {
+        e.stopPropagation()
         if (!localStorage.getItem("accessToken")) {
             navigate("/login");
             return;
@@ -34,12 +35,11 @@ function Card({ item }) {
     return (
         <div className="h-max">
             <div className="w-full h-full group relative">
-                <div className="w-full h-[300px] relative rounded-md overflow-hidden">
+                <div onClick={() => navigate(`/store/detail/${item.id}`)} className="w-full cursor-pointer h-[300px] relative rounded-md overflow-hidden">
                     <img className="w-full h-full object-cover" src={item?.media[0]?.url} alt="" />
-
                     <div
-                        onClick={() => handleWishlist(item?.id)}
-                        className="absolute hidden md:block z-20 cursor-pointer -right-5 group-hover:right-2 -top-5 group-hover:top-2 duration-300 group/icon"
+                        onClick={(e) => handleWishlist(e,item?.id)}
+                        className="absolute  hidden md:block z-20 cursor-pointer -right-5 group-hover:right-2 -top-5 group-hover:top-2 duration-300 group/icon"
                     >
                         <AiOutlinePlusCircle
                             className={`

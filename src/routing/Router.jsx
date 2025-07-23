@@ -22,6 +22,7 @@ import Wishlist from "../pages/User/Store/Wishlist"
 import Basket from "../pages/User/Store/Basket"
 import Account from "../pages/User/UserInfos/Account"
 import Settings from "../pages/User/UserInfos/Settings"
+import Detail from "../pages/User/Store/Detail"
 function Router() {
     return (
         <Routes>
@@ -32,6 +33,7 @@ function Router() {
                     <Route path="browse" element={<Browse />} />
                     <Route path="wishlist" element={<Wishlist />} />
                     <Route path="basket" element={<Basket />} />
+                    <Route path="detail/:id" element={<Detail />} />
                 </Route>
                 <Route path="account" element={<Account />} >
                     <Route index element={<Settings />} />

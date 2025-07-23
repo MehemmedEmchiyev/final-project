@@ -1,8 +1,13 @@
 import { VscEdit } from "react-icons/vsc";
-import { useLazyGetUserByIdQuery } from "../../../store/services/epicApi";
+import { useLazyGetUserByIdQuery, useUpdateProfileMutation } from "../../../store/services/epicApi";
 import { useEffect, useState } from "react";
 import { RiLoader5Fill } from "react-icons/ri";
-import NewEmail from "../../../components/User/Account/NewEmail";
+import NewEmail from "../../../components/User/Account/Setting/NewEmail";
+import NewNameModal from "../../../components/User/Account/Setting/NewNameModal";
+import toast from "react-hot-toast";
+import Loader from "../../../components/ui/Loader";
+import Download from "../../../components/User/Account/Setting/Download";
+import Delete from "../../../components/User/Account/Setting/Delete";
 
 function SettingLoader() {
   return (
@@ -13,9 +18,11 @@ function SettingLoader() {
 function Settings() {
   const userId = localStorage.getItem('userId')
   const [getUser, { data, isLoading }] = useLazyGetUserByIdQuery()
+  const [update, { isLoading: updateLoader }] = useUpdateProfileMutation()
   const [firstname, setFistname] = useState("")
   const [lastname, setLastname] = useState("")
-  const [open , setOpen ] = useState(false)
+  const [open, setOpen] = useState(false)
+  const [flag, setFlag] = useState(false)
   useEffect(() => {
     const user = async () => {
       await getUser(userId)
@@ -26,7 +33,21 @@ function Settings() {
     }
     user()
   }, [data])
+  const infos = {
+    firstname: data?.firstname,
+    lastname: data?.lastname,
+    username: data?.username
+  }
   const emailAdd = data?.email.split('@')[0][0] + "***" + data?.email.split('@')[0][data?.email.split('@')[0].length - 1] + "@" + data?.email.split('@')[1]
+  const handleSubmit = async () => {
+    const patch = {
+      firstname, lastname,
+      username: data?.username
+    }
+    const res = await update(patch)
+    if (res?.error) toast.error(res?.error.data.message)
+    else toast.success(res?.data.message)
+  }
   return (
     <>
       <div>
@@ -44,9 +65,10 @@ function Settings() {
             <div className="border w-full bg-[#1C1C20] border-[#ACACAD] hover:border-white rounded-xl py-3 px-2">
               <span>{isLoading ? <SettingLoader /> : data?.username}</span>
             </div>
-            <div className="py-3 px-3 w-max bg-blue-400 rounded-xl hover:bg-blue-300">
+            <div onClick={() => setFlag(true)} className="py-3 px-3 w-max bg-blue-400 rounded-xl hover:bg-blue-300">
               <VscEdit className="text-xl text-black" />
             </div>
+            <NewNameModal open={flag} setOpen={setFlag} info={infos} />
           </div>
         </div>
         <div className="w-full">
@@ -58,7 +80,7 @@ function Settings() {
             <div onClick={() => setOpen(true)} className="py-3 px-3 w-max bg-blue-400 rounded-xl hover:bg-blue-300">
               <VscEdit className="text-xl text-black" />
             </div>
-              <NewEmail open={open} setOpen={setOpen}/>
+            <NewEmail open={open} setOpen={setOpen} />
           </div>
         </div>
       </div>
@@ -71,7 +93,7 @@ function Settings() {
           <h2 className="text-sm mb-3 font-semibold text-[#ACACAD]">First Name</h2>
           <div className="flex w-full items-center  gap-3">
             <div className="border w-full bg-[#1C1C20] border-[#ACACAD] hover:border-white rounded-xl py-3 px-2">
-              <input className="outline-0 border-0 w-full" onChange={e => setFistname(e.target.value)} value={isLoading ? 'Loading...' : firstname }/>
+              <input className="outline-0 border-0 w-full" onChange={e => setFistname(e.target.value)} value={isLoading ? 'Loading...' : firstname} />
             </div>
           </div>
         </div>
@@ -83,6 +105,13 @@ function Settings() {
             </div>
           </div>
         </div>
+      </div>
+      <button onClick={handleSubmit} disabled={firstname != data?.firstname || lastname != data?.lastname ? false : true} className={`${firstname != data?.firstname || lastname != data?.lastname ? "bg-blue-400 hover:bg-blue-300 text-black cursor-pointer" : "bg-[#2e2e30] cursor-not-allowed text-gray-500"} rounded-xl  mt-5 py-3 px-4 font-semibold `}>
+        {updateLoader ? <Loader /> : "Save Changes"}
+      </button>
+      <div className="pt-10">
+        <Download />
+        <Delete />
       </div>
     </>
   )

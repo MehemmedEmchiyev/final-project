@@ -4,7 +4,7 @@ import baseQueryWithReauth from './baseQuery'
 export const epicApi = createApi({
   reducerPath: 'epicApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Genres', 'Features', 'Events', 'Types', 'Platforms', 'Subscription', 'Products', 'Wishlist' , 'Carts'],
+  tagTypes: ['Users', 'Genres', 'Features', 'Events', 'Types', 'Platforms', 'Subscription', 'Products', 'Wishlist', 'Carts'],
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (patch) => ({
@@ -33,7 +33,8 @@ export const epicApi = createApi({
           url: `users/${id}`,
           method: 'GET',
         }
-      )
+      ),
+      providesTags: ['Users']
     }),
     verifyOtp: builder.mutation({
       query: (patch) => ({
@@ -266,7 +267,7 @@ export const epicApi = createApi({
     getWishlist: builder.query({
       query: () => 'wishlist',
       providesTags: ['Wishlist'],
-      keepUnusedDataFor : 0
+      keepUnusedDataFor: 0
     }),
     addToWishlist: builder.mutation({
       query: (patch) => ({
@@ -274,55 +275,70 @@ export const epicApi = createApi({
         method: 'POST',
         body: patch
       }),
-      invalidatesTags : ['Wishlist']
+      invalidatesTags: ['Wishlist']
     }),
     deleteWishlist: builder.mutation({
       query: (id) => ({
         url: `wishlist/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags : ['Wishlist']
+      invalidatesTags: ['Wishlist']
     }),
-    clearWishlist : builder.mutation({
+    clearWishlist: builder.mutation({
       query: () => ({
-        url : 'wishlist',
-        method : 'DELETE',
+        url: 'wishlist',
+        method: 'DELETE',
       }),
-      invalidatesTags : ['Wishlist']
+      invalidatesTags: ['Wishlist']
     }),
-    getCarts : builder.query({
-      query : () => 'carts',
-      providesTags : ['Carts'],
-      keepUnusedDataFor : 0
+    getCarts: builder.query({
+      query: () => 'carts',
+      providesTags: ['Carts'],
+      keepUnusedDataFor: 0
     }),
-    addToCart : builder.mutation({
-      query : (patch) => ({
-        url : 'carts/add',
-        method : 'POST',
-        body : patch
+    addToCart: builder.mutation({
+      query: (patch) => ({
+        url: 'carts/add',
+        method: 'POST',
+        body: patch
       }),
-      invalidatesTags : ['Carts']
+      invalidatesTags: ['Carts']
     }),
-    clearCarts : builder.mutation({
+    clearCarts: builder.mutation({
       query: () => ({
-        url : 'carts',
-        method : 'DELETE',
+        url: 'carts',
+        method: 'DELETE',
       }),
-      invalidatesTags : ['Carts']
+      invalidatesTags: ['Carts']
     }),
-    newEmail : builder.mutation({
-      query : (patch) => ({
-        url  : 'users/updateEmail',
-        method : 'POST',
-        body : patch
+    newEmail: builder.mutation({
+      query: (patch) => ({
+        url: 'users/updateEmail',
+        method: 'POST',
+        body: patch
       })
     }),
-    verifyNewEmail : builder.mutation({
-      query : (patch) => ({
-        url : 'users/verifyNewEmail',
-        method : 'POST',
-        body : patch
+    verifyNewEmail: builder.mutation({
+      query: (patch) => ({
+        url: 'users/verifyNewEmail',
+        method: 'POST',
+        body: patch
       })
+    }),
+    updateProfile: builder.mutation({
+      query: (patch) => ({
+        url: 'users/updateProfile',
+        method: 'POST',
+        body: patch
+      }),
+      invalidatesTags: ['Users']
+    }),
+    deleteAccount: builder.mutation({
+      query: (id) => ({
+        url: `users/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags : ['Users']
     })
   }),
 })
@@ -372,5 +388,7 @@ export const {
   useAddToCartMutation,
   useClearCartsMutation,
   useNewEmailMutation,
-  useVerifyNewEmailMutation
+  useVerifyNewEmailMutation,
+  useUpdateProfileMutation,
+  useDeleteAccountMutation
 } = epicApi

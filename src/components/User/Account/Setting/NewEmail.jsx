@@ -1,11 +1,11 @@
 import { useFormik } from "formik"
 import { X } from "lucide-react"
-import { newEmail } from "../../../validation/newEmail"
-import { useNewEmailMutation, useVerifyNewEmailMutation } from "../../../store/services/epicApi";
 import toast from "react-hot-toast";
-import Loader from "../../ui/Loader";
+import Loader from "../../../ui/Loader";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
+import { newEmail } from "../../../../validation/newEmail";
+import { useNewEmailMutation, useVerifyNewEmailMutation } from "../../../../store/services/epicApi";
 
 function NewEmail({ open, setOpen }) {
     const navigator = useNavigate()

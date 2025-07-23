@@ -1,29 +1,8 @@
-import toast from "react-hot-toast";
-import { useAddToCartMutation, useDeleteWishlistMutation } from "../../../../store/services/epicApi";
-import Loader from "../../../ui/Loader";
+import { Loader } from "lucide-react"
 
-const GameCard = ({ item, itemId }) => {
+function BasketCard({ item, itemId }) {
     const { name, discount, price, id, isFree, discountedPrice, description } = item
-    const [deleteWishlist, { isLoading }] = useDeleteWishlistMutation()
-    const [addCart, { isLoading: cartLoader }] = useAddToCartMutation()
-    
-    const remove = async () => {
-        const res = await deleteWishlist(itemId)
-        if (res?.error) toast.error(res?.error.data.message)
-        else toast.success(res.data.message)
-    }
-
-    const addToCart = async () => {
-        const patch = {
-            productId: id,
-            quantity: 1
-        }
-        const res = await addCart(patch)
-        if (res?.error) toast.error(res?.error.data.message)
-        else toast.success(res.data.message)
-    }
     return (
-
         <div className="bg-[#202024] text-white rounded-xl p-4 flex gap-4  shadow-lg">
             {isLoading ? <Loader className="w-20 h-20 animate-spin text-white mx-auto" /> :
                 <>
@@ -71,7 +50,7 @@ const GameCard = ({ item, itemId }) => {
                                         cartLoader ?
                                             <Loader />
                                             :
-                                            "Add To Cart"
+                                            "Move To Wishlist"
                                     }
                                 </button>
                             </div>
@@ -80,7 +59,7 @@ const GameCard = ({ item, itemId }) => {
                 </>
             }
         </div>
-    );
-};
+    )
+}
 
-export default GameCard;
+export default BasketCard

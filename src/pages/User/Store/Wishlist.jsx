@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
 import Info from "../../../components/ui/Info";
 import Emptypart from "../../../components/User/Store/Wishlist-Cart/Emptypart";
-import { useGetWishlistQuery } from "../../../store/services/epicApi";
+import { useClearWishlistMutation, useGetWishlistQuery } from "../../../store/services/epicApi";
 import { Loader } from "lucide-react";
 import toast from "react-hot-toast";
 import GameCard from "../../../components/User/Store/Wishlist-Cart/GameCard";
-
 function Wishlist() {
   const [emptyData, setEmptyData] = useState(false);
   const { data, isLoading, isError , isFetching } = useGetWishlistQuery();
-  console.log(data);
-  
+  const [clearWishlist , {isLoading : clearLoading}] = useClearWishlistMutation()
+  const handlerClear = async() => {
+    const res = await clearWishlist()
+    if(res?.error) toast.error(res?.error.data.message)
+    else toast.success(res?.data.message)
+  }
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
@@ -20,9 +23,7 @@ function Wishlist() {
   }, []);
 
   useEffect(() => {
-    if (!isLoading && data?.length === 0) {
-      setEmptyData(true);
-    }
+    if (!isLoading && data?.length === 0) setEmptyData(true);
   }, [data, isLoading]);
 
   return (
@@ -32,12 +33,13 @@ function Wishlist() {
         <h1 className="text-white mt-3 font-extrabold text-[40px]">My Wishlist</h1>
         <Info property="hidden lg:flex" />
       </div>
-      {isLoading || isFetching ? (
+      {isLoading || isFetching || clearLoading ? (
         <Loader className="w-20 h-20 animate-spin text-white mx-auto mt-10" />
       ) : emptyData || isError ? (
         <Emptypart />
       ) : (
         <div className="w-full space-y-4 mt-6">
+          <button onClick={handlerClear} className="text-blue-400 hover:text-blue-300 duration-300 cursor-pointer">Clear Wishlist ({data?.length})</button>
           {data?.map((item, index) => (
             <GameCard key={item.id || index} item={item.product} itemId={item?.id}/>
           ))}

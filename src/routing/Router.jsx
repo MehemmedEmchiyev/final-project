@@ -20,7 +20,8 @@ import Platforms from "../pages/Admin/AdminPages/Platforms"
 import Subscription from "../pages/Admin/AdminPages/Subscription"
 import Wishlist from "../pages/User/Store/Wishlist"
 import Basket from "../pages/User/Store/Basket"
-
+import Account from "../pages/User/UserInfos/Account"
+import Settings from "../pages/User/UserInfos/Settings"
 function Router() {
     return (
         <Routes>
@@ -32,7 +33,9 @@ function Router() {
                     <Route path="wishlist" element={<Wishlist />} />
                     <Route path="basket" element={<Basket />} />
                 </Route>
-                <Route path="about" element={<About />} />
+                <Route path="account" element={<Account />} >
+                    <Route index element={<Settings />} />
+                </Route>
             </Route>
             <Route path="/admin" element={
                 <Auth>

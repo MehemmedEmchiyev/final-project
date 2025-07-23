@@ -4,7 +4,7 @@ import baseQueryWithReauth from './baseQuery'
 export const epicApi = createApi({
   reducerPath: 'epicApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Genres', 'Features', 'Events', 'Types', 'Platforms', 'Subscription', 'Products', 'Wishlist'],
+  tagTypes: ['Genres', 'Features', 'Events', 'Types', 'Platforms', 'Subscription', 'Products', 'Wishlist' , 'Carts'],
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (patch) => ({
@@ -283,8 +283,48 @@ export const epicApi = createApi({
       }),
       invalidatesTags : ['Wishlist']
     }),
+    clearWishlist : builder.mutation({
+      query: () => ({
+        url : 'wishlist',
+        method : 'DELETE',
+      }),
+      invalidatesTags : ['Wishlist']
+    }),
+    getCarts : builder.query({
+      query : () => 'carts',
+      providesTags : ['Carts'],
+      keepUnusedDataFor : 0
+    }),
+    addToCart : builder.mutation({
+      query : (patch) => ({
+        url : 'carts/add',
+        method : 'POST',
+        body : patch
+      }),
+      invalidatesTags : ['Carts']
+    }),
+    clearCarts : builder.mutation({
+      query: () => ({
+        url : 'carts',
+        method : 'DELETE',
+      }),
+      invalidatesTags : ['Carts']
+    }),
+    newEmail : builder.mutation({
+      query : (patch) => ({
+        url  : 'users/updateEmail',
+        method : 'POST',
+        body : patch
+      })
+    }),
+    verifyNewEmail : builder.mutation({
+      query : (patch) => ({
+        url : 'users/verifyNewEmail',
+        method : 'POST',
+        body : patch
+      })
+    })
   }),
-
 })
 
 export const {
@@ -326,5 +366,11 @@ export const {
   useUpdateProductMutation,
   useGetWishlistQuery,
   useAddToWishlistMutation,
-  useDeleteWishlistMutation
+  useDeleteWishlistMutation,
+  useClearWishlistMutation,
+  useGetCartsQuery,
+  useAddToCartMutation,
+  useClearCartsMutation,
+  useNewEmailMutation,
+  useVerifyNewEmailMutation
 } = epicApi

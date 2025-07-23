@@ -46,22 +46,25 @@ function Header() {
     }
     checkUser()
   }, [])
-  const [open , setOpen] = useState(false)
+  const [open, setOpen] = useState(false)
   const signOut = () => {
     localStorage.clear()
     toast.success("Succesfully Sign Out!")
     navigator('/store/browse')
     setUser({})
   }
-  
-  
+  useEffect(() => {
+    open && setOpen(false)
+  },[pathname])
+
+
   return (
 
     <div>
       <header className={`${pathname.includes('store') ? "relative" : "fixed"} top-0 w-full z-100 px-[1rem] md:px-[1.5rem] ${scroll ? "backdrop-blur-md bg-black/50" : "bg-black"} flex items-center justify-between ${pathname.includes("store") ? "py-5 md:py-0" : "py-5"}`}>
         <div className="w-12 h-8 ">
           <Link to='/'>
-            <SiEpicgames className="text-2xl text-white w-full h-full"/>
+            <SiEpicgames className="text-2xl text-white w-full h-full" />
           </Link>
         </div>
         <div className="order-2 block md:hidden ">
@@ -99,7 +102,7 @@ function Header() {
                               <li className="px-4 py-2 hover:bg-white/10 cursor-pointer">Epic Rewards</li>
                               <li className="px-4 py-2 hover:bg-white/10 cursor-pointer">Account Balance</li>
                               <li className="px-4 py-2 hover:bg-white/10 cursor-pointer">Coupons</li>
-                              <li className="px-4 py-2 hover:bg-white/10 cursor-pointer">Account</li>
+                              <Link  className="block px-4 py-2 hover:bg-white/10 cursor-pointer" to="account">Account</Link>
                               <li className="px-4 py-2 hover:bg-white/10 cursor-pointer">Redeem Code</li>
                               <li className="px-4 py-2 hover:bg-white/10 cursor-pointer">Redeem Fortnite Gift Card</li>
                               <li className="px-4 py-2 hover:bg-white/10 cursor-pointer">Wishlist</li>

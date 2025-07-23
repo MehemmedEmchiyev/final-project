@@ -11,7 +11,7 @@ function Sidebar() {
     { title: "Subscription", href: 'subscription' },
   ]
   return (
-    <div>
+    <>
       <div className="min-h-screen p-3 space-y-2 w-60 dark:bg-gray-50 dark:text-gray-800">
         <div className="flex flex-col justify-between h-screen divide-y dark:divide-gray-300">
           <ul className=" pt-2 pb-4 space-y-1 text-sm">
@@ -46,7 +46,7 @@ function Sidebar() {
           </ul>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

@@ -1,0 +1,67 @@
+import { LuUser, LuShare2 } from "react-icons/lu";
+import { MdOutlineMail } from "react-icons/md";
+import { RiShieldKeyholeLine } from "react-icons/ri";
+import { PiNotePencilLight } from "react-icons/pi";
+import { Link, Outlet, useLocation } from "react-router";
+import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import { MdOutlineClose } from "react-icons/md";
+import { useState } from "react";
+
+function Account() {
+    const [flag, setFlag] = useState(false)
+    const { pathname } = useLocation()
+    const path = pathname.replace('/', '')
+    const links = [
+        { title: 'Settings', href: 'account', icon: <LuUser /> },
+        { title: 'Linked accounts', href: 'linked-accounts', icon: <LuShare2 /> },
+        { title: 'Communication preferences', href: 'communication', icon: <MdOutlineMail /> },
+        { title: 'Password and security', href: 'security', icon: <RiShieldKeyholeLine /> },
+        { title: 'EULA history', href: 'eula', icon: <PiNotePencilLight /> },
+    ];
+    const activPage = links.find(item => item.href == path)
+    
+    return (
+        <div>
+            <div className="w-full relative lg:hidden  px-5 py-3 text-white bg-[#101014] flex items-center justify-between">
+                <div className="flex rounded items-center gap-3 py-2 px-3">
+                    <div className="text-[#26BBFF] text-xl">{activPage.icon}</div>
+                    <span>{activPage.title}</span>
+                </div>
+                <div className="text-2xl" onClick={() => setFlag(!flag)}>
+                    {flag ? <MdOutlineClose /> : <MdOutlineKeyboardArrowDown />}
+                </div>
+            </div>
+                {
+                    flag && <div className='block  w-full text-white lg:hidden bg-[#202024] px-5 py-4'>
+                        <h2 className='font-semibold text-xl px-4 pb-3'>Account</h2>
+                        <div>
+                            {
+                                links.map((item, index) => <Link key={index} to={item.href} className={`${path == item.href ? "bg-[#303034]" : ""} flex rounded items-center gap-3 hover:bg-[#303034] py-2 px-3`}>
+                                    <div className="text-[#26BBFF] text-xl">{item.icon}</div>
+                                    <span>{item.title}</span>
+                                </Link>)
+                            }
+                        </div>
+                    </div>
+                }
+            <div className='w-full  px-3 md:px-0 flex gap-10 mx-auto py-15 md:w-[70%] text-white'>
+                <div className='hidden h-max lg:block lg:w-1/3 rounded-2xl bg-[#202024] px-2 py-4'>
+                    <h2 className='font-semibold text-xl px-4 pb-3'>Account</h2>
+                    <div>
+                        {
+                            links.map((item, index) => <Link key={index} to={item.href} className={`${path == item.href ? "bg-[#303034]" : ""} flex rounded items-center gap-3 hover:bg-[#303034] py-2 px-3`}>
+                                <div className="text-[#26BBFF] text-xl">{item.icon}</div>
+                                <span>{item.title}</span>
+                            </Link>)
+                        }
+                    </div>
+                </div>
+                <div className='w-full  lg:w-2/3'>
+                    <Outlet />
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default Account

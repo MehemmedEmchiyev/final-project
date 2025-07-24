@@ -39,8 +39,6 @@ function Navbar() {
         setScroll(true)
         dispatch(changeSearch())
     }
-
-
     return (
         <div className={`${scroll || statue ? "sticky top-0 mx-auto z-119 right-0 left-0" : ""} w-full lg:w-[75%] mx-auto bg-[#18181C] py-4 px-3 lg:px-0 flex items-center ${search ? "" : "justify-between"} lg:justify-start gap-10`}>
             <div className='w-60 h-10 hidden lg:flex items-center gap-3 bg-[#202024] duration-300 rounded-full hover:bg-[#404044] !text-[#B1B1B3]'>
@@ -60,7 +58,7 @@ function Navbar() {
             </div>
             <div className={`lg:hidden block ${search ? "hidden" : ""}`}>
                 {
-                    path == 'wishlist' || path == 'basket' ?
+                    path == 'wishlist' || path == 'basket' || path.includes('detail') ?
                         <div onClick={handleOpenMenu} className="relative text-white" >
                             <div className="flex items-center gap-1 p-2.5 cursor-pointer">
                                 {navbar[0].title} <MdOutlineKeyboardArrowDown className="mt-[2px]" />

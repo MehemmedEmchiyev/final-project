@@ -8,12 +8,10 @@ import { useState } from 'react';
 export default function MinimalGallery({ media }) {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const medias = media?.length > 1 ? [...media || []] : media
-    const sliderItems = media?.length > 1 && medias.splice(0,1)
-    console.log(medias);
-    
+    const sliderItems = media?.length > 1 && medias.splice(0, 1)
     
     return (
-        
+
         <div className=" rounded-xl w-full mx-auto">
             <Swiper
                 style={{

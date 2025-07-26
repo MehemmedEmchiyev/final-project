@@ -3,7 +3,9 @@ import toast from "react-hot-toast"
 import Loader from "../../../ui/Loader"
 
 function BasketCard({ item, itemId }) {
-    const { name, discount, price, id, isFree, discountedPrice, description } = item
+    const { name, discount, price, id, isFree, discountedPrice, description , media } = item
+    console.log(item);
+    
     const [deleteCarts, {isLoading}] = useDeleteCartsMutation()
     const remove = async () => { 
         const res = await deleteCarts(itemId)
@@ -14,7 +16,7 @@ function BasketCard({ item, itemId }) {
         <div className="bg-[#202024] text-white rounded-xl p-4 flex gap-4  shadow-lg">
             
                     <div className="w-[100px] h-[140px] bg-black flex items-center justify-center text-white text-3xl font-bold rounded-md">
-                        LUTO
+                        <img src={media[0]?.url} className="w-full h-full object-cover" alt="" />
                     </div>
                     <div className="flex-1 flex flex-col justify-between">
                         <div>

@@ -97,10 +97,10 @@ function Navbar() {
                         )
                     }
                 </Link>
-                <Link to='basket' className={`${path == "basket" ? "text-white" : ""} inline  font-extrabold text-xl lg:hidden  hover:text-white`}><MdOutlineShoppingCart />
+                <Link to='basket' className={`${path == "basket" ? "text-white" : ""} relative inline  font-extrabold text-xl lg:hidden  hover:text-white`}><MdOutlineShoppingCart />
                     {
                         !isError && carts?.length > 0 && (
-                            <span className="ml-2 font-semibold bg-blue-400 rounded-2xl text-black px-4 text-sm py-[1px]">
+                            <span className="absolute left-[30%] -top-full font-semibold bg-blue-400 rounded-2xl text-black px-2 text-sm py-[1px]">
                                 {carts.length}
                             </span>
                         )

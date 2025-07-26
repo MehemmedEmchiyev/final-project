@@ -24,6 +24,7 @@ import Account from "../pages/User/UserInfos/Account"
 import Settings from "../pages/User/UserInfos/Settings"
 import Detail from "../pages/User/Store/Detail"
 import Security from "../pages/User/UserInfos/Security"
+import PaymentSettings from "../pages/User/UserInfos/PaymentSettings"
 function Router() {
     return (
         <Routes>
@@ -39,6 +40,7 @@ function Router() {
                 <Route path="account" element={<Account />} >
                     <Route index element={<Settings />} />
                     <Route path="security" element={<Security />} />
+                    <Route path="payment-settings" element={<PaymentSettings />} />
                 </Route>
             </Route>
             <Route path="/admin" element={

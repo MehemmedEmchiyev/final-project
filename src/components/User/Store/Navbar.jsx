@@ -8,6 +8,7 @@ import { changeSearch } from "../../../store/searchSlice";
 import { IoClose } from "react-icons/io5";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { MdOutlineShoppingCart } from "react-icons/md";
+import { useGetCartsQuery } from "../../../store/services/epicApi";
 
 const navbar = [
     { title: 'Discover', href: '' },
@@ -16,6 +17,7 @@ const navbar = [
 ]
 
 function Navbar() {
+    const { data: carts, isError } = useGetCartsQuery()
     const { pathname } = useLocation()
     const path = pathname == '/store' ? '' : pathname.replace('/store/', '')
     const { statue } = useSelector(store => store.black)
@@ -86,8 +88,24 @@ function Navbar() {
             <div className={`${search ? "hidden" : "flex"} lg:flex  space-x-3 items-center  text-sm  text-[#9F9FA1] justify-end lg:w-full`}>
                 <Link to='wishlist' className={`${path == "wishlist" ? "text-white" : ""} hidden lg:inline font-semibold hover:text-white`}>Wishlist</Link>
                 <Link to='wishlist' className={`${path == "wishlist" ? "text-white" : ""} inline font-extrabold text-xl  lg:hidden hover:text-white`}><FaRegCheckCircle /></Link>
-                <Link to='basket' className={`${path == "basket" ? "text-white" : ""} hidden lg:inline font-semibold hover:text-white`}>Cart</Link>
-                <Link to='basket' className={`${path == "basket" ? "text-white" : ""} inline  font-extrabold text-xl lg:hidden  hover:text-white`}><MdOutlineShoppingCart /></Link>
+                <Link to='basket' className={`${path == "basket" ? "text-white" : ""} hidden lg:inline font-semibold hover:text-white`}>Cart
+                    {
+                        !isError && carts?.length > 0 && (
+                            <span className="ml-2 font-semibold bg-blue-400 rounded-2xl text-black px-4 text-sm py-[1px]">
+                                {carts.length}
+                            </span>
+                        )
+                    }
+                </Link>
+                <Link to='basket' className={`${path == "basket" ? "text-white" : ""} inline  font-extrabold text-xl lg:hidden  hover:text-white`}><MdOutlineShoppingCart />
+                    {
+                        !isError && carts?.length > 0 && (
+                            <span className="ml-2 font-semibold bg-blue-400 rounded-2xl text-black px-4 text-sm py-[1px]">
+                                {carts.length}
+                            </span>
+                        )
+                    }
+                </Link>
             </div>
         </div>
     )

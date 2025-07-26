@@ -40,7 +40,7 @@ function Basket() {
         <Emptypart />
       ) : (
         <div className="w-full space-y-4 mt-6">
-          <button onClick={handlerClear} className="text-blue-400 hover:text-blue-300 duration-300 cursor-pointer">Clear Wishlist ({data?.length})</button>
+          <button onClick={handlerClear} className="text-blue-400 hover:text-blue-300 duration-300 cursor-pointer">Clear Carts ({data?.length})</button>
           {data?.map((item, index) => (
             <BasketCard key={item.id || index} item={item.product} itemId={item?.id} />
           ))}

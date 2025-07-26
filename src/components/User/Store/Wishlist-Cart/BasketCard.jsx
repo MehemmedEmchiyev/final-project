@@ -1,11 +1,18 @@
-import { Loader } from "lucide-react"
+import { useDeleteCartsMutation } from "../../../../store/services/epicApi"
+import toast from "react-hot-toast"
+import Loader from "../../../ui/Loader"
 
 function BasketCard({ item, itemId }) {
     const { name, discount, price, id, isFree, discountedPrice, description } = item
+    const [deleteCarts, {isLoading}] = useDeleteCartsMutation()
+    const remove = async () => { 
+        const res = await deleteCarts(itemId)
+        if (res?.error) toast.error(res?.error.data.message)
+        else toast.success(res.data.message)
+    }
     return (
         <div className="bg-[#202024] text-white rounded-xl p-4 flex gap-4  shadow-lg">
-            {isLoading ? <Loader className="w-20 h-20 animate-spin text-white mx-auto" /> :
-                <>
+            
                     <div className="w-[100px] h-[140px] bg-black flex items-center justify-center text-white text-3xl font-bold rounded-md">
                         LUTO
                     </div>
@@ -38,26 +45,15 @@ function BasketCard({ item, itemId }) {
                             <div className="flex items-center gap-10">
                                 <button
                                     onClick={() => remove(id)}
-                                    className="text-gray-400 hover:text-white text-sm"
+                                    className="bg-[#22b8f5] cursor-pointer hover:bg-[#1aaae0] text-black px-4 py-2 rounded font-semibold text-sm"
                                 >
-                                    Remove
+                                    {isLoading ? <Loader /> : "Remove"}
                                 </button>
-                                <button
-                                    onClick={addToCart}
-                                    className="bg-[#22b8f5] hover:bg-[#1aaae0] text-black px-4 py-2 rounded font-semibold text-sm"
-                                >
-                                    {
-                                        cartLoader ?
-                                            <Loader />
-                                            :
-                                            "Move To Wishlist"
-                                    }
-                                </button>
+                                
                             </div>
                         </div>
                     </div>
-                </>
-            }
+               
         </div>
     )
 }

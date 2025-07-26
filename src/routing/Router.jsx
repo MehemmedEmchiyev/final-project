@@ -23,6 +23,7 @@ import Basket from "../pages/User/Store/Basket"
 import Account from "../pages/User/UserInfos/Account"
 import Settings from "../pages/User/UserInfos/Settings"
 import Detail from "../pages/User/Store/Detail"
+import Security from "../pages/User/UserInfos/Security"
 function Router() {
     return (
         <Routes>
@@ -37,6 +38,7 @@ function Router() {
                 </Route>
                 <Route path="account" element={<Account />} >
                     <Route index element={<Settings />} />
+                    <Route path="security" element={<Security />} />
                 </Route>
             </Route>
             <Route path="/admin" element={

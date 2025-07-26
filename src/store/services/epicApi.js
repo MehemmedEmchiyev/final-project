@@ -298,13 +298,19 @@ export const epicApi = createApi({
     getCarts: builder.query({
       query: () => 'carts',
       providesTags: ['Carts'],
-      keepUnusedDataFor: 0
     }),
     addToCart: builder.mutation({
       query: (patch) => ({
         url: 'carts/add',
         method: 'POST',
         body: patch
+      }),
+      invalidatesTags: ['Carts']
+    }),
+    deleteCarts: builder.mutation({
+      query: (id) => ({
+        url: `carts/${id}`,
+        method: 'DELETE',
       }),
       invalidatesTags: ['Carts']
     }),
@@ -343,6 +349,14 @@ export const epicApi = createApi({
         method: "DELETE",
       }),
       invalidatesTags : ['Users']
+    }),
+    resetPassword : builder.mutation({
+      query : (values) => ({
+        url : 'auth/reset-password',
+        method : 'POST',
+        body : values
+        
+      })
     })
   }),
 })
@@ -391,9 +405,11 @@ export const {
   useClearWishlistMutation,
   useGetCartsQuery,
   useAddToCartMutation,
+  useDeleteCartsMutation,
   useClearCartsMutation,
   useNewEmailMutation,
   useVerifyNewEmailMutation,
   useUpdateProfileMutation,
-  useDeleteAccountMutation
+  useDeleteAccountMutation,
+  useResetPasswordMutation
 } = epicApi

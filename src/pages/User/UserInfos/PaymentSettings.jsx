@@ -1,10 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import { MdWarningAmber } from "react-icons/md";
 import { MdOutlineCardGiftcard } from "react-icons/md";
+import { useLazyGetUserByIdQuery } from "../../../store/services/epicApi";
+import Loader from "../../../components/ui/Loader";
+import IncreasBalance from "../../../components/User/Account/Inc/IncreasBalance";
 
 function PaymentSettings() {
     const [open, setOpen] = useState(true)
+    const [flag, setFlag] = useState(false)
+    const userId = localStorage.getItem('userId')
+    const [getUser , {data , isLoading}] = useLazyGetUserByIdQuery() 
+    useEffect(() => {
+        const user = async() => {
+            await getUser(userId)
+        }
+        user()
+    },[isLoading])
+     
     return (
         <>
             <div>
@@ -38,9 +51,9 @@ function PaymentSettings() {
             </div>}
             <div className="mt-4  ">
                 <h2 className="text-2xl font-semibold lg:text-3xl">Balance</h2>
-                <p className="py-3 text-5xl tracking-[2px]">$0.00</p>
+                <div className="py-3 text-5xl tracking-[2px]">{isLoading ? <Loader property={'text-blue-400'}/> : `$${data?.balance}`}</div>
                 <div className="flex gap-3 items-center flex-col mt-3 w-full lg:w-max lg:flex-row">
-                    <button className="bg-sky-500 flex items-center justify-center gap-3 hover:bg-sky-400 w-full md:w-max duration-300 cursor-pointer text-black font-medium py-3 px-4 rounded-md">
+                    <button onClick={() => setFlag(true)} className="bg-sky-500 flex items-center justify-center gap-3 hover:bg-sky-400 w-full md:w-max duration-300 cursor-pointer text-black font-medium py-3 px-4 rounded-md">
                         <GoPlus />
                         Add Funds
                     </button>
@@ -50,6 +63,7 @@ function PaymentSettings() {
                     </button>
                 </div>
             </div>
+            <IncreasBalance flag={flag} setFlag = {setFlag}/>
         </>
     )
 }

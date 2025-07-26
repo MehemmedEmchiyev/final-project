@@ -5,6 +5,7 @@ import blackUiSlice  from './blackUiSlice'
 import searchSlice from './searchSlice'
 import emailSlice  from './emailSlice'
 import priceSlice  from './priceSlice'
+import validSlice  from './paymentSlice'
 export const store = configureStore({
   reducer: {
     bars : hamMenuSlice,
@@ -12,6 +13,7 @@ export const store = configureStore({
     black : blackUiSlice,
     email : emailSlice,
     price : priceSlice,
+    payment : validSlice,
     [epicApi.reducerPath]: epicApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>

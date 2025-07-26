@@ -356,6 +356,13 @@ export const epicApi = createApi({
         method : 'POST',
         body : values
         
+      }),
+    }),
+    increasBalance : builder.mutation({
+      query : (value) => ({
+        url : 'users/increaseBalance',
+        method : 'POST',
+        body : value
       })
     })
   }),
@@ -411,5 +418,6 @@ export const {
   useVerifyNewEmailMutation,
   useUpdateProfileMutation,
   useDeleteAccountMutation,
-  useResetPasswordMutation
+  useResetPasswordMutation,
+  useIncreasBalanceMutation
 } = epicApi

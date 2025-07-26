@@ -55,7 +55,7 @@ function Header() {
   }
   useEffect(() => {
     open && setOpen(false)
-  },[pathname])
+  }, [pathname])
 
 
   return (
@@ -100,9 +100,9 @@ function Header() {
                             <ul className="absolute right-full top-full mt-6 w-64 rounded-xl shadow-lg bg-white/10 backdrop-blur-md ring-1 ring-white/20 text-white z-50">
                               <li className="px-4 py-2 hover:bg-white/10 cursor-pointer">My Achievements</li>
                               <li className="px-4 py-2 hover:bg-white/10 cursor-pointer">Epic Rewards</li>
-                              <li className="px-4 py-2 hover:bg-white/10 cursor-pointer">Account Balance</li>
+                              <Link className="block px-4 py-2 hover:bg-white/10 cursor-pointer" to="account/payment-settings">Account Balance</Link>
                               <li className="px-4 py-2 hover:bg-white/10 cursor-pointer">Coupons</li>
-                              <Link  className="block px-4 py-2 hover:bg-white/10 cursor-pointer" to="account">Account</Link>
+                              <Link className="block px-4 py-2 hover:bg-white/10 cursor-pointer" to="account">Account</Link>
                               <li className="px-4 py-2 hover:bg-white/10 cursor-pointer">Redeem Code</li>
                               <li className="px-4 py-2 hover:bg-white/10 cursor-pointer">Redeem Fortnite Gift Card</li>
                               <li className="px-4 py-2 hover:bg-white/10 cursor-pointer">Wishlist</li>

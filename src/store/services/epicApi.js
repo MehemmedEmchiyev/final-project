@@ -364,7 +364,11 @@ export const epicApi = createApi({
         method : 'POST',
         body : value
       })
-    })
+    }),
+    checkOut : builder.query({
+      query : () => 'checkouts',
+      providesTags : ['Carts']
+    }),
   }),
 })
 
@@ -419,5 +423,6 @@ export const {
   useUpdateProfileMutation,
   useDeleteAccountMutation,
   useResetPasswordMutation,
-  useIncreasBalanceMutation
+  useIncreasBalanceMutation,
+  useCheckOutQuery
 } = epicApi

@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useLazyGetUserByIdQuery } from "../../../store/services/epicApi";
 import toast from "react-hot-toast";
 import { SiEpicgames } from "react-icons/si";
+import { LogIn } from "lucide-react";
 
 export const menuItems = [
   { title: "Store", href: "/store", location: 'store' },
@@ -46,6 +47,7 @@ function Header() {
     }
     checkUser()
   }, [])
+  
   const [open, setOpen] = useState(false)
   const signOut = () => {
     localStorage.clear()

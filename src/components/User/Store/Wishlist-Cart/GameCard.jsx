@@ -4,19 +4,21 @@ import Loader from "../../../ui/Loader";
 import { useEffect, useState } from "react";
 
 const GameCard = ({ item, itemId }) => {
-    const { name, discount, price, id, isFree, discountedPrice, description } = item
+    const { name, discount, price, id, isFree, discountedPrice, description , media} = item
+    console.log(item);
 
     const [deleteWishlist, { isLoading }] = useDeleteWishlistMutation()
     const [addCart, { isLoading: cartLoader }] = useAddToCartMutation()
-    const { data: carts, isError } = useGetCartsQuery()
+    const { data : carts, isError } = useGetCartsQuery()
     const [inCarts, setInCart] = useState(false);
-
+    console.log(carts);
+    
     useEffect(() => {
-        if(isError) {
+        if (isError) {
             setInCart(false)
         }
         else if (carts) {
-            setInCart(carts?.some(item => item?.product?.id === id));
+            setInCart(carts?.data?.some(item => item?.product?.id === id));
         }
     }, [carts, id]);
 
@@ -37,8 +39,7 @@ const GameCard = ({ item, itemId }) => {
 
         <div className="bg-[#202024] text-white rounded-xl p-4 flex gap-4  shadow-lg">
             <div className="w-[100px] h-[140px] bg-black flex items-center justify-center text-white text-3xl font-bold rounded-md">
-                LOTO
-                {/* <img src={media[0]?.url} className="w-full h-full object-cover" alt="" /> */}
+                <img src={media[0]?.url} className="w-full h-full object-cover" alt="" />
             </div>
             <div className="flex-1 flex flex-col justify-between">
                 <div>

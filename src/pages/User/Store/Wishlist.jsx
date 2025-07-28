@@ -8,6 +8,8 @@ import GameCard from "../../../components/User/Store/Wishlist-Cart/GameCard";
 function Wishlist() {
   const [emptyData, setEmptyData] = useState(false);
   const { data, isLoading, isError , isFetching } = useGetWishlistQuery();
+  console.log(data);
+  
   const [clearWishlist , {isLoading : clearLoading}] = useClearWishlistMutation()
   const handlerClear = async() => {
     const res = await clearWishlist()
@@ -39,8 +41,8 @@ function Wishlist() {
         <Emptypart />
       ) : (
         <div className="w-full space-y-4 mt-6">
-          <button onClick={handlerClear} className="text-blue-400 hover:text-blue-300 duration-300 cursor-pointer">Clear Wishlist ({data?.length})</button>
-          {data?.map((item, index) => (
+          <button onClick={handlerClear} className="text-blue-400 hover:text-blue-300 duration-300 cursor-pointer">Clear Wishlist ({data?.data?.length})</button>
+          {data?.data?.map((item, index) => (
             <GameCard key={item.id || index} item={item.product} itemId={item?.id}/>
           ))}
         </div>

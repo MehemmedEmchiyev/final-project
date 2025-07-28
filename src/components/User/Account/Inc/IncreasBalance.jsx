@@ -38,7 +38,7 @@ function IncreasBalance({ flag, setFlag }) {
             <div className="h-screen w-full lg:w-[80%] overflow-auto bg-white">
 
                 {
-                    isLoading ? <div className="w-full h-full flex items-center justify-center"><Loader /></div> :
+                    isLoading ? <div className="w-full h-full flex items-center justify-center "><Loader /></div> :
                         <div className="flex flex-col  lg:flex-row  gap-6">
                             <div className="w-full lg:w-2/3  p-6 ">
                                 <div className="flex items-center text-sm">

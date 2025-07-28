@@ -11,13 +11,13 @@ function Card({ item }) {
     const [addWishlist, { isLoading }] = useAddToWishlistMutation();
     const [isInWishlist, setIsInWishlist] = useState(false);
     useEffect(() => {
-        const exists = wishlistData?.some(elem => elem.product.id === item?.id);
+        const exists = wishlistData?.data?.some(elem => elem.product.id === item?.id);
         setIsInWishlist(exists);
     }, [wishlistData, item?.id]);
 
     const handleWishlist = async (e,id) => {
         e.stopPropagation()
-        if (!localStorage.getItem("accessToken")) {
+        if (!localStorage.getItem("accessToken") || !localStorage.getItem('userId')) {
             navigate("/login");
             return;
         }
@@ -27,7 +27,7 @@ function Card({ item }) {
         if (response?.error) {
             toast.error(response?.error?.data?.message || "Something went wrong");
         } else {
-            toast.success(response?.data?.message || "Success");
+            toast.success(response?.data?.data?.message || "Success");
             setIsInWishlist(prev => !prev);
         }
     };

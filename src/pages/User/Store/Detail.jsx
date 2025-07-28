@@ -15,7 +15,7 @@ function Detail() {
     const { data: carts , isError} = useGetCartsQuery()
     const [addWish, { isLoading: addLoad }] = useAddToWishlistMutation()
     const [addCart, { isLoading: cardLoad }] = useAddToCartMutation()
-    const [inWishList, setIsInWishlist] = useState(wishlist?.some(item => item.product.id == id))
+    const [inWishList, setIsInWishlist] = useState(wishlist?.data?.some(item => item.product.id == id))
     const [inCarts, setInCart] = useState(false)
     const {pathname} = useLocation()
     useEffect(() => {
@@ -23,12 +23,12 @@ function Detail() {
             setInCart(false)
             return
         }
-        else setInCart(carts?.some(item => item?.product?.id == id) || false)
+        else setInCart(carts?.data?.some(item => item?.product?.id == id) || false)
     }, [carts, id , pathname])
     console.log(inCarts);
     
     const addWishlist = async () => {
-        if (!localStorage.getItem("accessToken")) {
+        if (!localStorage.getItem("accessToken") || !localStorage.getItem('userId')) {
             navigate("/login");
             return;
         }
@@ -43,7 +43,7 @@ function Detail() {
     }
     const addToCart = async () => {
 
-        if (!localStorage.getItem("accessToken")) {
+        if (!localStorage.getItem("accessToken") || !localStorage.getItem('userId')) {
             navigate("/login");
             return;
         }

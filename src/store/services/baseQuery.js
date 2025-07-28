@@ -10,7 +10,6 @@ const baseQuery = fetchBaseQuery({
 })
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
-
   if (result?.error?.status === 401) {
     const refreshToken = localStorage.getItem('refreshToken');
     const refreshResult = await baseQuery(
@@ -26,11 +25,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
       const newAccessToken = refreshResult.data.accessToken;
       localStorage.setItem('accessToken', newAccessToken);
       result = await baseQuery(args, api, extraOptions);
-    } 
-    // else {
-    //   // Refresh token de expired → logout user
-    //   // örneğin: api.dispatch(logoutUser())
-    // }
+    }
   }
 
   return result;

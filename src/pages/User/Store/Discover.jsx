@@ -1,8 +1,11 @@
-import React from 'react'
+import DiscoverSlider from "../../../components/User/Store/Discover/DiscoverSlider"
 
 function Discover() {
+  
   return (
-    <div>Discover</div>
+    <main className="py-5">
+      <DiscoverSlider />
+    </main>
   )
 }
 

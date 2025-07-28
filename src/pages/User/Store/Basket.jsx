@@ -11,9 +11,11 @@ function Basket() {
   const { data, isLoading, isError, isFetching } = useGetCartsQuery();
   const [clearCarts, { isLoading: clearLoading }] = useClearCartsMutation()
   const { data : check , isLoading : checkLoader } = useCheckOutQuery()
-  console.log(check);
+  console.log(data.data);
   
-  const price =  check?.at(0)?.items?.map(item => item?.product).reduce((acc , item) => acc + item?.price ,0)
+  const price =  data?.data?.reduce((acc,item) => acc + item?.totalPrice,0)
+  console.log(price);
+  
   const discount = check?.at(0)?.items?.map(item => item?.product).reduce((acc , item) => acc + (item?.price - item?.discountedPrice),0).toFixed(2)
   
   const handlerClear = async () => {
@@ -74,7 +76,7 @@ function Basket() {
                 <div className="py-3 ">
                   <div className="flex text-white py-2 font-bold items-center justify-between">
                     <span >Subtotal</span>
-                    <span >$ {check?.at(0)?.totalAmount}</span>
+                    <span >$ {price}</span>
                   </div>
                 </div>
                 <button className="w-full font-semibold cursor-pointer duration-300 text-black py-3 rounded-xl bg-blue-400 hover:bg-blue-300 tracking-[0.5px]">Check Out</button>

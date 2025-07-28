@@ -4,7 +4,7 @@ import baseQueryWithReauth from './baseQuery'
 export const epicApi = createApi({
   reducerPath: 'epicApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Users', 'Genres', 'Features', 'Events', 'Types', 'Platforms', 'Subscription', 'Products', 'Wishlist', 'Carts'],
+  tagTypes: ['Users', 'Genres', 'Features', 'Events', 'Types', 'Platforms', 'Subscription', 'Products', 'Wishlist', 'Carts','Checkout'],
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (patch) => ({
@@ -28,12 +28,10 @@ export const epicApi = createApi({
       })
     }),
     getUserById: builder.query({
-      query: (id) => (
-        {
+      query: (id) => ({
           url: `users/${id}`,
           method: 'GET',
-        }
-      ),
+        }),
       providesTags: ['Users']
     }),
     verifyOtp: builder.mutation({
@@ -367,8 +365,16 @@ export const epicApi = createApi({
     }),
     checkOut : builder.query({
       query : () => 'checkouts',
-      providesTags : ['Carts']
+      providesTags : ['Checkout']
     }),
+    addCheckOut : builder.mutation({
+      query : (data) => ({
+        url : 'checkout',
+        method : 'POST',
+        body : data
+      }),
+      invalidatesTags : ['Checkout']
+    })
   }),
 })
 
@@ -424,5 +430,6 @@ export const {
   useDeleteAccountMutation,
   useResetPasswordMutation,
   useIncreasBalanceMutation,
-  useCheckOutQuery
+  useCheckOutQuery,
+  useAddCheckOutMutation
 } = epicApi

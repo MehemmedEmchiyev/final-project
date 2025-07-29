@@ -90,18 +90,18 @@ function Navbar() {
                 <Link to='wishlist' className={`${path == "wishlist" ? "text-white" : ""} inline font-extrabold text-xl  lg:hidden hover:text-white`}><FaRegCheckCircle /></Link>
                 <Link to='basket' className={`${path == "basket" ? "text-white" : ""} hidden lg:inline font-semibold hover:text-white`}>Cart
                     {
-                        !isError && carts?.length > 0 && (
+                        !isError && carts?.data.length > 0 && (
                             <span className="ml-2 font-semibold bg-blue-400 rounded-2xl text-black px-4 text-sm py-[1px]">
-                                {carts.length}
+                                {carts?.data.length}
                             </span>
                         )
                     }
                 </Link>
                 <Link to='basket' className={`${path == "basket" ? "text-white" : ""} relative inline  font-extrabold text-xl lg:hidden  hover:text-white`}><MdOutlineShoppingCart />
                     {
-                        !isError && carts?.length > 0 && (
+                        !isError && carts?.data.length > 0 && (
                             <span className="absolute left-[30%] -top-full font-semibold bg-blue-400 rounded-2xl text-black px-2 text-sm py-[1px]">
-                                {carts.length}
+                                {carts?.data.length}
                             </span>
                         )
                     }

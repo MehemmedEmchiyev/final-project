@@ -368,13 +368,14 @@ export const epicApi = createApi({
       providesTags : ['Checkout']
     }),
     addCheckOut : builder.mutation({
-      query : (data) => ({
-        url : 'checkout',
+      query : (patch) => ({
+        url : 'checkouts',
         method : 'POST',
-        body : data
+        body : patch
       }),
       invalidatesTags : ['Checkout']
-    })
+    }),
+    
   }),
 })
 

@@ -12,8 +12,8 @@ import { useNavigate } from "react-router";
 function IncreasBalance({ flag, setFlag }) {
     const navigator = useNavigate()
     const [selectedAmount, setSelectedAmount] = useState(false);
-    const userId = localStorage.getItem('userId')
     const { valid } = useSelector(store => store.payment)
+    const userId = localStorage.getItem('userId')
     const [getUser, { data, isLoading }] = useLazyGetUserByIdQuery()
     useEffect(() => {
         const user = async () => await getUser(userId)

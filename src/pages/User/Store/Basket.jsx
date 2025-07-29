@@ -2,22 +2,29 @@ import { useEffect, useState } from "react";
 import Info from "../../../components/ui/Info"
 import BasketCard from "../../../components/User/Store/Wishlist-Cart/BasketCard";
 import Emptypart from "../../../components/User/Store/Wishlist-Cart/Emptypart"
-import { useCheckOutQuery, useClearCartsMutation, useGetCartsQuery } from "../../../store/services/epicApi";
+import { useAddCheckOutMutation, useClearCartsMutation, useGetCartsQuery } from "../../../store/services/epicApi";
 import { Loader } from "lucide-react";
 import toast from "react-hot-toast";
+import MyLoader  from "../../../components/ui/Loader";
+import Checkout from "../../../components/User/Store/Wishlist-Cart/Checkout";
 
 function Basket() {
   const [emptyData, setEmptyData] = useState(false);
   const { data, isLoading, isError, isFetching } = useGetCartsQuery();
   const [clearCarts, { isLoading: clearLoading }] = useClearCartsMutation()
-  const { data : check , isLoading : checkLoader } = useCheckOutQuery()
-  console.log(data.data);
-  
-  const price =  data?.data?.reduce((acc,item) => acc + item?.totalPrice,0)
-  console.log(price);
-  
-  const discount = check?.at(0)?.items?.map(item => item?.product).reduce((acc , item) => acc + (item?.price - item?.discountedPrice),0).toFixed(2)
-  
+  const [addCheckOut, { isLoading: checkLoad }] = useAddCheckOutMutation()
+  const totalPrice = data?.data?.reduce((acc, item) => acc + item?.totalPrice, 0)
+  const price = data?.data?.map(item => item?.product).reduce((acc, item) => acc + item?.price, 0)
+  const discount = data?.data?.map(item => item?.product).reduce((acc, item) => acc + (item?.price - item?.discountedPrice), 0).toFixed(2)
+  const [flag , setFlag] = useState(false)
+  const checkOut = async () => {
+    const productIds = data?.data?.map(item => item?.product.id)
+    const patch = { productIds }
+    const res = await addCheckOut(patch).unwrap()
+    if (res?.error) toast.error(res?.error.message)
+    else toast.success(res?.message)  
+    !isLoading && setFlag(true)
+  }
   const handlerClear = async () => {
     const res = await clearCarts()
     if (res?.error) toast.error(res?.error.data.message)
@@ -30,10 +37,7 @@ function Basket() {
       toast.error("Please login!");
     }
   }, []);
-
-  useEffect(() => {
-    if (!isLoading && data?.data?.length === 0 ) setEmptyData(true);
-  }, [data, isLoading]);
+  useEffect(() => { if (!isLoading && data?.data?.length === 0) setEmptyData(true); }, [data, isLoading]);
 
   return (
     <div className="pb-10">
@@ -42,10 +46,10 @@ function Basket() {
         <h1 className="text-white mt-3 font-extrabold text-[40px] ">My Cart</h1>
         <Info property="hidden lg:flex" />
       </div>
-      {isLoading || clearLoading || isFetching || checkLoader ? (
+      {isLoading || clearLoading || isFetching ? (
         <Loader className="w-20 h-20 animate-spin text-white mx-auto mt-10" />
       ) : emptyData || isError ? (
-        <Emptypart />
+        <Emptypart location={'cart'}/>
       ) : (
         <div>
           <button onClick={handlerClear} className="text-blue-400 mt-2 hover:text-blue-300 duration-300 cursor-pointer">Clear Carts ({data?.data?.length})</button>
@@ -76,13 +80,16 @@ function Basket() {
                 <div className="py-3 ">
                   <div className="flex text-white py-2 font-bold items-center justify-between">
                     <span >Subtotal</span>
-                    <span >$ {price}</span>
+                    <span >$ {totalPrice}</span>
                   </div>
                 </div>
-                <button className="w-full font-semibold cursor-pointer duration-300 text-black py-3 rounded-xl bg-blue-400 hover:bg-blue-300 tracking-[0.5px]">Check Out</button>
+                <button onClick={checkOut} className="w-full font-semibold cursor-pointer duration-300 text-black py-3 rounded-xl bg-blue-400 hover:bg-blue-300 tracking-[0.5px]">
+                  {checkLoad ? <MyLoader /> : 'Check Out'}
+                </button>
               </div>
             </div>
           </div>
+          <Checkout flag={flag} setFlag={setFlag}/>
         </div>
 
       )}

@@ -1,5 +1,5 @@
 import { useLocation, useNavigate, useParams } from "react-router"
-import { useAddToCartMutation, useAddToWishlistMutation, useGetCartsQuery, useGetProductByIdQuery, useGetWishlistQuery } from "../../../store/services/epicApi"
+import { useAddCheckOutMutation, useAddToCartMutation, useAddToWishlistMutation, useGetCartsQuery, useGetProductByIdQuery, useGetWishlistQuery } from "../../../store/services/epicApi"
 import GalerySlider from "../../../components/User/Detail/GalerySlider"
 import DetailSkelton from "../../../components/User/Detail/DetailSkelton"
 import { IoShareSocialOutline } from "react-icons/io5";
@@ -7,26 +7,25 @@ import { TbFlag3 } from "react-icons/tb";
 import Loader from "../../../components/ui/Loader";
 import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
+import Checkout from "../../../components/User/Store/Wishlist-Cart/Checkout";
 function Detail() {
     const { id } = useParams()
     const navigate = useNavigate()
     const { data, isLoading } = useGetProductByIdQuery(id)
     const { data: wishlist } = useGetWishlistQuery()
-    const { data: carts , isError} = useGetCartsQuery()
+    const { data: carts, isError } = useGetCartsQuery()
     const [addWish, { isLoading: addLoad }] = useAddToWishlistMutation()
     const [addCart, { isLoading: cardLoad }] = useAddToCartMutation()
     const [inWishList, setIsInWishlist] = useState(wishlist?.data?.some(item => item.product.id == id))
     const [inCarts, setInCart] = useState(false)
-    const {pathname} = useLocation()
+    const { pathname } = useLocation()
     useEffect(() => {
-        if(isError) {
+        if (isError) {
             setInCart(false)
             return
         }
         else setInCart(carts?.data?.some(item => item?.product?.id == id) || false)
-    }, [carts, id , pathname])
-    console.log(inCarts);
-    
+    }, [carts, id, pathname])
     const addWishlist = async () => {
         if (!localStorage.getItem("accessToken") || !localStorage.getItem('userId')) {
             navigate("/login");
@@ -59,7 +58,22 @@ function Detail() {
             }
         }
     }
-
+    const [flag, setFlag] = useState(false)
+    const [addCheckOut, { isLoading: checkLoad }] = useAddCheckOutMutation()
+    const checkOut = async () => {
+        if (!localStorage.getItem("accessToken") || !localStorage.getItem('userId')) {
+            navigate("/login");
+            return;
+        }
+        else {
+            const productIds = [Number(id)]
+            const patch = { productIds }
+            const res = await addCheckOut(patch).unwrap()
+            if (res?.error) toast.error(res?.error.message)
+            else toast.success(res?.message)
+            !checkLoad && setFlag(true)
+        }
+    }
     const { name, media, description, genres, features, ageRestriction, discount, discountedPrice, isFree, price, platforms, developer, updatedAt, publisher } = data ? data : {}
     const gameInfo = [
         { title: "Epic Rewards", value: "Earn 20% Back" },
@@ -124,7 +138,7 @@ function Detail() {
                             )}
                         </div>
                         <div className="pt-4 space-y-2">
-                            <button className="w-full bg-blue-400 py-3 cursor-pointer rounded-xl hover:bg-blue-300 text-black font-semibold">Buy Now</button>
+                            <button onClick={checkOut} className="w-full bg-blue-400 py-3 cursor-pointer rounded-xl hover:bg-blue-300 text-black font-semibold">{checkLoad ? <Loader /> : "Buy Now"}</button>
                             <button onClick={addToCart} className={`w-full bg-[#343437] py-3  rounded-xl hover:bg-[#636366] text-white font-semibold cursor-pointer`}>{cardLoad ? <Loader /> : inCarts ? "View in cart" : "Add To Cart"}</button>
                             <button onClick={addWishlist} className="w-full bg-[#343437] py-3 cursor-pointer rounded-xl hover:bg-[#636366] text-white font-semibold">{addLoad ? <Loader /> : inWishList ? "In Wishlist" : "Add to Wishlist"}</button>
                         </div>
@@ -142,6 +156,8 @@ function Detail() {
                         </div>
                     </div>
                 </div>
+
+                <Checkout flag={flag} setFlag={setFlag} />
             </div>
     )
 }

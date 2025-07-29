@@ -38,7 +38,7 @@ function Wishlist() {
       {isLoading || isFetching || clearLoading ? (
         <Loader className="w-20 h-20 animate-spin text-white mx-auto mt-10" />
       ) : emptyData || isError ? (
-        <Emptypart />
+        <Emptypart location={'wishlist'}/>
       ) : (
         <div className="w-full space-y-4 mt-6">
           <button onClick={handlerClear} className="text-blue-400 hover:text-blue-300 duration-300 cursor-pointer">Clear Wishlist ({data?.data?.length})</button>

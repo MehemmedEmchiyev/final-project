@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import Loader from '../../../ui/Loader';
 
 export default function PaymentMethods() {
+
     const [selectedMethod, setSelectedMethod] = useState('');
     const [savePayment, setSavePayment] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
@@ -32,7 +33,7 @@ export default function PaymentMethods() {
     })
     return (
         <div className="w-full mx-auto h-max">
-            <div className="bg-white ">
+            <div className='bg-white'>
                 <div className="py-6">
                     <h2 className="text-lg font-semibold text-gray-800 mb-6">OTHER PAYMENT METHODS</h2>
                     <div className={`border-2 rounded-lg mb-4 ${selectedMethod === 'credit' ? 'border-blue-400' : 'border-gray-200'}`}>

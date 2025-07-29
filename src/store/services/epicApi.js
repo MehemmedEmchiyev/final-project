@@ -367,6 +367,10 @@ export const epicApi = createApi({
       query : () => 'checkouts',
       providesTags : ['Checkout']
     }),
+    checkOutByUser : builder.query({
+      query : (id) => `checkouts/user/${id}`,
+      providesTags : ['Checkout']
+    }),
     addCheckOut : builder.mutation({
       query : (patch) => ({
         url : 'checkouts',
@@ -375,7 +379,21 @@ export const epicApi = createApi({
       }),
       invalidatesTags : ['Checkout']
     }),
-    
+    completeCheckOut : builder.mutation({
+      query : (patch) => ({
+        url : 'checkouts/complete',
+        method : 'POST',
+        body : patch
+      }),
+      invalidatesTags : ['Checkout']
+    }),
+    deleteCheckOut : builder.mutation({
+      query : (id) => ({
+        url : `checkouts/${id}`,
+        method : 'DELETE',
+      }),
+      invalidatesTags : ['Checkout']
+    }),
   }),
 })
 
@@ -432,5 +450,8 @@ export const {
   useResetPasswordMutation,
   useIncreasBalanceMutation,
   useCheckOutQuery,
-  useAddCheckOutMutation
+  useCheckOutByUserQuery,
+  useAddCheckOutMutation,
+  useCompleteCheckOutMutation,
+  useDeleteCheckOutMutation
 } = epicApi

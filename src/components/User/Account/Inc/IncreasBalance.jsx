@@ -75,7 +75,7 @@ function IncreasBalance({ flag, setFlag }) {
                                     </div>
 
                                 </div>
-                                {true ? <PaymentMethods /> : ""}
+                                {true ? <PaymentMethods propety={'bg-white'} /> : ""}
                             </div>
                             <div className="w-full order-[-1] lg:order-1  lg:w-1/3 bg-[#F2F2F2] p-4">
                                 <div className="flex items-center justify-between">

@@ -5,10 +5,12 @@ import Emptypart from "../../../components/User/Store/Wishlist-Cart/Emptypart"
 import { useAddCheckOutMutation, useClearCartsMutation, useGetCartsQuery } from "../../../store/services/epicApi";
 import { Loader } from "lucide-react";
 import toast from "react-hot-toast";
-import MyLoader  from "../../../components/ui/Loader";
+import MyLoader from "../../../components/ui/Loader";
 import Checkout from "../../../components/User/Store/Wishlist-Cart/Checkout";
+import CheckList from "../../../components/User/Store/Wishlist-Cart/CheckList";
 
 function Basket() {
+  const [open, setOpen] = useState(false)
   const [emptyData, setEmptyData] = useState(false);
   const { data, isLoading, isError, isFetching } = useGetCartsQuery();
   const [clearCarts, { isLoading: clearLoading }] = useClearCartsMutation()
@@ -16,13 +18,13 @@ function Basket() {
   const totalPrice = data?.data?.reduce((acc, item) => acc + item?.totalPrice, 0)
   const price = data?.data?.map(item => item?.product).reduce((acc, item) => acc + item?.price, 0)
   const discount = data?.data?.map(item => item?.product).reduce((acc, item) => acc + (item?.price - item?.discountedPrice), 0).toFixed(2)
-  const [flag , setFlag] = useState(false)
+  const [flag, setFlag] = useState(false)
   const checkOut = async () => {
     const productIds = data?.data?.map(item => item?.product.id)
     const patch = { productIds }
     const res = await addCheckOut(patch).unwrap()
     if (res?.error) toast.error(res?.error.message)
-    else toast.success(res?.message)  
+    else toast.success(res?.message)
     !isLoading && setFlag(true)
   }
   const handlerClear = async () => {
@@ -38,7 +40,10 @@ function Basket() {
     }
   }, []);
   useEffect(() => { if (!isLoading && data?.data?.length === 0) setEmptyData(true); }, [data, isLoading]);
-
+  const goCheckList = () => {
+    setOpen(true)
+    
+  }
   return (
     <div className="pb-10">
       <Info property='py-5 space-y-4 lg:hidden ' />
@@ -49,7 +54,7 @@ function Basket() {
       {isLoading || clearLoading || isFetching ? (
         <Loader className="w-20 h-20 animate-spin text-white mx-auto mt-10" />
       ) : emptyData || isError ? (
-        <Emptypart location={'cart'}/>
+        <Emptypart location={'cart'} />
       ) : (
         <div>
           <button onClick={handlerClear} className="text-blue-400 mt-2 hover:text-blue-300 duration-300 cursor-pointer">Clear Carts ({data?.data?.length})</button>
@@ -86,12 +91,15 @@ function Basket() {
                 <button onClick={checkOut} className="w-full font-semibold cursor-pointer duration-300 text-black py-3 rounded-xl bg-blue-400 hover:bg-blue-300 tracking-[0.5px]">
                   {checkLoad ? <MyLoader /> : 'Check Out'}
                 </button>
+                <button onClick={goCheckList} className="w-full mt-2 font-semibold cursor-pointer duration-300 text-black py-3 rounded-xl bg-blue-400 hover:bg-blue-300 tracking-[0.5px]">
+                  {false ? <MyLoader /> : 'Your Check List'}
+                </button>
               </div>
             </div>
           </div>
-          <Checkout flag={flag} setFlag={setFlag}/>
+          <Checkout flag={flag} setFlag={setFlag} />
+          <CheckList open={open} setOpen={setOpen} />
         </div>
-
       )}
     </div>
   )

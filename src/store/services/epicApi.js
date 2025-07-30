@@ -4,7 +4,7 @@ import baseQueryWithReauth from './baseQuery'
 export const epicApi = createApi({
   reducerPath: 'epicApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Users', 'Genres', 'Features', 'Events', 'Types', 'Platforms', 'Subscription', 'Products', 'Wishlist', 'Carts','Checkout'],
+  tagTypes: ['Users', 'Genres', 'Features', 'Events', 'Types', 'Platforms', 'Subscription', 'Products', 'Wishlist', 'Carts', 'Checkout'],
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (patch) => ({
@@ -29,9 +29,9 @@ export const epicApi = createApi({
     }),
     getUserById: builder.query({
       query: (id) => ({
-          url: `users/${id}`,
-          method: 'GET',
-        }),
+        url: `users/${id}`,
+        method: 'GET',
+      }),
       providesTags: ['Users']
     }),
     verifyOtp: builder.mutation({
@@ -226,9 +226,9 @@ export const epicApi = createApi({
       providesTags: ['Products'],
       keepUnusedDataFor: 0
     }),
-    getProductById : builder.query({
-      query : (id) => `products/${id}`,
-      providesTags : ['Products']
+    getProductById: builder.query({
+      query: (id) => `products/${id}`,
+      providesTags: ['Products']
     }),
     deleteProduct: builder.mutation({
       query: (id) => ({
@@ -346,53 +346,60 @@ export const epicApi = createApi({
         url: `users/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags : ['Users']
+      invalidatesTags: ['Users']
     }),
-    resetPassword : builder.mutation({
-      query : (values) => ({
-        url : 'auth/reset-password',
-        method : 'POST',
-        body : values
-        
+    resetPassword: builder.mutation({
+      query: (values) => ({
+        url: 'auth/reset-password',
+        method: 'POST',
+        body: values
+
       }),
     }),
-    increasBalance : builder.mutation({
-      query : (value) => ({
-        url : 'users/increaseBalance',
-        method : 'POST',
-        body : value
+    increasBalance: builder.mutation({
+      query: (value) => ({
+        url: 'users/increaseBalance',
+        method: 'POST',
+        body: value
       })
     }),
-    checkOut : builder.query({
-      query : () => 'checkouts',
-      providesTags : ['Checkout']
+    checkOut: builder.query({
+      query: () => 'checkouts',
+      providesTags: ['Checkout']
     }),
-    checkOutByUser : builder.query({
-      query : (id) => `checkouts/user/${id}`,
-      providesTags : ['Checkout']
+    checkOutByUser: builder.query({
+      query: (id) => `checkouts/user/${id}`,
+      providesTags: ['Checkout']
     }),
-    addCheckOut : builder.mutation({
-      query : (patch) => ({
-        url : 'checkouts',
-        method : 'POST',
-        body : patch
+    addCheckOut: builder.mutation({
+      query: (patch) => ({
+        url: 'checkouts',
+        method: 'POST',
+        body: patch
       }),
-      invalidatesTags : ['Checkout']
+      invalidatesTags: ['Checkout']
     }),
-    completeCheckOut : builder.mutation({
-      query : (patch) => ({
-        url : 'checkouts/complete',
-        method : 'POST',
-        body : patch
+    completeCheckOut: builder.mutation({
+      query: (patch) => ({
+        url: 'checkouts/complete',
+        method: 'POST',
+        body: patch
       }),
-      invalidatesTags : ['Checkout']
+      invalidatesTags: ['Checkout']
     }),
-    deleteCheckOut : builder.mutation({
-      query : (id) => ({
-        url : `checkouts/${id}`,
-        method : 'DELETE',
+    deleteCheckOut: builder.mutation({
+      query: (id) => ({
+        url: `checkouts/${id}`,
+        method: 'DELETE',
       }),
-      invalidatesTags : ['Checkout']
+      invalidatesTags: ['Checkout']
+    }),
+    deleteCheckItem: builder.mutation({
+      query: ({checkId , id}) => ({
+        url: `checkouts/${checkId}/checkoutItems/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Checkout']
     }),
   }),
 })
@@ -453,5 +460,6 @@ export const {
   useCheckOutByUserQuery,
   useAddCheckOutMutation,
   useCompleteCheckOutMutation,
-  useDeleteCheckOutMutation
+  useDeleteCheckOutMutation,
+  useDeleteCheckItemMutation
 } = epicApi

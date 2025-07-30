@@ -23,6 +23,8 @@ function Basket() {
     const productIds = data?.data?.map(item => item?.product.id)
     const patch = { productIds }
     const res = await addCheckOut(patch).unwrap()
+    console.log(res);
+    
     if (res?.error) toast.error(res?.error.message)
     else toast.success(res?.message)
     !isLoading && setFlag(true)

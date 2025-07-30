@@ -1,27 +1,29 @@
 import { useEffect, useState } from 'react';
-import { X, User, CreditCard, Plus, Trash } from 'lucide-react';
-import { useCheckOutQuery, useClearCartsMutation, useCompleteCheckOutMutation, useLazyGetUserByIdQuery } from '../../../../store/services/epicApi';
+import { X, User, Plus, Trash } from 'lucide-react';
+import { useCheckOutByUserQuery, useCheckOutQuery, useClearCartsMutation, useCompleteCheckOutMutation, useDeleteCheckItemMutation, useLazyGetUserByIdQuery } from '../../../../store/services/epicApi';
 import Loader from '../../../ui/Loader';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router';
 
 function Checkout({ flag, setFlag }) {
     const navigator = useNavigate()
-    const { data, isLoading } = useCheckOutQuery()
-    const [clear] = useClearCartsMutation()
     const userId = localStorage.getItem('userId')
+    const { data, isLoading } = useCheckOutByUserQuery(userId)
+
+    const [clear] = useClearCartsMutation()
     const [getUser, { data: user, isLoading: userLoading }] = useLazyGetUserByIdQuery()
     useEffect(() => {
         const user = async () => await getUser(userId)
         user()
     }, [isLoading])
 
-    const price = data?.at(data?.length - 1).items.map(item => item.product).reduce((acc, item) => acc + item?.price, 0)
-    const discount = data?.at(data?.length - 1).items.map(item => item.product).reduce((acc, item) => acc + (item?.price - item?.discountedPrice), 0)
+    const price = data?.filter(item => item.status == "INPROGRESS").at(data?.filter(item => item.status == "INPROGRESS")?.length - 1)?.items?.map(item => item?.product).reduce((acc, item) => acc + item?.price, 0) || 0
+    const discount = data?.filter(item => item.status == "INPROGRESS").at(data?.filter(item => item.status == "INPROGRESS")?.length - 1)?.items?.map(item => item?.product).reduce((acc, item) => acc + (item?.price - item?.discountedPrice), 0) || 0
+
     const [complete, { isLoading: completeLoader }] = useCompleteCheckOutMutation()
     const [selectedAmount, setSelectedAmount] = useState(false)
     const handleCompleteCheckOut = async () => {
-        const patch = { checkoutIds: [Number(data?.at(data?.length - 1).id)] }
+        const patch = { checkoutIds: [Number(data?.filter(item => item.status == "INPROGRESS")?.at(data?.filter(item => item.status == "INPROGRESS")?.length - 1)?.id)] }
         const res = await complete(patch).unwrap()
         if (res?.error) toast.error(res?.error.message)
         else toast.success(res?.message)
@@ -29,9 +31,18 @@ function Checkout({ flag, setFlag }) {
         setFlag(false)
         await clear()
     }
-    const handleDelete = (id) => {
-        console.log(data?.filter(item => item.status == "INPROGRESS")?.at(data?.filter(item => item.status == "INPROGRESS").length - 1).id,id);
-        
+    const [deleteCheckItem, { isLoading: deleteLoader }] = useDeleteCheckItemMutation()
+    const handleDelete = async (id) => {
+        const arr = data?.filter(item => item.status == "INPROGRESS")?.at(data?.filter(item => item.status == "INPROGRESS")?.length - 1)?.items
+        const checkId = data?.filter(item => item.status == "INPROGRESS")?.at(data?.filter(item => item.status == "INPROGRESS")?.length - 1)?.id
+
+        const res = await deleteCheckItem({ checkId, id })
+        if (res.error) toast.error(res?.error?.data.message)
+        else toast.success(res?.data?.message)
+        if (arr?.length == 1) {
+            setFlag(false)
+            return
+        }
     }
     return (
         <div className={`fixed text-black top-0 px-3 flex items-center justify-center left-0 w-full h-full bg-black/50 z-1000 ${flag ? "block" : 'hidden'}`}>
@@ -88,7 +99,7 @@ function Checkout({ flag, setFlag }) {
                                 </div>
                             </div>
                         </div>
-                        <div className="w-full lg:w-96 h-screen overflow-auto bg-white p-4 lg:p-6 lg:border-l flex-1 lg:flex-none">
+                        <div className="w-full lg:w-96 h-screen bg-white p-4 lg:p-6 lg:border-l flex-1 lg:flex-none">
                             <div className="hidden lg:flex items-center justify-between mb-6">
                                 <h2 className="text-lg font-semibold">ORDER SUMMARY</h2>
                                 <button
@@ -102,28 +113,37 @@ function Checkout({ flag, setFlag }) {
                             <div className="lg:hidden mb-4">
                                 <h2 className="text-lg font-semibold">ORDER SUMMARY</h2>
                             </div>
-                            <div className="space-y-3 overflow-auto mb-6">
-                                {data?.at(data?.length - 1).items?.map((game, index) => (
-                                    <div key={index} className="flex gap-3 p-3 bg-gray-50 rounded-lg">
-                                        <div className="flex-1 min-w-0">
-                                            <div className='flex items-start gap-4 justify-between'>
-                                                <h3 className="font-semibold text-sm leading-tight mb-1">
-                                                    {game?.product?.name}
-                                                </h3>
-                                                <button onClick={() => handleDelete(game?.product?.id)}><Trash className='w-5 h-5 text-red-500 cursor-pointer' /></button>
-                                            </div>
-                                            <span className={`${game?.product?.discount ? 'inline-block' : 'hidden'} px-2 text-[12px] bg-blue-500 text-white  rounded`}>{game?.product?.discount ? `-${game?.product?.discount}%` : ""}</span>
-                                            <div className='flex items-center gap-1'>
-                                                <p className={`${game?.product?.discount ? 'line-through text-[#505050]' : ""} text-sm`}>
-                                                    {game?.product?.isFree ? 'Free' : `$ ${game?.product?.price}`}
-                                                </p>
-                                                <span>
-                                                    {game?.product?.discount ? `$ ${game?.product?.discountedPrice}` : ""}
-                                                </span>
+                            <div className={` ${deleteLoader ? "" : 'overflow-y-auto space-y-3'} mb-6`}>
+                                {
+                                    deleteLoader ? <Loader /> : data?.filter(item => item.status == "INPROGRESS")?.at(data?.filter(item => item?.status == "INPROGRESS")?.length - 1)?.items?.map((game, index) => (
+                                        <div key={index} className="flex gap-3 p-3 w-full bg-gray-50 rounded-lg">
+                                            <div className="flex gap-3 w-full overflow-auto">
+                                                <img className='w-15 h-15 object-cover' src={game?.product?.media[0].url} alt="" />
+                                                <div className='w-full'>
+                                                    <div className='w-full flex items-start justify-between gap-4'>
+                                                        <h3 className="font-semibold text-sm leading-tight mb-1">
+                                                            {game?.product?.name}
+                                                        </h3>
+                                                        <button onClick={() => handleDelete(game?.id)}>
+                                                            <Trash className='w-5 h-5 text-red-500 cursor-pointer' />
+                                                        </button>
+                                                    </div>
+                                                    <span className={`${game?.product?.discount ? 'inline-block' : 'hidden'} px-2 text-[12px] bg-blue-500 text-white  rounded`}>{game?.product?.discount ? `-${game?.product?.discount}%` : ""}</span>
+                                                    <div className='flex items-center gap-1'>
+                                                        <p className={`${game?.product?.discount ? 'line-through text-[#505050]' : ""} text-sm`}>
+                                                            {game?.product?.isFree ? 'Free' : `$ ${game?.product?.price}`}
+                                                        </p>
+                                                        <span>
+                                                            {game?.product?.discount ? `$ ${game?.product?.discountedPrice}` : ""}
+                                                        </span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
+                                        
+                                    ))
+                                }
+
                             </div>
                             <div className="space-y-2 mb-6 pb-4 border-b border-gray-200">
                                 <div className="flex justify-between text-sm">
@@ -136,7 +156,7 @@ function Checkout({ flag, setFlag }) {
                                 </div>
                                 <div className="flex justify-between font-semibold">
                                     <span>Total</span>
-                                    <span>${data?.at(data?.length - 1).totalAmount}</span>
+                                    <span>${data?.filter(item => item?.status == "INPROGRESS")?.at(data?.filter(item => item?.status == "INPROGRESS")?.length - 1)?.totalAmount}</span>
                                 </div>
                             </div>
                             <div className="bg-gradient-to-r from-yellow-200 to-green-200 p-3 rounded-lg mb-6 flex items-center gap-2">

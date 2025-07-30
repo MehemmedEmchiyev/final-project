@@ -35,14 +35,14 @@ const OrderListItem = ({ order }) => {
             minute: '2-digit'
         });
     };
-    const [deleteCheckOut , {isLoading}] = useDeleteCheckOutMutation()
-    
+    const [deleteCheckOut, { isLoading }] = useDeleteCheckOutMutation()
+
     const deleteCheck = async (id) => {
         const res = await deleteCheckOut(id)
-        if(res?.error) toast.error(res?.error.data.message)
+        if (res?.error) toast.error(res?.error.data.message)
         else toast.success(res?.data.message)
         console.log(res);
-        
+
     }
 
     return (
@@ -82,7 +82,7 @@ const OrderListItem = ({ order }) => {
             </div>
             <div className="border-t pt-3">
                 <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-medium text-gray-700">Items:</span>
+                    <div></div>
                     <button onClick={() => deleteCheck(order?.id)} className="text-xs text-blue-500 cursor-pointer hover:text-blue-700 font-medium">
                         {isLoading ? <Loader /> : 'Delete'}
                     </button>
@@ -95,7 +95,7 @@ const OrderListItem = ({ order }) => {
 function CheckList({ open, setOpen }) {
     const userId = localStorage.getItem('userId')
     const { data, isLoading } = useCheckOutByUserQuery(userId)
-    
+
     return (
         <div className={`${open ? "flex" : "hidden"} items-center justify-center fixed top-0 left-0 z-1000 bg-black/50 w-full h-full `}>
             <div className='w-full max-w-4xl mx-4 overflow-hidden bg-white rounded-2xl shadow-2xl max-h-[90vh] flex flex-col'>
@@ -120,7 +120,7 @@ function CheckList({ open, setOpen }) {
                     ) : (
                         <div className='space-y-4'>
                             {data && data.length > 0 ? (
-                                data?.map((order,index) => (
+                                data?.map((order, index) => (
                                     <OrderListItem key={index} order={order} />
                                 ))
                             ) : (

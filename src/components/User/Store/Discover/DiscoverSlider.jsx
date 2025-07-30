@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 function Tabs({ item, isActive, index }) {
     return (
-        <div className={`text-white relative overflow-hidden cursor-pointer duration-300 flex rounded-md items-center py-4 px-3 ${isActive == index ? "bg-[#28282C]" : ""} z-[-2] hover:bg-[#28282C] gap-3`}>
+        <div  className={`text-white relative overflow-hidden cursor-pointer duration-300 flex rounded-md items-center py-4 px-3 ${isActive == index ? "bg-[#28282C]" : ""} z-[-2] hover:bg-[#28282C] gap-3`}>
             <div className={`bg-[#404044] ${isActive == index ? "fill" : ""}  z-[-1] absolute h-full top-0 left-0`}></div>
             <div className='w-10 h-13'>
                 <img className='w-full rounded-md h-full object-cover' src={item.mini_image} alt="" />

@@ -24,12 +24,17 @@ function Checkout({ flag, setFlag }) {
     const [selectedAmount, setSelectedAmount] = useState(false)
     const handleCompleteCheckOut = async () => {
         const patch = { checkoutIds: [Number(data?.filter(item => item.status == "INPROGRESS")?.at(data?.filter(item => item.status == "INPROGRESS")?.length - 1)?.id)] }
-        const res = await complete(patch).unwrap()
-        if (res?.error) toast.error(res?.error.message)
-        else toast.success(res?.message)
-        navigator('/store/browse')
-        setFlag(false)
-        await clear()
+        const res = await complete(patch)
+        if (res?.error) {
+            toast.error(res?.error.data.message)
+            navigator('/account/payment-settings')
+        }
+        else {
+            toast.success(res?.message)
+            navigator('/store/browse')
+            setFlag(false)
+            await clear()
+        }
     }
     const [deleteCheckItem, { isLoading: deleteLoader }] = useDeleteCheckItemMutation()
     const handleDelete = async (id) => {
@@ -140,7 +145,7 @@ function Checkout({ flag, setFlag }) {
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                     ))
                                 }
 

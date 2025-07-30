@@ -39,7 +39,7 @@ const OrderListItem = ({ order }) => {
 
     const deleteCheck = async (id) => {
         const res = await deleteCheckOut(id)
-        if (res?.error) toast.error(res?.error.data.message)
+        if (res?.error) toast(res?.error.data.message,{icon: '⚠️'});
         else toast.success(res?.data.message)
         console.log(res);
 

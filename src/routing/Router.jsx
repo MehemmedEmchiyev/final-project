@@ -25,6 +25,8 @@ import Settings from "../pages/User/UserInfos/Settings"
 import Detail from "../pages/User/Store/Detail"
 import Security from "../pages/User/UserInfos/Security"
 import PaymentSettings from "../pages/User/UserInfos/PaymentSettings"
+import News from "../pages/Admin/AdminPages/News"
+import NewsPage from "../pages/User/Store/NewsPage"
 function Router() {
     return (
         <Routes>
@@ -33,6 +35,7 @@ function Router() {
                 <Route path="store" element={<Store />}>
                     <Route index element={<Discover />} />
                     <Route path="browse" element={<Browse />} />
+                    <Route path="news" element={<NewsPage />} />
                     <Route path="wishlist" element={<Wishlist />} />
                     <Route path="basket" element={<Basket />} />
                     <Route path="detail/:id" element={<Detail />} />
@@ -55,6 +58,7 @@ function Router() {
                 <Route path="types" element={<Types />} />
                 <Route path="platforms" element={<Platforms />} />
                 <Route path="subscription" element={<Subscription />} />
+                <Route path="news" element={<News />} />
             </Route>
             <Route path="/adminlogin" element={<AdminLogin />} />
             <Route path="/login" element={<Login />} />

@@ -4,7 +4,7 @@ import baseQueryWithReauth from './baseQuery'
 export const epicApi = createApi({
   reducerPath: 'epicApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Users', 'Genres', 'Features', 'Events', 'Types', 'Platforms', 'Subscription', 'Products', 'Wishlist', 'Carts', 'Checkout'],
+  tagTypes: ['Users', 'Genres', 'Features', 'Events', 'Types', 'Platforms', 'Subscription', 'Products', 'Wishlist', 'Carts', 'Checkout', 'News'],
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (patch) => ({
@@ -240,9 +240,12 @@ export const epicApi = createApi({
     uploadMedia: builder.mutation({
       query: (files) => {
         const formData = new FormData()
-        files.forEach(file => {
-          formData.append("files", file)
-        });
+        if (Array.isArray(files)) {
+          files.forEach(file => {
+            formData.append("files", file)
+          });
+        }
+        else formData.append('files', files)
         return {
           url: "upload/media",
           method: 'POST',
@@ -395,12 +398,39 @@ export const epicApi = createApi({
       invalidatesTags: ['Checkout']
     }),
     deleteCheckItem: builder.mutation({
-      query: ({checkId , id}) => ({
+      query: ({ checkId, id }) => ({
         url: `checkouts/${checkId}/checkoutItems/${id}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['Checkout']
     }),
+    getNews: builder.query({
+      query: (page) => `news/${page ? `?page=${page}`: ''}`,
+      providesTags: ['News']
+    }),
+    createNews: builder.mutation({
+      query: (patch) => ({
+        url: 'news',
+        method: 'POST',
+        body: patch
+      }),
+      invalidatesTags: ['News']
+    }),
+    deleteNews : builder.mutation({
+      query : (id) => ({
+        url: `news/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['News']
+    }),
+    updateNews : builder.mutation({
+      query : ({id,patch}) => ({
+        url: `news/${id}`,
+        method: 'POST',
+        body : patch
+      }),
+      invalidatesTags: ['News']
+    })
   }),
 })
 
@@ -461,5 +491,9 @@ export const {
   useAddCheckOutMutation,
   useCompleteCheckOutMutation,
   useDeleteCheckOutMutation,
-  useDeleteCheckItemMutation
+  useDeleteCheckItemMutation,
+  useGetNewsQuery,
+  useCreateNewsMutation,
+  useDeleteNewsMutation,
+  useUpdateNewsMutation
 } = epicApi

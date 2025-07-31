@@ -55,7 +55,6 @@ function Dashboard() {
                 name,
                 description,
                 isFree,
-                // isTopSeller,
                 price,
                 discount,
                 developer,
@@ -79,7 +78,6 @@ function Dashboard() {
                 name,
                 description,
                 isFree,
-                // isTopSeller,
                 price,
                 discount,
                 developer,
@@ -153,13 +151,13 @@ function Dashboard() {
                                 <option value={false}>false</option>
                             </select>
                         </div>
-                        <div className="mb-2 flex items-center gap-3">
+                        {/* <div className="mb-2 flex items-center gap-3">
                             <h2>IsTopSeller : </h2>
                             <select value={isTopSeller} onChange={e => setIsTopSeller(e.target.value)} required >
                                 <option value={true}>true</option>
                                 <option value={false}>false</option>
                             </select>
-                        </div>
+                        </div> */}
                         <div className="mb-2">
                             <h2>Price : </h2>
                             <input value={price} onChange={e => setPrice(e.target.value)} type="number" min={0} required placeholder="$500" className="mb-2 w-full border-b py-2 outline-0" />
@@ -336,7 +334,7 @@ function Dashboard() {
                                             <td className="p-3">{item.publisher}</td>
                                             <td className="p-3">{item.soldCount}</td>
                                             <td className="p-3">{item.isFree ? "Yes" : "No"}</td>
-                                            <td className="p-3">{item.isTopSeller ? "Yes" : "No"}</td>
+                                            {/* <td className="p-3">{item.isTopSeller ? "Yes" : "No"}</td> */}
                                             <td className="p-3">{item.isSlider ? "Yes" : "No"}</td>
                                             <td className="p-3">{item.ageRestriction}</td>
                                             <td className="p-3 space-y-1">

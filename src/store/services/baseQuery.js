@@ -1,5 +1,4 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/query";
-
 const baseQuery = fetchBaseQuery({
         baseUrl: 'http://localhost:3000/api',
         prepareHeaders : (headers , {endpoint}) => {
@@ -27,8 +26,6 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
       result = await baseQuery(args, api, extraOptions);
     }
   }
-
   return result;
 };
-
 export default baseQueryWithReauth;

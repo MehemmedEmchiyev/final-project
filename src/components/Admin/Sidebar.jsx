@@ -9,6 +9,7 @@ function Sidebar() {
     { title: "Types", href: 'types' },
     { title: "Platforms", href: 'platforms' },
     { title: "Subscription", href: 'subscription' },
+    { title: "News", href: 'news' },
   ]
   return (
     <>

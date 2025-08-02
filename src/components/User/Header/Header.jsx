@@ -12,7 +12,7 @@ import { LogIn } from "lucide-react";
 
 export const menuItems = [
   { title: "Store", href: "/store", location: 'store' },
-  { title: "News", href: "/news", location: '' },
+  { title: "News", href: "store/news", location: '' },
   { title: "FAQ", href: "/faq", location: '' },
   { title: "Help", href: "/help", location: '' },
   { title: "About Epic", href: "/about", location: '' }
@@ -71,7 +71,7 @@ function Header() {
         </div>
         <div className="order-2 block md:hidden ">
           {
-            flag ? <IoCloseOutline onClick={() => dispatch(changeFlag())} className="text-white text-2xl" /> : <HiMiniBars3 onClick={() => dispatch(changeFlag())} className="text-white text-2xl" />
+            flag ? <IoCloseOutline onClick={() => dispatch(changeFlag(false))} className="text-white text-2xl" /> : <HiMiniBars3 onClick={() => dispatch(changeFlag(true))} className="text-white text-2xl" />
           }
         </div>
         <div className="hidden md:flex items-center justify-between w-full">

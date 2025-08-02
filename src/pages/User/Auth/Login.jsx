@@ -71,7 +71,7 @@ function Login() {
         !paswwordPart ?
             <div className='min-h-screen px-2 flex items-center justify-center text-white'>
                 <div className='text-white p-2 md:p-5 rounded-2xl border border-[#303033] bg-[#18181C]'>
-                    <h2 className='text-center text-xl font-bold mb-3'>Sign in to Epic Games</h2>
+                    <h2 className='text-center text-xl font-bold mb-3 py-3'>Sign in to Epic Games</h2>
                     <div className='w-full md:w-100 text-white p-5 rounded-2xl border border-[#303033] bg-[#18181C]'>
                         <h2 className='text-[#AEAEB0] pb-4 text-center'>Played on PC or mobile ?</h2>
                         <div>

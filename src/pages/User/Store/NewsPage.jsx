@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Loader from "../../../components/ui/Loader";
 
 function NewsPage() {
     useEffect(() => {
@@ -33,11 +34,8 @@ function NewsPage() {
                 const existingIds = new Set(prev.map(item => item.id));
                 const filteredNew = data.data.filter(item => !existingIds.has(item.id));
                 return [...prev, ...filteredNew];
-            });
-
-            if (page >= data.totalPages) {
-                setHasMore(false);
-            }
+            })
+            if (page >= data.totalPages) setHasMore(false);
         }
     }, [data, page]);
     return (
@@ -62,7 +60,7 @@ function NewsPage() {
                     next={() => setPage(prev => prev + 1)}
                     hasMore={hasMore}
                     style={{ overflow: "hidden" }}
-                    loader={<h4 className="text-white">Yükleniyor...</h4>}
+                    loader={<Loader property={'text-blue-400'}/>}
                 >
                     {
                         newsList.map((item, index) => <div key={index} data-aos="fade-up" className="py-5 flex flex-col lg:flex-row gap-5 border-t border-[#404043]">

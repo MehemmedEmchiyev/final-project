@@ -1,4 +1,4 @@
-import { useLocation, useNavigate, useParams } from "react-router"
+import { useLoaderData, useLocation, useNavigate, useParams } from "react-router"
 import { useAddCheckOutMutation, useAddToCartMutation, useAddToWishlistMutation, useGetCartsQuery, useGetProductByIdQuery, useGetWishlistQuery } from "../../../store/services/epicApi"
 import GalerySlider from "../../../components/User/Detail/GalerySlider"
 import DetailSkelton from "../../../components/User/Detail/DetailSkelton"
@@ -9,8 +9,11 @@ import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import Checkout from "../../../components/User/Store/Wishlist-Cart/Checkout";
 function Detail() {
-    const { id } = useParams()
+    const { slug } = useParams()
     const navigate = useNavigate()
+    const location = useLocation()
+    const searchParams = new URLSearchParams(useLocation().search);    
+    const id = searchParams.get("id");
     const { data, isLoading } = useGetProductByIdQuery(id)
     const { data: wishlist } = useGetWishlistQuery()
     const { data: carts, isError } = useGetCartsQuery()

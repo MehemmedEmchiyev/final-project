@@ -8,8 +8,8 @@ export const hamMenuSlice = createSlice({
   name: 'HamburgerMenu',
   initialState,
   reducers: {
-    changeFlag : (state) => {
-        state.flag = !state.flag
+    changeFlag : (state,actions) => {
+        state.flag = actions.payload
     }
   },
 })

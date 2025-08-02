@@ -9,11 +9,9 @@ import { useRef } from 'react';
 export default function GenerSlider() {
     const { data, isLoading } = useGetGenresQuery();
     // const { data: products, isLoading: prodLoad } = useGetProductsQuery();
-    
     const prevRef = useRef(null);
     const nextRef = useRef(null);
-    const arr = Array.from({ length: 4 }, () => "");
-
+    const arr = Array.from({ length: 4 }, () => "")
     return (
         <>
             <div className='w-full flex items-center justify-between mb-3'>

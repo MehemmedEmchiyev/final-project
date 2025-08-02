@@ -8,7 +8,9 @@ import { changeSearch } from "../../../store/searchSlice";
 import { IoClose } from "react-icons/io5";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { MdOutlineShoppingCart } from "react-icons/md";
-import { useGetCartsQuery } from "../../../store/services/epicApi";
+import { useGetCartsQuery, useLazyGetUserByIdQuery } from "../../../store/services/epicApi";
+import { RiAdminLine } from "react-icons/ri";
+import Loader from "../../ui/Loader";
 
 const navbar = [
     { title: 'Discover', href: '' },
@@ -18,6 +20,7 @@ const navbar = [
 
 function Navbar() {
     const { data: carts, isError } = useGetCartsQuery()
+    const [getUser , {isLoading}] = useLazyGetUserByIdQuery()
     const { pathname } = useLocation()
     const path = pathname == '/store' ? '' : pathname.replace('/store/', '')
     const { statue } = useSelector(store => store.black)
@@ -32,6 +35,15 @@ function Navbar() {
         window.addEventListener("scroll", onScroll)
         return () => window.removeEventListener("scroll", onScroll);
     }, [])
+    const [user,setUser] = useState({})
+    useEffect(() => {
+        const user = async () => {
+            const res = await getUser(localStorage.getItem('userId'))
+            if(res?.data?.error) return
+            else setUser(res?.data)
+        }
+        user()
+    }, [])
     const handleOpenMenu = () => {
         if (statue) dispatch(changeStatue(false))
         else dispatch(changeStatue(true))
@@ -41,6 +53,7 @@ function Navbar() {
         setScroll(true)
         dispatch(changeSearch())
     }
+
     return (
         <div className={`${scroll || statue ? "sticky top-0 mx-auto z-119 right-0 left-0" : ""} w-full lg:w-[75%] mx-auto bg-[#18181C] py-4 px-3 lg:px-0 flex items-center ${search ? "" : "justify-between"} lg:justify-start gap-10`}>
             <div className='w-60 h-10 hidden lg:flex items-center gap-3 bg-[#202024] duration-300 rounded-full hover:bg-[#404044] !text-[#B1B1B3]'>
@@ -86,6 +99,13 @@ function Navbar() {
                 }
             </nav>
             <div className={`${search ? "hidden" : "flex"} lg:flex  space-x-3 items-center  text-sm  text-[#9F9FA1] justify-end lg:w-full`}>
+                {
+                    isLoading ? <div><Loader property={'text-blue-400'} /></div> :
+                    <div className={`${(user?.role?.name == "ADMIN" && localStorage.getItem('userId')) ? "" : "hidden"}`}>
+                        <Link to='/admin' className={`hidden lg:inline font-semibold hover:text-white`}>Dashboard</Link>
+                        <Link to='/admin' className={`inline font-extrabold text-xl  lg:hidden hover:text-white`}><RiAdminLine /></Link>
+                    </div>
+                }
                 <Link to='wishlist' className={`${path == "wishlist" ? "text-white" : ""} hidden lg:inline font-semibold hover:text-white`}>Wishlist</Link>
                 <Link to='wishlist' className={`${path == "wishlist" ? "text-white" : ""} inline font-extrabold text-xl  lg:hidden hover:text-white`}><FaRegCheckCircle /></Link>
                 <Link to='basket' className={`${path == "basket" ? "text-white" : ""} hidden lg:inline font-semibold hover:text-white`}>Cart

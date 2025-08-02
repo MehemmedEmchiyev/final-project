@@ -21,7 +21,6 @@ function Card({ item }) {
             navigate("/login");
             return;
         }
-
         const patch = { productId: id };
         const response = await addWishlist(patch);
         if (response?.error) {
@@ -35,7 +34,7 @@ function Card({ item }) {
     return (
         <div className="h-max">
             <div className="w-full h-full group relative">
-                <div onClick={() => navigate(`/store/detail/${item.id}`)} className="w-full cursor-pointer h-[300px] relative rounded-md overflow-hidden">
+                <div onClick={() => navigate(`/store/detail/${item.slug}?id=${item.id}`)} className="w-full cursor-pointer h-[300px] relative rounded-md overflow-hidden">
                     <img className="w-full h-full object-cover" src={item?.media[0]?.url} alt="" />
                     <div
                         onClick={(e) => handleWishlist(e,item?.id)}

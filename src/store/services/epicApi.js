@@ -27,6 +27,29 @@ export const epicApi = createApi({
         body: patch
       })
     }),
+    getRoles : builder.query({
+      query : () => 'general/roles',
+      providesTags : ['Users']
+    }),
+    userRoleUpdate : builder.mutation({
+      query : ({ id , patch}) => ({
+        url : `users/${id}/setRole`,
+        method : 'POST',
+        body : patch
+      }),
+      invalidatesTags : ['Users']
+    }),
+    deleteUser : builder.mutation({
+      query : (id) => ({
+        url : `users/${id}`,
+        method : 'DELETE',
+      }),
+      invalidatesTags : ['Users']
+    }),
+    getUsers : builder.query({
+      query : () => 'users',
+      providesTags : ['Users']
+    }),
     getUserById: builder.query({
       query: (id) => ({
         url: `users/${id}`,
@@ -495,5 +518,9 @@ export const {
   useGetNewsQuery,
   useCreateNewsMutation,
   useDeleteNewsMutation,
-  useUpdateNewsMutation
+  useUpdateNewsMutation,
+  useGetUsersQuery,
+  useGetRolesQuery,
+  useUserRoleUpdateMutation,
+  useDeleteUserMutation
 } = epicApi

@@ -123,7 +123,7 @@ function Checkout({ flag, setFlag }) {
                                     deleteLoader ? <Loader /> : data?.filter(item => item.status == "INPROGRESS")?.at(data?.filter(item => item?.status == "INPROGRESS")?.length - 1)?.items?.map((game, index) => (
                                         <div key={index} className="flex gap-3 p-3 w-full bg-gray-50 rounded-lg">
                                             <div className="flex gap-3 w-full overflow-auto">
-                                                <img className='w-15 h-15 object-cover' src={game?.product?.media[0].url} alt="" />
+                                                <img className='w-15 h-15 object-cover' src={game?.product?.coverImage?.url} alt="" />
                                                 <div className='w-full'>
                                                     <div className='w-full flex items-start justify-between gap-4'>
                                                         <h3 className="font-semibold text-sm leading-tight mb-1">

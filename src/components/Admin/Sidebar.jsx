@@ -10,6 +10,7 @@ function Sidebar() {
     { title: "Platforms", href: 'platforms' },
     { title: "Subscription", href: 'subscription' },
     { title: "News", href: 'news' },
+    { title: "Users", href: 'users' },
   ]
   const navigator = useNavigate()
   const signOut = () => {

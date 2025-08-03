@@ -11,7 +11,7 @@ import Checkout from "../../../components/User/Store/Wishlist-Cart/Checkout";
 function Detail() {
     const { slug } = useParams()
     const navigate = useNavigate()
-    const location = useLocation()
+    // const location = useLocation()
     const searchParams = new URLSearchParams(useLocation().search);    
     const id = searchParams.get("id");
     const { data, isLoading } = useGetProductByIdQuery(id)
@@ -77,7 +77,9 @@ function Detail() {
             !checkLoad && setFlag(true)
         }
     }
-    const { name, media, description, genres, features, ageRestriction, discount, discountedPrice, isFree, price, platforms, developer, updatedAt, publisher } = data ? data : {}
+    console.log(data);
+    
+    const { name, detailImage,productLogo, description, genres, features, ageRestriction, discount, discountedPrice, isFree, price, platforms, developer, updatedAt, publisher ,  } = data ? data : {}
     const gameInfo = [
         { title: "Epic Rewards", value: "Earn 20% Back" },
         { title: "Refund Type", value: "Self-Refundable" },
@@ -96,7 +98,7 @@ function Detail() {
                 <h1 className="text-2xl md:text-4xl font-bold">{name}</h1>
                 <div className="flex flex-col lg:flex-row gap-10 mt-5">
                     <div className="order-2 lg:order-0 w-full lg:w-7/10">
-                        <GalerySlider media={media} />
+                        <GalerySlider media={detailImage} />
                         <p className="text-xl">{description}</p>
                         <div className="py-4 flex ">
                             {
@@ -113,7 +115,7 @@ function Detail() {
                     </div>
                     <div className="w-full lg:w-3/10">
                         <div className="pb-4 h-[200px]">
-                            <img className="w-full h-full object-contain" src={media[1]?.url ? media[1]?.url : media[0]?.url} alt="" />
+                            <img className="w-full h-full object-contain" src={productLogo?.url} alt="" />
                         </div>
                         <div className="border w-full border-gray-700 rounded-lg p-3 inline-flex items-center gap-5">
                             <div className="border border-white p-0.5 text-center leading-tight">

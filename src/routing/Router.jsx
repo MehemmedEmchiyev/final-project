@@ -27,6 +27,7 @@ import Security from "../pages/User/UserInfos/Security"
 import PaymentSettings from "../pages/User/UserInfos/PaymentSettings"
 import News from "../pages/Admin/AdminPages/News"
 import NewsPage from "../pages/User/Store/NewsPage"
+import Users from "../pages/Admin/AdminPages/Users"
 function Router() {
     return (
         <Routes>
@@ -52,6 +53,7 @@ function Router() {
                 </Auth>
             }>
                 <Route index element={<Dashboard />} />
+                <Route path="users" element={<Users />} />
                 <Route path="genres" element={<Genres />} />
                 <Route path="features" element={<Features />} />
                 <Route path="events" element={<Events />} />

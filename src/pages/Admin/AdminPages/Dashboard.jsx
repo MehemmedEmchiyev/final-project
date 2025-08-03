@@ -46,7 +46,7 @@ function Dashboard() {
     const [update, setUpdate] = useState(false)
     const [updateId, setUpdateID] = useState(null)
     const [newProduct, { isLoading: loadProduct }] = useCreateProductMutation()
-    const [deleteProduct] = useDeleteProductMutation()
+    const [deleteProduct , {isLoading : deletLoader}] = useDeleteProductMutation()
     const [updateProducts , {isLoading : updateLoad}] = useUpdateProductMutation()
     const handleSave = async () => {
         if (update) {
@@ -293,7 +293,7 @@ function Dashboard() {
                 </ModalContain>}
                 <div className="overflow-x-auto w-full md:w-[700px] lg:w-[1200px]">
                     {
-                        isLoading ? <Loader className="animate-spin mx-auto w-10 h-10" /> :
+                        isLoading || deletLoader ? <Loader className="animate-spin mx-auto w-10 h-10" /> :
                             <table className="overflow-x-scroll w-full text-xs">
                                 <thead className="dark:bg-gray-300">
                                     <tr className="text-left">
@@ -338,7 +338,7 @@ function Dashboard() {
                                             <td className="p-3">{item.isSlider ? "Yes" : "No"}</td>
                                             <td className="p-3">{item.ageRestriction}</td>
                                             <td className="p-3 space-y-1">
-                                                <img src={item?.media[0]?.url} className="w-10 h-10 object-cover rounded" />
+                                                <img src={item?.coverImage?.url} className="w-10 h-10 object-cover rounded" />
 
                                             </td>
                                             <td className="p-3 whitespace-nowrap">

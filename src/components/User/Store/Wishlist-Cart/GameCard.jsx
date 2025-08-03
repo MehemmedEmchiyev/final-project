@@ -4,7 +4,9 @@ import Loader from "../../../ui/Loader";
 import { useEffect, useState } from "react";
 
 const GameCard = ({ item, itemId }) => {
-    const { name, discount, price, id, isFree, discountedPrice, description , media} = item
+    console.log(item);
+    
+    const { name, discount, price, id, isFree, discountedPrice, description , coverImage} = item
     console.log(item);
 
     const [deleteWishlist, { isLoading }] = useDeleteWishlistMutation()
@@ -39,7 +41,7 @@ const GameCard = ({ item, itemId }) => {
 
         <div className="bg-[#202024] text-white rounded-xl p-4 flex gap-4  shadow-lg">
             <div className="w-[100px] h-[140px] bg-black flex items-center justify-center text-white text-3xl font-bold rounded-md">
-                <img src={media[0]?.url} className="w-full h-full object-cover" alt="" />
+                <img src={coverImage?.url} className="w-full h-full object-cover" alt="" />
             </div>
             <div className="flex-1 flex flex-col justify-between">
                 <div>

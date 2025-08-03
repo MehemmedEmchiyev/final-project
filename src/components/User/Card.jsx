@@ -6,6 +6,8 @@ import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 
 function Card({ item }) {
+    console.log(item);
+    
     const navigate = useNavigate();
     const { data: wishlistData } = useGetWishlistQuery();
     const [addWishlist, { isLoading }] = useAddToWishlistMutation();
@@ -35,7 +37,7 @@ function Card({ item }) {
         <div className="h-max">
             <div className="w-full h-full group relative">
                 <div onClick={() => navigate(`/store/detail/${item.slug}?id=${item.id}`)} className="w-full cursor-pointer h-[300px] relative rounded-md overflow-hidden">
-                    <img className="w-full h-full object-cover" src={item?.media[0]?.url} alt="" />
+                    <img className="w-full h-full object-cover" src={item?.coverImage?.url} alt="" />
                     <div
                         onClick={(e) => handleWishlist(e,item?.id)}
                         className="absolute  hidden md:block z-20 cursor-pointer -right-5 group-hover:right-2 -top-5 group-hover:top-2 duration-300 group/icon"

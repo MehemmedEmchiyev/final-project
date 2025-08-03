@@ -99,10 +99,10 @@ function Detail() {
                 <div className="flex flex-col lg:flex-row gap-10 mt-5">
                     <div className="order-2 lg:order-0 w-full lg:w-7/10">
                         <GalerySlider media={detailImage} />
-                        <p className="text-xl">{description}</p>
+                        <p className="text-xl py-3">{description}</p>
                         <div className="py-4 flex ">
                             {
-                                detailInfo.map((item, index) => <div key={index} className={`w-1/2 px-3 ${index == 1 ? "" : "border-r"} border-[#343437]`}>
+                                detailInfo.map((item, index) => <div key={index} className={`w-1/2 ${index == 0 ? "" : 'px-3'} ${index == 1 ? "" : "border-r"} border-[#343437]`}>
                                     <h2 className="text-[#888]">{item.title}</h2>
                                     <div className="pt-2 flex items-center gap-2 flex-wrap">
                                         {

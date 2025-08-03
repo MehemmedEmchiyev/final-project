@@ -18,9 +18,9 @@ function Browse() {
   const { price } = useSelector(store => store.price)
   const loadArr = Array.from({ length: 4 }, () => "")
   const sortedData = price === 1
-    ? [...data?.data].sort((a, b) => b.price - a.price)
+    ? [...data?.data].sort((a, b) => b.discountedPrice - a.discountedPrice)
     : price === -1
-      ? [...data?.data].sort((a, b) => a.price - b.price)
+      ? [...data?.data].sort((a, b) => a.discountedPrice - b.discountedPrice)
       : data?.data;
   const { data: events } = useGetEventsQuery()
   const { data: genre } = useGetGenresQuery()

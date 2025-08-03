@@ -9,8 +9,7 @@ import { useEffect } from "react"
 function AllProducts() {
     const navigator = useNavigate()
     const { data, isLoading } = useGetProductsQuery()
-    const arr = Array.from({ length: 4 }, () => {})
-    console.log(arr);
+    const arr = Array.from({ length: 5 }, () => {})
     useEffect(() => {
         Aos.init ({
             duration : 1000,
@@ -18,12 +17,12 @@ function AllProducts() {
         })
     },[])
     return (
-        <div data-aos="fade-up" className="">
+        <div data-aos={isLoading ? "" : "fade-up"} className="">
             {isLoading ?
-                <div className="grid grid-cols-2 gap-3 pt-10 text-white md:grid-cols-3 lg:grid-cols-4">
+                <div className="grid grid-cols-2 gap-3 pt-10 text-white md:grid-cols-3 lg:grid-cols-5">
                     {arr.map((_, index) => (<CardSkeleton key={index} />))}
                 </div> :
-                <div  className="grid grid-cols-2 gap-3 pt-10 text-white md:grid-cols-3 lg:grid-cols-4">
+                <div  className="grid grid-cols-2 gap-3 pt-10 text-white md:grid-cols-3 lg:grid-cols-5">
                     {data?.data?.map((item, index) => <Card item={item} key={index} />)}
                 </div>
             }

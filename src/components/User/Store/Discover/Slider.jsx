@@ -10,7 +10,7 @@ import CardSkeleton from '../../../ui/CardSkeleton';
 export default function Slider({data , isLoading , title}) {
     const prevRef = useRef(null);
     const nextRef = useRef(null);
-    const arr = Array.from({ length: 4 }, () => "");
+    const arr = Array.from({ length: 5 }, () => "");
     return (
         <>
             <div className='w-full flex items-center justify-between mb-3'>
@@ -27,7 +27,7 @@ export default function Slider({data , isLoading , title}) {
 
             {
                 isLoading ?
-                    <div className='grid gap-7.5 grid-cols-2 md:grid-cols-4'>
+                    <div className='grid gap-7.5 grid-cols-2 md:grid-cols-5'>
                         {arr.map((_, index) => (
                             <CardSkeleton key={index}/>
                         ))}
@@ -41,9 +41,9 @@ export default function Slider({data , isLoading , title}) {
                             swiper.params.navigation.nextEl = nextRef.current;
                         }}
                         breakpoints={{
-                            640: { slidesPerView: 2 },
-                            768: { slidesPerView: 3 },
-                            1024: { slidesPerView: 4 },
+                            640: { slidesPerView: 3 },
+                            768: { slidesPerView: 4 },
+                            1024: { slidesPerView: 5 },
                         }}
                         pagination={{
                             el: '.swiper-pagination',

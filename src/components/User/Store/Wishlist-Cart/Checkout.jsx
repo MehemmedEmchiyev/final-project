@@ -52,7 +52,7 @@ function Checkout({ flag, setFlag }) {
     return (
         <div className={`fixed text-black top-0 px-3 flex items-center justify-center left-0 w-full h-full bg-black/50 z-1000 ${flag ? "block" : 'hidden'}`}>
             {
-                isLoading ? <div className='w-full bg-white h-[90vh] lg:w-[80%] flex items-center justify-center'><Loader /></div> :
+                isLoading ? <div className=' w-full bg-white h-[90vh] lg:w-[80%] flex items-center justify-center'><Loader /></div> :
                     <div className=" w-full lg:w-[80%]  bg-white flex flex-col lg:flex-row">
                         <div className="lg:hidden w-full p-4 bg-white border-b">
                             <div className="flex items-center w-full  justify-between">
@@ -104,7 +104,7 @@ function Checkout({ flag, setFlag }) {
                                 </div>
                             </div>
                         </div>
-                        <div className="w-full lg:w-96 h-screen bg-white p-4 lg:p-6 lg:border-l flex-1 lg:flex-none">
+                        <div className="w-full lg:w-96 h-screen overflow-auto bg-white p-4 lg:p-6 lg:border-l flex-1 lg:flex-none">
                             <div className="hidden lg:flex items-center justify-between mb-6">
                                 <h2 className="text-lg font-semibold">ORDER SUMMARY</h2>
                                 <button
@@ -118,7 +118,7 @@ function Checkout({ flag, setFlag }) {
                             <div className="lg:hidden mb-4">
                                 <h2 className="text-lg font-semibold">ORDER SUMMARY</h2>
                             </div>
-                            <div className={` ${deleteLoader ? "" : 'overflow-y-auto space-y-3'} mb-6`}>
+                            <div className={` ${deleteLoader ? "" : '!overflow-y-auto space-y-3'} mb-6`}>
                                 {
                                     deleteLoader ? <Loader /> : data?.filter(item => item.status == "INPROGRESS")?.at(data?.filter(item => item?.status == "INPROGRESS")?.length - 1)?.items?.map((game, index) => (
                                         <div key={index} className="flex gap-3 p-3 w-full bg-gray-50 rounded-lg">

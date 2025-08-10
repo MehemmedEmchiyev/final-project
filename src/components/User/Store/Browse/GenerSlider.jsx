@@ -8,9 +8,16 @@ import { useRef } from 'react';
 
 export default function GenerSlider() {
     const { data, isLoading } = useGetGenresQuery();
-    // const { data: products, isLoading: prodLoad } = useGetProductsQuery();
+    const { data: products, isLoading: prodLoad } = useGetProductsQuery();
+    const getImage = (id, arg) => {
+        const filteredProducts = products?.data.filter(item => item?.genres?.some(elem => elem.id == id))
+        return filteredProducts?.at(arg)?.coverImage?.url
+    }
     const prevRef = useRef(null);
     const nextRef = useRef(null);
+    function rnd(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
     const arr = Array.from({ length: 4 }, () => "")
     return (
         <>
@@ -60,19 +67,20 @@ export default function GenerSlider() {
                         className="mySwiper"
                     >
                         {
-                            data?.map((item, index) => (
+                            data?.map((item, index, arr) => (
                                 <SwiperSlide key={index} className='bg-[#1F1F23] cursor-pointer  hover:bg-[#3F3F43] duration-200 px-5 py-6.5 rounded-2xl'>
                                     <div className='h-33 flex items-center relative bg-gray-500'>
                                         <div className='w-full h-full relative'>
+
                                             <div className='absolute w-full h-full bg-black/30'></div>
-                                            <img className='w-full h-full object-cover' src="https://cdn1.epicgames.com/spt-assets/e2c3bc6771dc4524a4730b379f8242c7/ready-or-not-23qyn.png?resize=1&w=360&h=480&quality=medium" alt="" />
+                                            <img className='w-full h-full object-cover' src={getImage(item?.id, 0) || "https://cdn1.epicgames.com/spt-assets/e2c3bc6771dc4524a4730b379f8242c7/ready-or-not-23qyn.png?resize=1&w=360&h=480&quality=medium"} alt="" />
                                         </div>
                                         <div className='w-2/4 rounded-md z-15 absolute mx-auto left-0 right-0 overflow-hidden !shadow-2xl h-full'>
-                                            <img className='w-full h-full object-cover' src="https://cdn1.epicgames.com/spt-assets/9c94e578b3804a5593e0cf3c056d4ed2/smokestack-saints-the-parkour-game-part-i-t2g00.png?resize=1&w=360&h=480&quality=medium" alt="" />
+                                            <img className='w-full h-full object-cover' src={getImage(item?.id, 1) || "https://cdn1.epicgames.com/spt-assets/9c94e578b3804a5593e0cf3c056d4ed2/smokestack-saints-the-parkour-game-part-i-t2g00.png?resize=1&w=360&h=480&quality=medium"} alt="" />
                                         </div>
                                         <div className='w-full h-full relative'>
                                             <div className='absolute w-full h-full bg-black/30'></div>
-                                            <img className='w-full h-full object-cover' src="https://cdn1.epicgames.com/spt-assets/cefb7db3ae7a407ca9b2c991c8c8914d/hymnlight-bazaar-ladder-1b0a4.png?resize=1&w=360&h=480&quality=medium" alt="" />
+                                            <img className='w-full h-full object-cover' src={getImage(item?.id, 2) || "https://cdn1.epicgames.com/spt-assets/cefb7db3ae7a407ca9b2c991c8c8914d/hymnlight-bazaar-ladder-1b0a4.png?resize=1&w=360&h=480&quality=medium"} alt="" />
                                         </div>
                                     </div>
                                     <p className='text-center text-white mt-3.5'>{item?.name}</p>

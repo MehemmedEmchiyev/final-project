@@ -245,7 +245,7 @@ export const epicApi = createApi({
       invalidatesTags: ['Subscription']
     }),
     getProducts: builder.query({
-      query: (params = "") => `products?${params}`,
+      query: ({page, params = ""} = {}) => `products?${page ?  `page=${page}&limit=12` : ""}&${params}`,
       providesTags: ['Products'],
       keepUnusedDataFor: 0
     }),

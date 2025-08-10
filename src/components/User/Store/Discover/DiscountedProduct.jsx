@@ -2,7 +2,7 @@ import { useGetProductsQuery } from "../../../../store/services/epicApi"
 import Slider from "./Slider"
 
 function DiscountedProduct() {
-    const { data, isLoading } = useGetProductsQuery('isDiscount=true')
+    const { data, isLoading } = useGetProductsQuery({ params : 'isDiscount=true'})
     console.log(data);
     
     return (

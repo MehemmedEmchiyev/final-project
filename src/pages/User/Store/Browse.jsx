@@ -10,11 +10,13 @@ import { useEffect, useState } from 'react'
 import { ImCheckmark } from "react-icons/im";
 import { X } from 'lucide-react'
 import { IoFilterOutline } from "react-icons/io5";
+import Pagination from '../../../components/User/Store/Browse/Pagination'
 
 function Browse() {
   const [path, setPath] = useState([])
   const params = path.join("&")
-  const { data, isLoading, isError, isFetching } = useGetProductsQuery(params)
+  const [page, setPage] = useState(1)
+  const { data, isLoading, isError, isFetching } = useGetProductsQuery({ page, params })
   const { price } = useSelector(store => store.price)
   const loadArr = Array.from({ length: 4 }, () => "")
   const sortedData = price === 1
@@ -48,7 +50,7 @@ function Browse() {
   const toggleEvent = (name, event, id) => {
     const value = name == "Events" ? "eventId" :
       name == "Genre" ? "genreId" :
-        name == "Features" ? "featurId" :
+        name == "Features" ? "featureId" :
           name == "Types" ? "typeId" :
             name == "Platforms" ? "platformId" :
               "subscriptionId"
@@ -91,7 +93,7 @@ function Browse() {
     setPath([])
     setSearch("")
   }
-  const [mobileFilter , setMobileFilter] = useState(false)
+  const [mobileFilter, setMobileFilter] = useState(false)
 
   return (
     <main className='pt-10'>
@@ -104,7 +106,7 @@ function Browse() {
           </div>
           <div onClick={() => setMobileFilter(true)} className='flex items-center justify-between gap-3 lg:hidden bg-[#343437] rounded px-1 py-1'>
             <h2 className='text-white font-bold  whitespace-nowrap'>Filter</h2>
-            <IoFilterOutline className='text-white mt-1'/>
+            <IoFilterOutline className='text-white mt-1' />
           </div>
           <div className=' hidden lg:flex items-center justify-between w-1/5'>
             <h2 className='text-white font-bold w-1/5  whitespace-nowrap'>Filters {path.length ? `(${path.length})` : ""}</h2>
@@ -178,6 +180,17 @@ function Browse() {
           </div>
         </div>
       </div>
+      {data?.totalPages > 1 && (
+        <Pagination
+          location={"User"}
+          page={page}
+          path= {path}
+          totalPages={data?.totalPages}
+          setPage = {setPage}
+          onChange={(newPage) => setPage(newPage)}
+        />
+      )}
+
     </main>
   )
 }

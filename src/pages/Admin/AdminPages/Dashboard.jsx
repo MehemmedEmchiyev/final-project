@@ -5,9 +5,11 @@ import { GrUpdate } from "react-icons/gr";
 import { useState } from "react";
 import ModalContain from "../../../components/ui/ModalContain";
 import toast from "react-hot-toast";
+import Pagination from "../../../components/User/Store/Browse/Pagination";
 
 function Dashboard() {
-    const { data, isLoading } = useGetProductsQuery()
+    const [page, setPage] = useState(1)
+    const { data, isLoading } = useGetProductsQuery({ page })
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
     const [isFree, setIsFree] = useState(false)
@@ -145,8 +147,8 @@ function Dashboard() {
                             <h1 className="text-2xl font-bold text-gray-800">Products Management</h1>
                             <p className="text-gray-600 mt-1">Manage all your products in one place</p>
                         </div>
-                        <button 
-                            onClick={() => setOpen(true)} 
+                        <button
+                            onClick={() => setOpen(true)}
                             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-md font-medium transition-colors flex items-center gap-2"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -163,15 +165,15 @@ function Dashboard() {
                                 {update ? "Update Product" : "Create New Product"}
                             </h2>
                         </div>
-                        
+
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[70vh] overflow-y-auto p-2">
                             <div className="space-y-2">
                                 <label className="block text-sm font-medium text-gray-700">Name</label>
-                                <input 
-                                    value={name} 
-                                    onChange={e => setName(e.target.value)} 
-                                    type="text" 
-                                    required 
+                                <input
+                                    value={name}
+                                    onChange={e => setName(e.target.value)}
+                                    type="text"
+                                    required
                                     placeholder="Product name"
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 />
@@ -179,10 +181,10 @@ function Dashboard() {
 
                             <div className="space-y-2">
                                 <label className="block text-sm font-medium text-gray-700">Description</label>
-                                <textarea 
-                                    value={description} 
-                                    onChange={e => setDescription(e.target.value)} 
-                                    required 
+                                <textarea
+                                    value={description}
+                                    onChange={e => setDescription(e.target.value)}
+                                    required
                                     placeholder="Product description"
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[100px]"
                                 />
@@ -190,9 +192,9 @@ function Dashboard() {
 
                             <div className="space-y-2">
                                 <label className="block text-sm font-medium text-gray-700">Is Free</label>
-                                <select 
-                                    value={isFree} 
-                                    onChange={e => setIsFree(e.target.value)} 
+                                <select
+                                    value={isFree}
+                                    onChange={e => setIsFree(e.target.value)}
                                     required
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 >
@@ -202,66 +204,66 @@ function Dashboard() {
                             </div>
                             <div className="space-y-2">
                                 <label className="block text-sm font-medium text-gray-700">Price</label>
-                                <input 
-                                    value={price} 
-                                    onChange={e => setPrice(e.target.value)} 
-                                    type="number" 
-                                    min={0} 
-                                    required 
+                                <input
+                                    value={price}
+                                    onChange={e => setPrice(e.target.value)}
+                                    type="number"
+                                    min={0}
+                                    required
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 />
                             </div>
                             <div className="space-y-2">
                                 <label className="block text-sm font-medium text-gray-700">Discount</label>
-                                <input 
-                                    value={discount} 
-                                    onChange={e => setDiscount(e.target.value)} 
-                                    type="number" 
-                                    min={0} 
-                                    required 
+                                <input
+                                    value={discount}
+                                    onChange={e => setDiscount(e.target.value)}
+                                    type="number"
+                                    min={0}
+                                    required
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 />
                             </div>
 
                             <div className="space-y-2">
                                 <label className="block text-sm font-medium text-gray-700">Developer</label>
-                                <input 
-                                    value={developer} 
-                                    onChange={e => setDeveloper(e.target.value)} 
-                                    type="text" 
-                                    required 
+                                <input
+                                    value={developer}
+                                    onChange={e => setDeveloper(e.target.value)}
+                                    type="text"
+                                    required
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 />
                             </div>
 
                             <div className="space-y-2">
                                 <label className="block text-sm font-medium text-gray-700">Publisher</label>
-                                <input 
-                                    value={publisher} 
-                                    onChange={e => setPublisher(e.target.value)} 
-                                    type="text" 
-                                    required 
+                                <input
+                                    value={publisher}
+                                    onChange={e => setPublisher(e.target.value)}
+                                    type="text"
+                                    required
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 />
                             </div>
 
                             <div className="space-y-2">
                                 <label className="block text-sm font-medium text-gray-700">Age Restriction</label>
-                                <input 
-                                    value={age} 
-                                    onChange={e => setAge(e.target.value)} 
-                                    type="text" 
+                                <input
+                                    value={age}
+                                    onChange={e => setAge(e.target.value)}
+                                    type="text"
                                     placeholder="3+"
-                                    required 
+                                    required
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 />
                             </div>
 
                             <div className="space-y-2">
                                 <label className="block text-sm font-medium text-gray-700">Is Slider</label>
-                                <select 
-                                    value={isSilder} 
-                                    onChange={e => setIsSilder(e.target.value)} 
+                                <select
+                                    value={isSilder}
+                                    onChange={e => setIsSilder(e.target.value)}
                                     required
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 >
@@ -407,6 +409,12 @@ function Dashboard() {
                     )}
                 </div>
             </div>
+            <Pagination  
+                page={page}
+                location={"Admin"}
+                totalPages={data?.totalPages}
+                setPage={setPage}
+                onChange={(newPage) => setPage(newPage)} />
         </div>
     )
 }

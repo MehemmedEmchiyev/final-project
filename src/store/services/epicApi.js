@@ -440,7 +440,7 @@ export const epicApi = createApi({
       invalidatesTags: ['Checkout']
     }),
     getNews: builder.query({
-      query: (page) => `news/${page ? `?page=${page}`: ''}`,
+      query: ({page , limit}) => `news/${page ? `?page=${page}&limit=${limit}`: ''}`,
       providesTags: ['News']
     }),
     createNews: builder.mutation({
@@ -465,8 +465,17 @@ export const epicApi = createApi({
         body : patch
       }),
       invalidatesTags: ['News']
+    }),
+    newsDragAndDrop : builder.mutation({
+      query : ({id , patch}) => ({
+        url : `news/dragAndDrop/${id}`,
+        method : 'POST',
+        body : patch
+      }),
+      invalidatesTags : ['News']
     })
   }),
+
 })
 
 export const {
@@ -531,6 +540,7 @@ export const {
   useCreateNewsMutation,
   useDeleteNewsMutation,
   useUpdateNewsMutation,
+  useNewsDragAndDropMutation ,
   useGetUsersQuery,
   useGetRolesQuery,
   useUserRoleUpdateMutation,

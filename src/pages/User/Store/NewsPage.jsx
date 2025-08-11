@@ -63,7 +63,7 @@ function NewsPage() {
                     loader={<Loader property={'text-blue-400'}/>}
                 >
                     {
-                        newsList.map((item, index) => <div key={index} data-aos="fade-up" className="py-5 flex flex-col lg:flex-row gap-5 border-t border-[#404043]">
+                        newsList.map((item, index) => <div key={index} data-aos={index % 2 ? "fade-right" : "fade-left" } className="py-5 flex flex-col lg:flex-row gap-5 border-t border-[#404043]">
                             <div className="w-full lg:w-60 rounded overflow-hidden lg:h-30">
                                 <img src={item?.media.url} className="w-full h-full object-cover" alt="" />
                             </div>

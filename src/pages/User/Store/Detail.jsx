@@ -77,7 +77,6 @@ function Detail() {
             !checkLoad && setFlag(true)
         }
     }
-    console.log(data);
     
     const { name, detailImage,productLogo, description, genres, features, ageRestriction, discount, discountedPrice, isFree, price, platforms, developer, updatedAt, publisher ,  } = data ? data : {}
     const gameInfo = [

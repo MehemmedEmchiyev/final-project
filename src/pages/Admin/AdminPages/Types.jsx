@@ -17,7 +17,6 @@ function Types() {
     const [updateTypes] = useUpdateTypesMutation()
     const handleSave = async () => {
         if (update) {
-            console.log(updateId);
             await updateTypes({ id: updateId, name })
             toast.success("Types Updated")
             close()

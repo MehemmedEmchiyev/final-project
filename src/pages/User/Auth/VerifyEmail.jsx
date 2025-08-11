@@ -45,7 +45,6 @@ export default function VerifyEmail() {
             "email": email,
             "otpCode": kod
         }
-        console.log(data);
 
         const res = await verifyEmail(data)
         if (res?.error) toast.error(res?.error.data.message)

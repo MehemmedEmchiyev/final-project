@@ -3,7 +3,6 @@ import User from "../layout/User"
 import Auth from "./Auth"
 import Admin from "../layout/Admin"
 import AdminLogin from "../pages/Admin/AdminAuth/AdminLogin"
-import About from "../pages/User/About"
 import Home from "../pages/User/Home"
 import Store from "../pages/User/Store/Store"
 import Browse from "../pages/User/Store/Browse"
@@ -11,7 +10,6 @@ import Discover from "../pages/User/Store/Discover"
 import Login from "../pages/User/Auth/Login"
 import Register from "../pages/User/Auth/Register"
 import VerifyEmail from "../pages/User/Auth/VerifyEmail"
-import Dashboard from "../pages/Admin/AdminPages/Dashboard"
 import Genres from "../pages/Admin/AdminPages/Genres"
 import Features from "../pages/Admin/AdminPages/Features"
 import Events from "../pages/Admin/AdminPages/Events"
@@ -28,6 +26,8 @@ import PaymentSettings from "../pages/User/UserInfos/PaymentSettings"
 import News from "../pages/Admin/AdminPages/News"
 import NewsPage from "../pages/User/Store/NewsPage"
 import Users from "../pages/Admin/AdminPages/Users"
+import Products from "../pages/Admin/AdminPages/Products"
+import Dashboard from "../pages/Admin/AdminPages/Dashboard"
 function Router() {
     return (
         <Routes>
@@ -53,6 +53,7 @@ function Router() {
                 </Auth>
             }>
                 <Route index element={<Dashboard />} />
+                <Route path="products" element={<Products />} />
                 <Route path="users" element={<Users />} />
                 <Route path="genres" element={<Genres />} />
                 <Route path="features" element={<Features />} />

@@ -17,7 +17,6 @@ function Genres() {
     const [updateGenres] = useUpdateGenresMutation()
     const handleSave = async () => {
         if (update) {
-            console.log(updateId);
             await updateGenres({ id : updateId , name})
             toast.success("Genre Updated")
             close()

@@ -1,34 +1,10 @@
-import { DataGrid } from '@mui/x-data-grid';
-import Paper from '@mui/material/Paper';
 import ModalContain from '../../../components/ui/ModalContain';
 import { useState } from 'react';
-import { useCreateNewsMutation, useDeleteNewsMutation, useGetNewsQuery, useUpdateNewsMutation, useUploadMediaMutation } from '../../../store/services/epicApi';
-import { Loader } from 'lucide-react';
+import { useCreateNewsMutation, useDeleteMediaFromAllMediasMutation, useDeleteNewsMutation, useGetAllMediasQuery, useGetNewsQuery, useUpdateNewsMutation, useUploadMediaMutation } from '../../../store/services/epicApi';
+import { Loader, Trash } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { GrUpdate } from 'react-icons/gr';
 import { MdDeleteOutline } from 'react-icons/md';
-
-const columns = [
-    { field: 'id', headerName: 'ID', flex: 1 },
-    { field: 'title', headerName: 'Title', flex: 1 },
-    { field: 'description', headerName: 'Description', flex: 1 },
-    // {
-    //     field: 'age',
-    //     headerName: 'Age',
-    //     type: 'number',
-    //     flex: 1,
-    // },
-    // {
-    //     field: 'fullName',
-    //     headerName: 'Full name',
-    //     description: 'This column has a value getter and is not sortable.',
-    //     sortable: false,
-    //     flex: 1,
-    //     valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
-    // },
-];
-
-const paginationModel = { page: 0, pageSize: 5 };
 
 export default function DataTable() {
     const [page, setPage] = useState(1)
@@ -41,15 +17,17 @@ export default function DataTable() {
     const [updateId, setUpdateID] = useState(null)
     const [update, setUpdate] = useState(false)
     const checkedImages = async (e) => {
-
         const files = Array.from(e.target.files)
-        console.log(files);
         if (!files.length) return
         const res = await uploadMedia(files)
         if (res?.error) toast.error("Somethigs went wrong")
         else toast.success('Succes')
         setMedias(res?.data[0]?.id)
     }
+    const { data: mediasData, isLoading: mediasLoader } = useGetAllMediasQuery()
+
+    const newsImage = mediasData?.find(item => item.id == medias)
+
     const [updateNews, { isLoading: updateLoad }] = useUpdateNewsMutation()
     const createNews = async () => {
         if (update) {
@@ -72,7 +50,15 @@ export default function DataTable() {
             setOpen(false)
         }
     }
-
+    const [deleteImg, { isLoading: deletMediaLoader }] = useDeleteMediaFromAllMediasMutation()
+    const deletImage = async (id) => {
+        const res = await deleteImg(id)
+        if (res?.error) toast.error(res?.error.data?.message)
+        else {
+            toast.success(res?.data?.message)
+            setMedias("")
+        }
+    }
     const [open, setOpen] = useState(false)
     const close = () => {
         setOpen(false)
@@ -102,6 +88,10 @@ export default function DataTable() {
                     <button onClick={() => setOpen(true)} className="bg-black cursor-pointer text-white px-2 py-3 rounded font-semibold">Create News</button>
                 </div>
                 {open && <ModalContain close={close}>
+                    {newsImage && <div className="w-full h-auto relative">
+                        <img className="w-full h-full  object-cover" src={newsImage?.url} />
+                        <Trash onClick={() => deletImage(newsImage?.id)} className="absolute top-[-10px] right-[-10px] w-8 h-8 bg-black p-1 rounded-full text-red-600" />
+                    </div>}
                     <h2>Image :</h2>
                     <input onChange={checkedImages} type="file" className='py-3' />
                     <h2>Name : </h2>
@@ -119,7 +109,7 @@ export default function DataTable() {
                 </ModalContain>}
             </div>
             {
-                isLoading || deletLoader ? <Loader className="animate-spin mx-auto w-10 h-10" /> :
+                isLoading || deletLoader || deletMediaLoader ? <Loader className="animate-spin mx-auto w-10 h-10" /> :
                     isError ? <p className='text-center text-2xl font-bold'>News Not Fount</p> :
                         <table className="w-full text-xs">
                             <thead className="dark:bg-gray-300">
@@ -165,7 +155,7 @@ export default function DataTable() {
                     Previous
                 </button>
                 {
-                    Array.from({ length : data?.totalPages || 1 }, (_, i) => (
+                    Array.from({ length: data?.totalPages || 1 }, (_, i) => (
                         <button
                             key={i}
                             onClick={() => setPage(i + 1)}

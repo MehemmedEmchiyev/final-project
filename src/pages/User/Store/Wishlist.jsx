@@ -8,7 +8,7 @@ import GameCard from "../../../components/User/Store/Wishlist-Cart/GameCard";
 function Wishlist() {
   const [emptyData, setEmptyData] = useState(false);
   const { data, isLoading, isError , isFetching } = useGetWishlistQuery();
-  console.log(data);
+
   
   const [clearWishlist , {isLoading : clearLoading}] = useClearWishlistMutation()
   const handlerClear = async() => {

@@ -25,7 +25,6 @@ function IncreasBalance({ flag, setFlag }) {
     const increasBalance = async () => {
         const value = { balance: selectedAmount }
         const res = await addBalance(value).unwrap()
-        console.log(res);
         
         if (res?.error) toast.error(res?.message)
         else {

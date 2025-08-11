@@ -4,16 +4,15 @@ import Loader from "../../../ui/Loader";
 import { useEffect, useState } from "react";
 
 const GameCard = ({ item, itemId }) => {
-    console.log(item);
-    
+
     const { name, discount, price, id, isFree, discountedPrice, description , coverImage} = item
-    console.log(item);
+   
 
     const [deleteWishlist, { isLoading }] = useDeleteWishlistMutation()
     const [addCart, { isLoading: cartLoader }] = useAddToCartMutation()
     const { data : carts, isError } = useGetCartsQuery()
     const [inCarts, setInCart] = useState(false);
-    console.log(carts);
+ 
     
     useEffect(() => {
         if (isError) {

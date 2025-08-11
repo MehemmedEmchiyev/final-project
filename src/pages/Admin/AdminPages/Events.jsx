@@ -17,7 +17,6 @@ function Events() {
     const [updateEvents] = useUpdateEventsMutation()
     const handleSave = async () => {
         if (update) {
-            console.log(updateId);
             await updateEvents({ id: updateId, name })
             toast.success("Event Updated")
             close()

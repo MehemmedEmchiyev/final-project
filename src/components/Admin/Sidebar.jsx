@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router"
 function Sidebar() {
   const menuItems = [
     { title: "Dashboard", href: '' },
+    { title: "Products", href: 'products' },
     { title: "Genres", href: 'genres' },
     { title: "Features", href: 'features' },
     { title: "Events", href: 'events' },

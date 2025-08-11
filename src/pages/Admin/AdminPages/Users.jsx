@@ -34,7 +34,7 @@ function Users() {
     }
     const deleteUsers = async (id) => {
         const res = await delet(id)
-        console.log(res);
+
 
     }
     return (

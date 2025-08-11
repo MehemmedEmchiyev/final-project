@@ -41,8 +41,7 @@ export default function Register() {
       const dateOfBirth = `${month}-${day}-${year}`;
       const payload = { ...form, dateOfBirth };
       const res = await register(payload)
-      console.log(res);
-      
+
       if (res.error) toast.error(res?.error.data.message)
       else {
         
@@ -53,7 +52,6 @@ export default function Register() {
     },
     validationSchema: registerSchema
   })
-  console.log(errors);
 
   const { data, isLoading } = useGetCounrtyQuery()
 

@@ -25,7 +25,7 @@ function Delete() {
                 const res = deletUser(userId)
                 navigator('/store/browse')
                 localStorage.clear()
-                console.log(res);
+
                 Swal.fire({
                     title: "Deleted",
                     background : "#202024",

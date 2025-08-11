@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 
 function Card({ item }) {
-    console.log(item);
 
     const navigate = useNavigate();
     const { data: wishlistData } = useGetWishlistQuery();
@@ -33,7 +32,7 @@ function Card({ item }) {
         }
     };
     const isEA = item?.subscriptions?.some(item => item?.id == 2)
-    console.log(isEA);
+
     
     
 

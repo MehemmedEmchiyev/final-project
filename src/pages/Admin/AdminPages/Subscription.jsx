@@ -17,7 +17,6 @@ function Subscription() {
     const [updateSubscription] = useUpdateSubscriptionMutation()
     const handleSave = async () => {
         if (update) {
-            console.log(updateId);
             await updateSubscription({ id: updateId, name })
             toast.success("Subscription Updated")
             close()

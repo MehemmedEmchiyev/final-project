@@ -17,7 +17,6 @@ function Platforms() {
     const [updatePlatforms] = useUpdatePlatformsMutation()
     const handleSave = async () => {
         if (update) {
-            console.log(updateId);
             await updatePlatforms({ id: updateId, name })
             toast.success("Platforms Updated")
             close()

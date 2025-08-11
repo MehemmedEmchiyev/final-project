@@ -17,7 +17,6 @@ function Features() {
     const [updateFeatures] = useUpdateFeaturesMutation()
     const handleSave = async () => {
         if (update) {
-            console.log(updateId);
             await updateFeatures({ id: updateId, name })
             toast.success("Feature Updated")
             close()

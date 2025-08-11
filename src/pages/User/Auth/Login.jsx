@@ -24,7 +24,7 @@ function Login() {
         validationSchema: loginschema,
         onSubmit: async () => {
             const res = await login(values)
-            console.log(res);
+
 
             if (res.error) {
                 toast.error(res?.error?.data?.message)

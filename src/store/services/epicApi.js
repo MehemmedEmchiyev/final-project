@@ -4,7 +4,7 @@ import baseQueryWithReauth from './baseQuery'
 export const epicApi = createApi({
   reducerPath: 'epicApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Users', 'Genres', 'Features', 'Events', 'Types', 'Platforms', 'Subscription', 'Products', 'Wishlist', 'Carts', 'Checkout', 'News'],
+  tagTypes: ['Medias','Users', 'Genres', 'Features', 'Events', 'Types', 'Platforms', 'Subscription', 'Products', 'Wishlist', 'Carts', 'Checkout', 'News'],
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (patch) => ({
@@ -274,7 +274,19 @@ export const epicApi = createApi({
           method: 'POST',
           body: formData
         }
-      }
+      },
+      invalidatesTags : ['Medias']
+    }),
+    getAllMedias : builder.query({
+      query : () => 'upload/medias',
+      providesTags : ['Medias']
+    }),
+    deleteMediaFromAllMedias : builder.mutation({
+      query: (id) => ({
+        url: `upload/media/${id}`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: ['Medias']
     }),
     createProduct: builder.mutation({
       query: (patch) => ({
@@ -522,5 +534,7 @@ export const {
   useGetUsersQuery,
   useGetRolesQuery,
   useUserRoleUpdateMutation,
-  useDeleteUserMutation
+  useDeleteUserMutation,
+  useGetAllMediasQuery,
+  useDeleteMediaFromAllMediasMutation
 } = epicApi

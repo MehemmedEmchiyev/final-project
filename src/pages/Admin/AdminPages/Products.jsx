@@ -6,6 +6,9 @@ import { useState } from "react";
 import ModalContain from "../../../components/ui/ModalContain";
 import toast from "react-hot-toast";
 import Pagination from "../../../components/User/Store/Browse/Pagination";
+import { RiFileExcel2Fill } from "react-icons/ri";
+import * as XLSX from 'xlsx';
+import LoaderModal from "../../../components/Admin/LoaderModal";
 
 function Products() {
     const [page, setPage] = useState(1)
@@ -47,7 +50,7 @@ function Products() {
     const filteredMedias = mediasData?.filter(item => medias?.includes(item.id))
     const filterCoverImage = mediasData?.find(item => item?.id == coverImage)
     const filterLogo = mediasData?.find(item => item?.id == logo)
-    
+
 
     const checkedImages = async (arg, e) => {
         const files = Array.from(e.target.files)
@@ -123,7 +126,6 @@ function Products() {
             }
         }
     }
-
     const close = () => {
         setOpen(false)
         setName("")
@@ -157,7 +159,27 @@ function Products() {
         setMedias(item?.detailImage.map(item => item.id))
         setCoverImage(item?.coverImage?.id)
         setLogo(item?.productLogo.id)
-        
+    }
+    const { data: products, isLoading: productsLoader } = useGetProductsQuery({ page: 1, limit: 1000 })
+    const exportExcel = async () => {
+        const formattedData = products?.data?.map(data => ({
+            "ID": data.id,
+            "Name": data?.name,
+            "Description": data?.description,
+            "Developer": data?.developer,
+            "Discount": data?.discount,
+            "Discounted Price": data?.discountedPrice,
+            "Price": data?.price,
+            "Date of Created ": data?.createdAt.split("T")[0],
+            "Events": data?.events?.map(item => item.name).join(','),
+            "Features": data?.features?.map(item => item.name).join(','),
+            "Genres": data?.genres?.map(item => item.name).join(','),
+            "Platforms": data?.platforms?.map(item => item.name).join(',')
+        }))
+        const worksheet = XLSX.utils.json_to_sheet(formattedData)
+        const workbook = XLSX.utils.book_new()
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Products_Info')
+        XLSX.writeFile(workbook, "ProductInfo.xlsx")
     }
 
     return (
@@ -169,15 +191,24 @@ function Products() {
                             <h1 className="text-2xl font-bold text-gray-800">Products Management</h1>
                             <p className="text-gray-600 mt-1">Manage all your products in one place</p>
                         </div>
-                        <button
-                            onClick={() => setOpen(true)}
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-md font-medium transition-colors flex items-center gap-2"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-                            </svg>
-                            Create Product
-                        </button>
+                        <div className="flex items-center gap-3">
+                            <button
+                                onClick={exportExcel}
+                                className="bg-black hover:bg-black/90 cursor-pointer text-white px-4 py-2.5 rounded-md font-medium transition-colors flex items-center gap-2"
+                            >
+                                <RiFileExcel2Fill />
+                                Export Excel
+                            </button>
+                            <button
+                                onClick={() => setOpen(true)}
+                                className="bg-blue-600 hover:bg-blue-700 cursor-pointer text-white px-4 py-2.5 rounded-md font-medium transition-colors flex items-center gap-2"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+                                </svg>
+                                Create Product
+                            </button>
+                        </div>
                     </div>
                 </div>
                 {open && <ModalContain close={close} location={'product'}>
@@ -395,7 +426,7 @@ function Products() {
                 <div className="p-4 overflow-x-auto">
                     {isLoading || deletLoader ? (
                         <div className="flex justify-center items-center py-12">
-                            <Loader className="animate-spin h-8 w-8 text-blue-500" />
+                            <LoaderModal />
                         </div>
                     ) : (
                         <div className="shadow overflow-hidden border border-gray-200 rounded-lg">

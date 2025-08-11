@@ -19,6 +19,7 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import LoaderModal from '../../../components/Admin/LoaderModal';
 
 export default function DataTable() {
     const [page, setPage] = useState(1)
@@ -104,7 +105,7 @@ export default function DataTable() {
         await delet(id);
         toast.success('News deleted');
     };
-    const [dragAndDrop] = useNewsDragAndDropMutation();
+    const [dragAndDrop , {isLoading : droploading}] = useNewsDragAndDropMutation();
     const handleDragEnd = async (result) => {
         if (!result.destination) return;
         const reordered = Array.from(items);
@@ -180,8 +181,8 @@ export default function DataTable() {
                     </ModalContain>
                 )}
             </div>
-            {isLoading || deletLoader || deletMediaLoader ? (
-                <Loader className="animate-spin mx-auto w-10 h-10" />
+            {isLoading || deletLoader || deletMediaLoader || droploading ? (
+                <LoaderModal />
             ) : isError ? (
                 <p className="text-center text-2xl font-bold">News Not Found</p>
             ) : (

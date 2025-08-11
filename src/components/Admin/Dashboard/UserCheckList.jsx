@@ -53,7 +53,7 @@ function UserCheckList() {
                             {userCheckList?.map((item) => (
                                 <div
                                     key={item.id}
-                                    className="border rounded-lg p-4 flex flex-col hover:shadow-lg transition-shadow duration-200"
+                                    className="border border-[#eee] rounded p-4 flex flex-col hover:shadow-lg transition-shadow duration-200"
                                 >
                                     <h2>{item?.status}</h2>
                                     <div className="flex flex-col gap-3">
@@ -67,9 +67,9 @@ function UserCheckList() {
                                                 />
                                                 <div>
                                                     <h3 className="mt-3 font-semibold">{elem.product.name}</h3>
-                                                    <p className="text-gray-500 text-sm">Normal Fiyat: ${elem.product.price}</p>
+                                                    <p className="text-gray-500 text-sm">Price: ${elem.product.price}</p>
                                                     <p className="text-green-600 font-bold">
-                                                        İndirimli: ${elem.product.discountedPrice}
+                                                        Discounted: ${elem.product.discountedPrice}
                                                     </p>
                                                 </div>
                                             </div>)

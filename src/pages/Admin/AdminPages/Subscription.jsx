@@ -5,6 +5,7 @@ import { GrUpdate } from "react-icons/gr";
 import { useState } from "react";
 import ModalContain from "../../../components/ui/ModalContain";
 import toast from "react-hot-toast";
+import LoaderModal from "../../../components/Admin/LoaderModal";
 
 function Subscription() {
     const { data, isLoading } = useGetSubscriptionQuery()
@@ -63,7 +64,7 @@ function Subscription() {
                 </ModalContain>}
                 <div className="overflow-x-auto">
                     {
-                        isLoading ? <Loader className="animate-spin mx-auto w-10 h-10" /> :
+                        isLoading ? <LoaderModal /> :
                             <table className="w-full text-xs">
                                 <thead className="dark:bg-gray-300">
                                     <tr className="text-left">

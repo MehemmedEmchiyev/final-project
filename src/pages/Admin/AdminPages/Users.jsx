@@ -6,6 +6,7 @@ import { useState } from "react";
 import ModalContain from "../../../components/ui/ModalContain";
 import toast from "react-hot-toast";
 import MyLoader from "../../../components/ui/Loader";
+import LoaderModal from "../../../components/Admin/LoaderModal";
 
 function Users() {
     const [flag, setFlag] = useState(false)
@@ -61,7 +62,7 @@ function Users() {
 
                 <div className="overflow-x-auto">
                     {
-                        isLoading || deleteUserLoader ? <Loader className="animate-spin mx-auto w-10 h-10" /> :
+                        isLoading || deleteUserLoader ? <LoaderModal /> :
                             <table className="w-full text-xs">
                                 <thead className="dark:bg-gray-300">
                                     <tr className="text-left">

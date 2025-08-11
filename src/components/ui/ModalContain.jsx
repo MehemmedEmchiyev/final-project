@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 
 function ModalContain({ children, close, location }) {
   const dragging = useRef(false);
-  const [position, setPosition] = useState(null); // başlangıçta null
+  const [position, setPosition] = useState(null); 
   const offset = useRef({ x: 0, y: 0 });
   const start = (e) => {
     dragging.current = true;

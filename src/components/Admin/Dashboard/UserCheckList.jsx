@@ -1,14 +1,17 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useCheckOutByUserQuery, useGetUsersQuery } from "../../../store/services/epicApi"
+import LoaderModal from "../LoaderModal"
 
 function UserCheckList() {
     const { data, isLoading } = useGetUsersQuery()
+
     const [selectedUser, setSelectedUser] = useState(null)
     const { data: userCheckList, isLoading: checkListLoader, isError } = useCheckOutByUserQuery(selectedUser)
-    console.log(userCheckList);
 
     return (
         <>
+            {isLoading || checkListLoader && <LoaderModal />}
+
             <h2 className='py-3 font-semibold text-2xl'>User Check List</h2>
             <div className="w-full">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Select User</label>
@@ -32,51 +35,51 @@ function UserCheckList() {
                 </div>
             </div>
             {
-            !selectedUser ? "" : isError ? <div className="text-gray-500 text-center p-6">
-                No order has been selected yet
-            </div> : 
-                <div className="bg-white shadow rounded-lg p-6">
+                !selectedUser ? "" : isError ? <div className="text-gray-500 text-center p-6">
+                    No order has been selected yet
+                </div> :
+                    <div className="bg-white shadow rounded-lg p-6">
 
-                    <div className="flex justify-between mb-4">
-                        <div>
-                            <h2 className="text-xl font-bold mb-1">
-                                {userCheckList?.at(0)?.user?.username}
-                            </h2>
-                        </div>
-                    </div>
-
-
-                    <div className="flex flex-col gap-3">
-                        {userCheckList?.map((item) => (
-                            <div
-                                key={item.id}
-                                className="border rounded-lg p-4 flex flex-col hover:shadow-lg transition-shadow duration-200"
-                            >
-                                <h2>{item?.status}</h2>
-                                <div className="flex flex-col gap-3">
-                                    {
-                                        item?.items?.map((elem, index) => <div key={index} className="flex items-center gap-3">
-                                            <img
-
-                                                src={elem.product.coverImage?.url}
-                                                alt={elem.product.name}
-                                                className="w-20 h-20 object-cover rounded"
-                                            />
-                                            <div>
-                                                <h3 className="mt-3 font-semibold">{elem.product.name}</h3>
-                                                <p className="text-gray-500 text-sm">Normal Fiyat: ${elem.product.price}</p>
-                                                <p className="text-green-600 font-bold">
-                                                    İndirimli: ${elem.product.discountedPrice}
-                                                </p>
-                                            </div>
-                                        </div>)
-                                    }
-                                </div>
+                        <div className="flex justify-between mb-4">
+                            <div>
+                                <h2 className="text-xl font-bold mb-1">
+                                    {userCheckList?.at(0)?.user?.username}
+                                </h2>
                             </div>
+                        </div>
 
-                        ))}
-                    </div>
-                </div>}
+
+                        <div className="flex flex-col gap-3">
+                            {userCheckList?.map((item) => (
+                                <div
+                                    key={item.id}
+                                    className="border rounded-lg p-4 flex flex-col hover:shadow-lg transition-shadow duration-200"
+                                >
+                                    <h2>{item?.status}</h2>
+                                    <div className="flex flex-col gap-3">
+                                        {
+                                            item?.items?.map((elem, index) => <div key={index} className="flex items-center gap-3">
+                                                <img
+
+                                                    src={elem.product.coverImage?.url}
+                                                    alt={elem.product.name}
+                                                    className="w-20 h-20 object-cover rounded"
+                                                />
+                                                <div>
+                                                    <h3 className="mt-3 font-semibold">{elem.product.name}</h3>
+                                                    <p className="text-gray-500 text-sm">Normal Fiyat: ${elem.product.price}</p>
+                                                    <p className="text-green-600 font-bold">
+                                                        İndirimli: ${elem.product.discountedPrice}
+                                                    </p>
+                                                </div>
+                                            </div>)
+                                        }
+                                    </div>
+                                </div>
+
+                            ))}
+                        </div>
+                    </div>}
         </>
 
     )

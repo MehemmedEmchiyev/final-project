@@ -1,6 +1,6 @@
 import { BarChart, Bar, ResponsiveContainer, XAxis, CartesianGrid, YAxis, Tooltip, Pie, Cell, Legend, PieChart } from 'recharts';
 import { useGetUsersQuery } from "../../../store/services/epicApi"
-
+import LoaderModal from '../LoaderModal';
 
 function UserChart() {
     const { data, isLoading } = useGetUsersQuery()
@@ -18,8 +18,9 @@ function UserChart() {
         {
             title: 'Guest User',
             count: guestCount
-        },
+        }
     ]
+
     const barData = [
         {
             name: 'Admin',
@@ -46,9 +47,10 @@ function UserChart() {
             color: '#10B981'
         }
     ];
-    const COLORS = ['#3B82F6', '#10B981'];
+    const COLORS = ['#3B82F6', '#10B981']
     return (
         <div className='w-full h-full'>
+            {isLoading && <LoaderModal />}
             <div className="flex items-center justify-between gap-3">
                 {
                     parts?.map((item, index) => <div key={index} className="bg-white flex items-center justify-between w-full p-6 rounded-lg shadow-md">

@@ -1,4 +1,7 @@
 import { Loader, Trash } from "lucide-react";
+import { BsFillPinAngleFill } from "react-icons/bs";
+import { RiUnpinFill } from "react-icons/ri";
+
 import { useCreateProductMutation, useDeleteMediaFromAllMediasMutation, useDeleteProductMutation, useGetAllMediasQuery, useGetEventsQuery, useGetFeaturesQuery, useGetGenresQuery, useGetPlatformsQuery, useGetProductsQuery, useGetSubscriptionQuery, useGetTypesQuery, useUpdateProductMutation, useUploadMediaMutation } from "../../../store/services/epicApi"
 import { MdDeleteOutline } from "react-icons/md";
 import { GrUpdate } from "react-icons/gr";
@@ -13,6 +16,7 @@ import LoaderModal from "../../../components/Admin/LoaderModal";
 function Products() {
     const [page, setPage] = useState(1)
     const { data, isLoading } = useGetProductsQuery({ page })
+
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
     const [isFree, setIsFree] = useState(false)
@@ -180,6 +184,13 @@ function Products() {
         const workbook = XLSX.utils.book_new()
         XLSX.utils.book_append_sheet(workbook, worksheet, 'Products_Info')
         XLSX.writeFile(workbook, "ProductInfo.xlsx")
+    }
+
+    const pin = async (id , isPin ) => {
+        const patch = {isPin : !isPin}
+        const res = await updateProducts({id , patch})
+        if(res?.error) toast.error(res?.error?.data?.message)
+        else toast.success(res?.data?.message)
     }
 
     return (
@@ -424,7 +435,7 @@ function Products() {
                     </div>
                 </ModalContain>}
                 <div className="p-4 overflow-x-auto">
-                    {isLoading || deletLoader ? (
+                    {isLoading || deletLoader || updateLoad ? (
                         <div className="flex justify-center items-center py-12">
                             <LoaderModal />
                         </div>
@@ -459,6 +470,16 @@ function Products() {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <div className="flex justify-end space-x-2">
+                                                    <button
+                                                        onClick={() => pin(item?.id , item?.isPin)}
+                                                        className=" p-1 rounded hover:bg-blue-50"
+                                                        title="Pip"
+                                                    >
+                                                        {
+                                                            item?.isPin ? <RiUnpinFill className="h-5 w-5" /> :
+                                                                <BsFillPinAngleFill className="h-5 w-5" />
+                                                        }
+                                                    </button>
                                                     <button
                                                         onClick={() => handleUpdate(item)}
                                                         className="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50"

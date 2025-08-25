@@ -1,15 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
 import { ChevronLeft } from 'lucide-react';
-import { useVerifyOtpMutation } from '../../../store/services/epicApi';
+import { useResendOtpMutation, useVerifyOtpMutation } from '../../../store/services/epicApi';
 import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router';
+import Loader from '../../../components/ui/Loader';
 
 export default function VerifyEmail() {
     const [code, setCode] = useState(['', '', '', '', '', '']);
     const [focusedIndex, setFocusedIndex] = useState(0);
     const inputRefs = useRef([]);
     const [verifyEmail] = useVerifyOtpMutation()
+    const [resentOtp, { isLoading }] = useResendOtpMutation()
     useEffect(() => {
         if (inputRefs.current[0]) {
             inputRefs.current[0].focus();
@@ -39,6 +41,7 @@ export default function VerifyEmail() {
     const handleFocus = (index) => {
         setFocusedIndex(index);
     };
+    
     const verifyOtp = async () => {
         const kod = code.join('')
         const data = {
@@ -53,14 +56,15 @@ export default function VerifyEmail() {
             toast.success(res?.data?.message)
         }
     };
-    const handleResendCode = () => {
-        console.log('Resend code clicked');
-    };
+    const handleResendCode = async () => {
+        const data = {
+            "email": email
+        }
+        const res = await resentOtp(data)
+        if (res?.error) toast.error(res?.error.data.message)
+        else toast.success(res?.data?.message)
 
-    const handleChangeEmail = () => {
-        console.log('Change email clicked');
     };
-
     const isCodeComplete = code.every(digit => digit !== '');
     return (
         <div className="min-h-screen bg-[#101014] flex items-center justify-center p-4">
@@ -109,17 +113,13 @@ export default function VerifyEmail() {
                 <div className="flex justify-center items-center gap-2 mt-8">
                     <button
                         onClick={handleResendCode}
-                        className="text-blue-400 hover:text-blue-300 transition-colors"
+                        className="text-blue-400 cursor-pointer hover:text-blue-300 transition-colors"
                     >
-                        Resend code
+                        {
+                            isLoading ? <Loader property={'text-blue-400'}/> : 'Resend code'
+                        }
                     </button>
-                    <span className="text-gray-500">or</span>
-                    <button
-                        onClick={handleChangeEmail}
-                        className="text-blue-400 hover:text-blue-300 transition-colors"
-                    >
-                        Change email
-                    </button>
+
                 </div>
             </div>
         </div>

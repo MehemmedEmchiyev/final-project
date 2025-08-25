@@ -64,6 +64,13 @@ export const epicApi = createApi({
         body: patch
       })
     }),
+    resendOtp : builder.mutation({
+      query: (patch) => ({
+        url: 'auth/resentOtp',
+        method: 'POST',
+        body: patch
+      })
+    }),
     forgotPassword: builder.mutation({
       query: (patch) => ({
         url: 'auth/forget-password',
@@ -485,6 +492,7 @@ export const {
   useGetCounrtyQuery,
   useRegisterMutation,
   useVerifyOtpMutation,
+  useResendOtpMutation,
   useForgotPasswordMutation,
   useGetGenresQuery,
   useCreateGenresMutation,

@@ -153,6 +153,7 @@ export default function Register() {
                 className={`w-full bg-transparent outline-0 border ${errors.username ? "border-red-500" : "border-[#303033]"} rounded-lg px-4 py-3 `} />
               {errors.username && <p className='text-red-500'>{errors.username}</p>}
             </div>
+            <label className='text-[#AEAEB0] font-semibold inline-block mb-2'>Select Country</label>
             <div className='w-full -ml-2'>
               {
                 isLoading ? <Loader /> :

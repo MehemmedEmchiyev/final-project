@@ -8,8 +8,6 @@ import { useEffect, useState } from "react";
 import { useLazyGetUserByIdQuery } from "../../../store/services/epicApi";
 import toast from "react-hot-toast";
 import { SiEpicgames } from "react-icons/si";
-import { LogIn } from "lucide-react";
-
 export const menuItems = [
   { title: "Store", href: "/store", location: 'store' },
   { title: "News", href: "store/news", location: '' },
@@ -24,7 +22,7 @@ function Header() {
   const [scroll, setScroll] = useState(false)
   const [user, setUser] = useState({})
   const { pathname } = useLocation()
-  const [getUser, { isLoading }] = useLazyGetUserByIdQuery()
+  const [getUser, { isLoading  , isFetching}] = useLazyGetUserByIdQuery()
   useEffect(() => {
     const onScroll = () => {
       !pathname.includes('/store') && setScroll(window.scrollY > 50)
@@ -46,7 +44,7 @@ function Header() {
       }
     }
     checkUser()
-  }, [])
+  }, [isFetching])
   
   const [open, setOpen] = useState(false)
   const signOut = () => {

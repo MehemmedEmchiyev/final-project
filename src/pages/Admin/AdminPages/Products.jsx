@@ -10,7 +10,9 @@ import ModalContain from "../../../components/ui/ModalContain";
 import toast from "react-hot-toast";
 import Pagination from "../../../components/User/Store/Browse/Pagination";
 import { RiFileExcel2Fill } from "react-icons/ri";
-import * as XLSX from 'xlsx';
+import XLSX from 'xlsx-js-style';
+import { GiSpeaker } from "react-icons/gi";
+
 import LoaderModal from "../../../components/Admin/LoaderModal";
 
 function Products() {
@@ -79,9 +81,9 @@ function Products() {
     const handleSave = async () => {
         if (update) {
             const data = {
-                // detailImageId: medias,
-                // coverImageId: coverImage,
-                // productLogoId: logo,
+                detailImageId: medias,
+                coverImageId: coverImage,
+                productLogoId: logo,
                 name,
                 description,
                 isFree,
@@ -110,6 +112,7 @@ function Products() {
                 name,
                 description,
                 isFree,
+                isPin: false,
                 price,
                 discount,
                 developer,
@@ -180,17 +183,37 @@ function Products() {
             "Genres": data?.genres?.map(item => item.name).join(','),
             "Platforms": data?.platforms?.map(item => item.name).join(',')
         }))
+
         const worksheet = XLSX.utils.json_to_sheet(formattedData)
+        const range = XLSX.utils.decode_range(worksheet['!ref'])
+        for (let C = range.s.c; C <= range.e.c; ++C) {
+            const cell_address = XLSX.utils.encode_cell({ r: 0, c: C })
+            if (!worksheet[cell_address]) continue
+            worksheet[cell_address].s = {
+                fill: { fgColor: { rgb: "4F81BD" } },
+                font: { bold: true, color: { rgb: "FFFFFF" }, sz: 12 },
+                alignment: { horizontal: "center", vertical: "center" }
+            }
+        }
+        const colWidths = Object.keys(formattedData[0]).map(key => ({ wch: Math.max(key.length, 20) }))
+        worksheet['!cols'] = colWidths
+
         const workbook = XLSX.utils.book_new()
         XLSX.utils.book_append_sheet(workbook, worksheet, 'Products_Info')
         XLSX.writeFile(workbook, "ProductInfo.xlsx")
     }
 
-    const pin = async (id , isPin ) => {
-        const patch = {isPin : !isPin}
-        const res = await updateProducts({id , patch})
-        if(res?.error) toast.error(res?.error?.data?.message)
+    const pin = async (id, isPin) => {
+        const patch = { isPin: !isPin }
+        const res = await updateProducts({ id, patch })
+        if (res?.error) toast.error(res?.error?.data?.message)
         else toast.success(res?.data?.message)
+    }
+    const [lang, setLang] = useState('en-US')
+    const handleSpeak = (arg) => {
+        const text = new SpeechSynthesisUtterance(arg)
+        text.lang = lang,    
+        window.speechSynthesis.speak(text)
     }
 
     return (
@@ -457,7 +480,18 @@ function Products() {
                                     {data?.data?.map((item) => (
                                         <tr key={item.id} className="hover:bg-gray-50">
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.id}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.name}</td>
+                                            <td className="px-6  py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                <span>{item.name}</span>
+                                                <select
+                                                    className=" rounded ml-2 border border-gray-300 bg-white p-1 text-gray-800 
+                                            shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 
+                                            transition ease-in-out duration-200 cursor-pointer" value={lang} onChange={e => setLang(e.target.value)}>
+                                                    <option value='az-AZ'>AZ</option>
+                                                    <option value='en-US'>EN</option>
+                                                    <option value='ru-RU'>RU</option>
+                                                </select>
+                                                <button onClick={() => handleSpeak(item?.name)} className="pl-1 cursor-pointer text-red-500 text-xl"><GiSpeaker /></button>
+                                            </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${item.price}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.discount}%</td>
                                             <td className="px-6 py-4 whitespace-nowrap">
@@ -471,8 +505,8 @@ function Products() {
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <div className="flex justify-end space-x-2">
                                                     <button
-                                                        onClick={() => pin(item?.id , item?.isPin)}
-                                                        className=" p-1 rounded hover:bg-blue-50"
+                                                        onClick={() => pin(item?.id, item?.isPin)}
+                                                        className=" p-1 cursor-pointer rounded hover:bg-blue-50"
                                                         title="Pip"
                                                     >
                                                         {
@@ -482,14 +516,14 @@ function Products() {
                                                     </button>
                                                     <button
                                                         onClick={() => handleUpdate(item)}
-                                                        className="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50"
+                                                        className="text-blue-600 cursor-pointer hover:text-blue-900 p-1 rounded hover:bg-blue-50"
                                                         title="Edit"
                                                     >
                                                         <GrUpdate className="h-5 w-5" />
                                                     </button>
                                                     <button
                                                         onClick={() => deleteProducts(item.id)}
-                                                        className="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50"
+                                                        className="text-red-600 cursor-pointer hover:text-red-900 p-1 rounded hover:bg-red-50"
                                                         title="Delete"
                                                     >
                                                         <MdDeleteOutline className="h-5 w-5" />

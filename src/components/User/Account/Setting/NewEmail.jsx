@@ -5,7 +5,7 @@ import Loader from "../../../ui/Loader";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { newEmail } from "../../../../validation/newEmail";
-import { useNewEmailMutation, useVerifyNewEmailMutation } from "../../../../store/services/epicApi";
+import { useNewEmailMutation, useResendOtpMutation, useVerifyNewEmailMutation } from "../../../../store/services/epicApi";
 
 function NewEmail({ open, setOpen }) {
     const navigator = useNavigate()
@@ -54,6 +54,18 @@ function NewEmail({ open, setOpen }) {
             }
         },
     })
+    const [resentOtp, { isLoading : resendLoader }] = useResendOtpMutation()
+    // const handleReset = async () => {
+    //     console.log(values.email);
+        
+    //     const data = {
+    //         "email": values.email
+    //     }
+    //     const res = await resentOtp(data)
+    //     if (res?.error) toast.error(res?.error.data.message)
+    //     else toast.success(res?.data?.message)
+
+    // }
     const handleClose = () => {
         resetForm()
         setOpen(false)
@@ -92,9 +104,11 @@ function NewEmail({ open, setOpen }) {
                         </div>
 
                         <div className="pt-2">
-                            <button className="text-sm text-blue-400 hover:underline">
-                                Resend security code
-                            </button>
+                            {/* <button onClick={handleReset} className="text-sm text-blue-400 hover:underline">
+                                {
+                                    resendLoader ? <Loader property={'text-blue-400'} /> : "Resend security code"
+                                }
+                            </button> */}
                         </div>
 
                         <div className="flex items-center justify-between pt-4 space-x-4">

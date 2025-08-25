@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useCheckOutByUserQuery, useGetUsersQuery } from "../../../store/services/epicApi"
 import LoaderModal from "../LoaderModal"
 
@@ -10,7 +10,7 @@ function UserCheckList() {
 
     return (
         <>
-            {isLoading || checkListLoader && <LoaderModal />}
+            {isLoading || checkListLoader || checkListLoader && <LoaderModal />}
 
             <h2 className='py-3 font-semibold text-2xl'>User Check List</h2>
             <div className="w-full">
@@ -55,7 +55,6 @@ function UserCheckList() {
                                     key={item.id}
                                     className="border border-[#eee] rounded p-4 flex flex-col hover:shadow-lg transition-shadow duration-200"
                                 >
-                                    <h2>{item?.status}</h2>
                                     <div className="flex flex-col gap-3">
                                         {
                                             item?.items?.map((elem, index) => <div key={index} className="flex items-center gap-3">
@@ -66,11 +65,9 @@ function UserCheckList() {
                                                     className="w-20 h-20 object-cover rounded"
                                                 />
                                                 <div>
+                                                    <h2 className="font-semibold">{item?.status}</h2>
                                                     <h3 className="mt-3 font-semibold">{elem.product.name}</h3>
-                                                    <p className="text-gray-500 text-sm">Price: ${elem.product.price}</p>
-                                                    <p className="text-green-600 font-bold">
-                                                        Discounted: ${elem.product.discountedPrice}
-                                                    </p>
+
                                                 </div>
                                             </div>)
                                         }

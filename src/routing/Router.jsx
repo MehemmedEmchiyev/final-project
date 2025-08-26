@@ -28,6 +28,7 @@ import NewsPage from "../pages/User/Store/NewsPage"
 import Users from "../pages/Admin/AdminPages/Users"
 import Products from "../pages/Admin/AdminPages/Products"
 import Dashboard from "../pages/Admin/AdminPages/Dashboard"
+import NotFound from "../pages/NotFound"
 function Router() {
     return (
         <Routes>
@@ -67,6 +68,7 @@ function Router() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/verify-email" element={<VerifyEmail />} />
+            <Route path="*" element={<NotFound />}/>
         </Routes>
     )
 }

@@ -31,7 +31,7 @@ function Card({ item }) {
             setIsInWishlist(prev => !prev);
         }
     };
-    const isEA = item?.subscriptions?.some(item => item?.id == 2)
+    const isEA = item?.subscriptions?.some(item => item?.id == 2) || item?.events?.some(item => item?.id == 3)
 
     
     

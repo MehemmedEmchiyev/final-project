@@ -5,7 +5,7 @@ import { RiUnpinFill } from "react-icons/ri";
 import { useCreateProductMutation, useDeleteMediaFromAllMediasMutation, useDeleteProductMutation, useGetAllMediasQuery, useGetEventsQuery, useGetFeaturesQuery, useGetGenresQuery, useGetPlatformsQuery, useGetProductsQuery, useGetSubscriptionQuery, useGetTypesQuery, useUpdateProductMutation, useUploadMediaMutation } from "../../../store/services/epicApi"
 import { MdDeleteOutline } from "react-icons/md";
 import { GrUpdate } from "react-icons/gr";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalContain from "../../../components/ui/ModalContain";
 import toast from "react-hot-toast";
 import Pagination from "../../../components/User/Store/Browse/Pagination";
@@ -79,6 +79,10 @@ function Products() {
         }
     }
     const handleSave = async () => {
+        if (!validateForm()) {
+            toast.error("Please fix validation errors.")
+            return
+        }
         if (update) {
             const data = {
                 detailImageId: medias,
@@ -133,11 +137,34 @@ function Products() {
             }
         }
     }
+    
+    const [errors, setErrors] = useState({})
     const close = () => {
         setOpen(false)
         setName("")
         setMedias([])
         update && setUpdate(false)
+        setUpdateID(null)
+        setName("");
+        setDescription("");
+        setIsFree(false);
+        setIsTopSeller(false);
+        setPrice(0);
+        setDiscount(0);
+        setDeveloper("");
+        setPublisher("");
+        setAge("");
+        setIsSilder(false);
+        setEventsId([]);
+        setGenresId([]);
+        setTypeId([]);
+        setfeaturesId([]);
+        setplatformsId([]);
+        setsubscriptionsId([]);
+        setMedias([])
+        setCoverImage('')
+        setLogo('')
+        setErrors({})
     }
     const deleteProducts = async (id) => {
         await deleteProduct(id)
@@ -212,8 +239,32 @@ function Products() {
     const [lang, setLang] = useState('en-US')
     const handleSpeak = (arg) => {
         const text = new SpeechSynthesisUtterance(arg)
-        text.lang = lang,    
+        text.lang = lang,
         window.speechSynthesis.speak(text)
+    }
+
+    
+
+    const validateForm = () => {
+        let newErrors = {}
+        if (!name || name.trim().length < 3) {
+            newErrors.name = "Name is required and must be at least 3 characters."
+        }
+        if (!description || description.trim().length < 3) {
+            newErrors.description = "Description is required and must be at least 3 characters."
+        }
+        if (!age) {
+            newErrors.age = "Age restriction is required "
+        }
+        if (!developer || developer.trim().length < 3) {
+            newErrors.developer = "Developer is required and must be at least 3 characters."
+        }
+        if (!publisher || publisher.trim().length < 3) {
+            newErrors.publisher = "Publisher is required and must be at least 3 characters."
+        }
+
+        setErrors(newErrors)
+        return Object.keys(newErrors).length === 0
     }
 
     return (
@@ -265,8 +316,10 @@ function Products() {
                                     type="text"
                                     required
                                     placeholder="Product name"
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+
+                                    className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
                                 />
+                                 {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
                             </div>
 
                             <div className="space-y-2">
@@ -276,8 +329,9 @@ function Products() {
                                     onChange={e => setDescription(e.target.value)}
                                     required
                                     placeholder="Product description"
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[100px]"
+                                    className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[100px] ${errors.description ? 'border-red-500' : 'border-gray-300'}`}
                                 />
+                                 {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
                             </div>
 
                             <div className="space-y-2">
@@ -300,7 +354,7 @@ function Products() {
                                     type="number"
                                     min={0}
                                     required
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 `}
                                 />
                             </div>
                             <div className="space-y-2">
@@ -322,8 +376,9 @@ function Products() {
                                     onChange={e => setDeveloper(e.target.value)}
                                     type="text"
                                     required
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.developer ? 'border-red-500' : 'border-gray-300'}`}
                                 />
+                                 {errors.developer && <p className="text-red-500 text-sm">{errors.developer}</p>}
                             </div>
 
                             <div className="space-y-2">
@@ -333,8 +388,9 @@ function Products() {
                                     onChange={e => setPublisher(e.target.value)}
                                     type="text"
                                     required
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.publisher ? 'border-red-500' : 'border-gray-300'}`}
                                 />
+                                 {errors.publisher && <p className="text-red-500 text-sm">{errors.publisher}</p>}
                             </div>
 
                             <div className="space-y-2">
@@ -345,8 +401,9 @@ function Products() {
                                     type="text"
                                     placeholder="3+"
                                     required
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.age ? 'border-red-500' : 'border-gray-300'}`}
                                 />
+                                 {errors.age && <p className="text-red-500 text-sm">{errors.age}</p>}
                             </div>
 
                             <div className="space-y-2">

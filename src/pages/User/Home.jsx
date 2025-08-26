@@ -82,7 +82,7 @@ function Home() {
 
   return (
     <div>
-      <div className='relative bg-[url(images/home-bg.jpg)] bg-fixed bg-center bg-cover'>
+      <div className='relative bg-[url(public/images/home-bg.jpg)] bg-fixed bg-center bg-cover'>
         <div className='absolute w-full h-full bg-black/60'></div>
         <div className=' py-10 w-8/10 flex flex-col lg:flex-row items-center justify-between mx-auto '>
           <h1 id='title' className='text-center lg:text-start font-bold text-white text-[3rem] lg:text-[5rem] uppercase '>Welcome to Epic Games</h1>
@@ -91,7 +91,7 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className='bg-[url(images/R.jpeg)] bg-center bg-cover bg-fixed relative'>
+      <div className='bg-[url(public/images/R.jpeg)] bg-center bg-cover bg-fixed relative'>
         <div className='absolute z-5 w-full h-full  bg-black/70'></div>
         <div className='w-full relative z-10 px-2  lg:w-8/10 mx-auto flex items-center justify-between h-max lg:h-[50vh] py-10'>
           <div className='lg:w-1/3'></div>
@@ -103,7 +103,7 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className='bg-[url(images/B.jpg)] bg-center bg-cover bg-fixed relative'>
+      <div className='bg-[url(public/images/B.jpg)] bg-center bg-cover bg-fixed relative'>
         <div className='absolute z-5 w-full h-full  bg-black/70'></div>
         <div className='w-full  relative z-10  px-2 lg:w-8/10 mx-auto flex items-center justify-between h-max lg:h-[50vh] py-10'>
           <div id='text' className=' text-white flex-col flex items-start justify-center  w-full'>
@@ -122,13 +122,8 @@ function Home() {
           <div className='lg:w-1/3'></div>
         </div>
       </div>
-      {/* <div className='pt-10 w-full h-full'>
-        <div id='box' className='w-50 h-50 mx-auto bg-[url(images/Epic-Games-Store.jpg)] bg-center bg-cover'>
-
-        </div>
-      </div> */}
       <HomeSlider />
-    </div>
+    </div>  
   )
 }
 

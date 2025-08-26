@@ -12,7 +12,7 @@ function Detail() {
     const { slug } = useParams()
     const navigate = useNavigate()
     // const location = useLocation()
-    const searchParams = new URLSearchParams(useLocation().search);    
+    const searchParams = new URLSearchParams(useLocation().search);
     const id = searchParams.get("id");
     const { data, isLoading } = useGetProductByIdQuery(id)
     const { data: wishlist } = useGetWishlistQuery()
@@ -77,8 +77,8 @@ function Detail() {
             !checkLoad && setFlag(true)
         }
     }
-    
-    const { name, detailImage,productLogo, description, genres, features, ageRestriction, discount, discountedPrice, isFree, price, platforms, developer, updatedAt, publisher ,  } = data ? data : {}
+
+    const { name, detailImage, productLogo, description, genres, features, ageRestriction, discount, discountedPrice, isFree, price, platforms, developer, updatedAt, publisher, } = data ? data : {}
     const gameInfo = [
         { title: "Epic Rewards", value: "Earn 20% Back" },
         { title: "Refund Type", value: "Self-Refundable" },

@@ -1,7 +1,8 @@
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer} from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { TrendingUp, Package, DollarSign, Users, Filter } from 'lucide-react';
 import { useCheckOutQuery, useGetProductsQuery } from '../../../store/services/epicApi';
 import LoaderModal from '../LoaderModal';
+import SalesChart from './SalesChart';
 const ProductsChart = () => {
     const { data, isLoading } = useGetProductsQuery({ page: 1, limit: 100 })
     const { data: checkOutData, isLoading: checkOutLoader } = useCheckOutQuery()
@@ -52,33 +53,27 @@ const ProductsChart = () => {
         ];
         return pieData
     }
-
-    const getMonthlySales = (data) => {
-        const monthlyData = {};
-
-        data?.forEach(product => {
-            const month = new Date(product.createdAt)
-                .toLocaleDateString('tr-TR', { month: 'short', year: 'numeric' });
-
-            if (monthlyData[month]) {
-                monthlyData[month].sales += product.soldCount || 0;
-                monthlyData[month].products += 1;
-            } else {
-                monthlyData[month] = { sales: product.soldCount || 0, products: 1 };
+    const { data: checkouts } = useCheckOutQuery()
+    const monthlyData = checkouts?.reduce((acc, checkout) => {
+        const month = new Date(checkout.createdAt).toLocaleString('default', { month: 'short' }) 
+        const existing = acc.find(item => item.name === month)
+        if (existing) {
+            existing.uv += checkout.totalAmount 
+            if (checkout.status === 'FAILED') {
+                existing.pv += checkout.totalAmount 
             }
-        });
-
-        return Object.entries(monthlyData).map(([month, data]) => ({
-            month,
-            sales: data.sales,
-            products: data.products,
-            avgRating: 4.5
-        }));
-    };
-
+        } else {
+            acc.push({
+                name: month,
+                uv: checkout.totalAmount,
+                pv: checkout.status === 'FAILED' ? checkout.totalAmount : 0,
+            })
+        }
+        return acc
+    }, [])
+    
     const genreData = getSalesbyGenre();
     const barData = data?.data.map(item => ({ name: item?.name, price: item?.price, discountedPrice: item?.discountedPrice || 0 }))
-    const monthlyData = getMonthlySales(data?.data);
     const COLORS = ['#3B82F6', '#10B981', '#ff0000']
 
     return (
@@ -106,27 +101,31 @@ const ProductsChart = () => {
             <div className="bg-white p-6 mb-3 rounded-lg shadow-sm ">
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">Product Sales Distribution
                 </h3>
-                <ResponsiveContainer width="100%" height={300}>
-                    <PieChart>
-                        <Pie
-                            data={genreData}
-                            cx="50%"
-                            cy="50%"
-                            labelLine={false}
-                            outerRadius={80}
-                            fill="#8884d8"
-                            dataKey="value"
-                        >
-                            {genreData.map((_, index) => (
-                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                            ))}
-                        </Pie>
-                        <Tooltip
-                            formatter={(value, name) => [`${value} product (${genreData.find(item => item.name === name)?.percentage}%)`, name]}
-                        />
-                        <Legend />
-                    </PieChart>
-                </ResponsiveContainer>
+
+                <div className='flex items-center'>
+                    <SalesChart />
+                    <ResponsiveContainer width="100%" height={300}>
+                        <PieChart>
+                            <Pie
+                                data={genreData}
+                                cx="50%"
+                                cy="50%"
+                                labelLine={false}
+                                outerRadius={80}
+                                fill="#8884d8"
+                                dataKey="value"
+                            >
+                                {genreData.map((_, index) => (
+                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                ))}
+                            </Pie>
+                            <Tooltip
+                                formatter={(value, name) => [`${value} product (${genreData.find(item => item.name === name)?.percentage}%)`, name]}
+                            />
+                            <Legend />
+                        </PieChart>
+                    </ResponsiveContainer>
+                </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
@@ -134,13 +133,24 @@ const ProductsChart = () => {
 
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">Monthly Sales Trend</h3>
                     <ResponsiveContainer width="100%" height={300}>
-                        <LineChart data={monthlyData}>
+                        <LineChart
+                            width={500}
+                            height={300}
+                            data={monthlyData}
+                            margin={{
+                                top: 5,
+                                right: 30,
+                                left: 20,
+                                bottom: 5,
+                            }}
+                        >
                             <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="month" />
+                            <XAxis dataKey="name" />
                             <YAxis />
                             <Tooltip />
                             <Legend />
-                            <Line type="monotone" dataKey="sales" stroke="#8884d8" strokeWidth={3} />
+                            <Line type="monotone" dataKey="pv" stroke="#8884d8" strokeDasharray="5 5" />
+                            <Line type="monotone" dataKey="uv" stroke="#82ca9d" strokeDasharray="3 4 5 2" />
                         </LineChart>
                     </ResponsiveContainer>
                 </div>

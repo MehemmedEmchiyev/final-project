@@ -11,19 +11,16 @@ import { ImCheckmark } from "react-icons/im";
 import { X } from 'lucide-react'
 import { IoFilterOutline } from "react-icons/io5";
 import Pagination from '../../../components/User/Store/Browse/Pagination'
+import { useLocation } from 'react-router'
 
 function Browse() {
+  const {pathname} = useLocation()
   const [path, setPath] = useState([])
   const params = path.join("&")
   const [page, setPage] = useState(1)
   const { data, isLoading, isError, isFetching } = useGetProductsQuery({ page, params })
-  const { price } = useSelector(store => store.price)
   const loadArr = Array.from({ length: 4 }, () => "")
-  const sortedData = price === 1
-    ? [...data?.data].sort((a, b) => b.discountedPrice - a.discountedPrice)
-    : price === -1
-      ? [...data?.data].sort((a, b) => a.discountedPrice - b.discountedPrice)
-      : data?.data;
+
   const { data: events } = useGetEventsQuery()
   const { data: genre } = useGetGenresQuery()
   const { data: features } = useGetFeaturesQuery()
@@ -81,13 +78,13 @@ function Browse() {
   }
   useEffect(() => {
     const params = new URLSearchParams()
+    
     path.forEach(filter => {
       const [key, value] = filter?.split("=")
       params.append(key, value)
     })
     window.history.replaceState(null, "", "?" + params.toString())
-  }, [path])
-
+  }, [path , pathname])
   const reset = () => {
     setSelected([])
     setPath([])
@@ -102,7 +99,7 @@ function Browse() {
         <div className='flex pb-3 items-center justify-between '>
           <div className='w-4/5 flex gap-1 items-center'>
             <div className='text-[#ABABAC]'>Show:</div>
-            <div><AccountDropdown /></div>
+            <div><AccountDropdown setPath={setPath} path={path}/></div>
           </div>
           <div onClick={() => setMobileFilter(true)} className='flex items-center justify-between gap-3 lg:hidden bg-[#343437] rounded px-1 py-1'>
             <h2 className='text-white font-bold  whitespace-nowrap'>Filter</h2>
@@ -119,13 +116,13 @@ function Browse() {
               {
                 isLoading || isFetching ?
                   loadArr.map((_, index) => <CardSkeleton key={index} />)
-                  : isError || sortedData?.length == 0 ?
+                  : isError || data?.data?.length == 0 ?
                     <div className='text-center'>
                       <h2 className='text-3xl md:text-5xl text-white'>No results found</h2>
                       <p className='text-[#ACACAD] pt-2 text-[14px]'>Unfortunately I could not find any results matching your search.</p>
                     </div>
                     :
-                    sortedData?.map((item, index) => <Card key={index} item={item} />)
+                    data?.data?.map((item, index) => <Card key={index} item={item} />)
               }
             </div>
           </div>
@@ -184,9 +181,9 @@ function Browse() {
         <Pagination
           location={"User"}
           page={page}
-          path= {path}
+          path={path}
           totalPages={data?.totalPages}
-          setPage = {setPage}
+          setPage={setPage}
           onChange={(newPage) => setPage(newPage)}
         />
       )}

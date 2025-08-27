@@ -450,7 +450,7 @@ function Products() {
                                 <div className="w-full flex items-center flex-wrap gap-3">
                                     {
                                         filteredMedias?.map((item, index) => <div key={index} className="w-15 h-15 relative">
-                                            <img className="w-full h-full  object-cover" src={item?.url} />
+                                            {item?.type == "IMAGE" ? <img className="w-full h-full  object-cover" src={item?.url}  /> : <video className="w-full h-full object-cover" controls><source src={item?.url} /> </video>}
                                             <Trash onClick={() => deletImage(item?.id)} className="absolute bottom-[80%] left-[80%] w-5 h-5 bg-black p-1 rounded-full text-red-600" />
                                         </div>)
                                     }

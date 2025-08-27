@@ -4,8 +4,11 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import { useState } from 'react';
+import CustomVideoPlayer from '../../ui/CustomVideoPlayer';
 
 export default function MinimalGallery({ media }) {
+    console.log(media);
+
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const [activeIndex, setActiveIndex] = useState(0);
 
@@ -24,11 +27,12 @@ export default function MinimalGallery({ media }) {
             >
                 {media?.map((src, i) => (
                     <SwiperSlide key={i}>
-                        <img
+                        {src?.type == 'IMAGE' ? <img
                             src={src.url}
-                            className="w-full h-[250px] lg:h-[500px] object-cover rounded-xl"
+                            className="w-full h-[250px] md:h-[300px] lg:h-[500px] object-cover rounded-xl"
                             alt={`slide-${i}`}
-                        />
+                        /> :
+                            <CustomVideoPlayer src={src?.url}/>}
                     </SwiperSlide>
                 ))}
             </Swiper>
@@ -45,12 +49,16 @@ export default function MinimalGallery({ media }) {
                 >
                     {media?.map((src, i) => (
                         <SwiperSlide key={i}>
-                            <img
-                                src={src.url}
-                                className={`w-full h-15 lg:h-20 object-cover rounded-md cursor-pointer hover:opacity-100 opacity-50 border 
+                            {src?.type == 'IMAGE' ?
+                                <img
+                                    src={src.url}
+                                    className={`w-full h-15 lg:h-20 object-cover rounded-md cursor-pointer hover:opacity-100 opacity-50 border 
                                     ${activeIndex === i ? "border-2 opacity-100 border-white" : "border-gray-700"}`}
-                                alt={`thumb-${i}`}
-                            />
+                                    alt={`thumb-${i}`}
+                                /> : <video className={`w-full h-15 lg:h-20 object-cover rounded-md cursor-pointer hover:opacity-100 opacity-50 border 
+                                    ${activeIndex === i ? "border-2 opacity-100 border-white" : "border-gray-700"}`}>
+                                    <source  src={src?.url} />
+                                </video>}
                         </SwiperSlide>
                     ))}
                 </Swiper>

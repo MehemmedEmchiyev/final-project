@@ -7,7 +7,7 @@ import toast from "react-hot-toast"
 
 function ChangePassword({ open, setOpen }) {
     const [resetPassword , {isLoading}] = useResetPasswordMutation()
-    const { values , errors , handleChange , handleSubmit , resetForm } = useFormik({
+    const { values , errors , handleChange , handleSubmit , resetForm , touched } = useFormik({
         initialValues: {
             currentPassword: "",
             newPassword: "",
@@ -39,26 +39,26 @@ function ChangePassword({ open, setOpen }) {
                         name="currentPassword"
                         value={values.currentPassword}
                         onChange={handleChange}
-                        className={`w-full px-4 py-2 rounded-md bg-[#121214] text-white border ${errors.currentPassword ? 'border-red-500' : ""} placeholder-gray-500 outline-none`}
+                        className={`w-full px-4 py-2 rounded-md bg-[#121214] text-white border ${(errors.currentPassword && touched.currentPassword) ? 'border-red-500' : ""} placeholder-gray-500 outline-none`}
                     />
-                    {errors.currentPassword && <p className="text-red-500">{errors.currentPassword}</p>}
+                    {(errors.currentPassword && touched.currentPassword) && <p className="text-red-500">{errors.currentPassword}</p>}
                     <h2 className="inline-block pb-2 ">New Password</h2>
                     <input
                         name="newPassword"
                         value={values.newPassword}
                         onChange={handleChange}
-                        className={`w-full px-4 py-2 rounded-md bg-[#121214] text-white border ${errors.newPassword ? 'border-red-500' : ""} placeholder-gray-500 outline-none`}
+                        className={`w-full px-4 py-2 rounded-md bg-[#121214] text-white border ${(errors.newPassword && touched.newPassword) ? 'border-red-500' : ""} placeholder-gray-500 outline-none`}
                     />
-                    {errors.newPassword && <p className="text-red-500">{errors.newPassword}</p>}
+                    {(errors.newPassword && touched.currentPassword) && <p className="text-red-500">{errors.newPassword}</p>}
 
                     <h2 className="inline-block pb-2 ">Repeat Password</h2>
                     <input
                         name="repeatPassword"
                         value={values.repeatPassword}
                         onChange={handleChange}
-                        className={`w-full px-4 py-2 rounded-md bg-[#121214] text-white border ${errors.repeatPassword ? 'border-red-500' : ""} placeholder-gray-500 outline-none`}
+                        className={`w-full px-4 py-2 rounded-md bg-[#121214] text-white border ${(errors.repeatPassword && touched.currentPassword) ? 'border-red-500' : ""} placeholder-gray-500 outline-none`}
                     />
-                    {errors.repeatPassword && <p className="text-red-500">{errors.repeatPassword}</p>}
+                    {(errors.repeatPassword && touched.currentPassword) && <p className="text-red-500">{errors.repeatPassword}</p>}
 
                     <button type="submit" className="w-full py-3 mt-2 bg-blue-400 hover:bg-blue-300 cursor-pointer duration-300 text-black font-semibold text-sm rounded-md">
                         {

@@ -27,7 +27,7 @@ export default function Register() {
   const [continuer, setContinue] = useState(false)
   const isFormValid = month && day && year
   const [register , { isLoading : loader }] = useRegisterMutation()
-  const { values: form, handleChange, errors, handleSubmit } = useFormik({
+  const { values: form, handleChange, errors, handleSubmit , touched } = useFormik({
     initialValues: {
       firstname: "",
       lastname: '',
@@ -123,35 +123,35 @@ export default function Register() {
           <div className="space-y-4">
             <label className='text-[#AEAEB0] font-semibold inline-block mb-2'>Email address</label>
             <input type="email" name="email" value={form.email} onChange={handleChange}
-              className={`w-full bg-transparent outline-0 border ${errors.email ? "border-red-500" : "border-[#303033]"} rounded-lg px-4 py-3 `} />
-            {errors.email && <p className='text-red-500'>{errors.email}</p>}
+              className={`w-full bg-transparent outline-0 border ${(errors.email && touched.email) ? "border-red-500" : "border-[#303033]"} rounded-lg px-4 py-3 `} />
+            {(errors.email && touched.email) && <p className='text-red-500'>{errors.email}</p>}
             <div className="flex gap-4">
               <div className='flex flex-col '>
                 <label className='text-[#AEAEB0] font-semibold inline-block mb-2'>First Name</label>
                 <input type="text" name="firstname" value={form.firstname} onChange={handleChange}
-                  className={`w-full bg-transparent outline-0 border ${errors.firstname ? "border-red-500" : "border-[#303033]"} rounded-lg px-4 py-3 `} />
-                {errors.firstname && <p className='text-red-500'>{errors.firstname}</p>}
+                  className={`w-full bg-transparent outline-0 border ${(errors.firstname && touched.firstname) ? "border-red-500" : "border-[#303033]"} rounded-lg px-4 py-3 `} />
+                {(errors.firstname && touched.firstname) && <p className='text-red-500'>{errors.firstname}</p>}
               </div>
               <div className='flex flex-col '>
                 <label className='text-[#AEAEB0] font-semibold inline-block mb-2'>Last Name</label>
                 <input type="text" name="lastname" value={form.lastname} onChange={handleChange}
-                  className={`w-full bg-transparent outline-0 border ${errors.lastname ? "border-red-500" : "border-[#303033]"} rounded-lg px-4 py-3 `} />
-                {errors.lastname && <p className='text-red-500'>{errors.lastname}</p>}
+                  className={`w-full bg-transparent outline-0 border ${(errors.lastname && touched.lastname) ? "border-red-500" : "border-[#303033]"} rounded-lg px-4 py-3 `} />
+                {(errors.lastname && touched.lastname) && <p className='text-red-500'>{errors.lastname}</p>}
               </div>
             </div>
 
             <div className="relative">
               <label className='text-[#AEAEB0] font-semibold inline-block mb-2'>Password</label>
               <input type="password" name="password" value={form.password} onChange={handleChange}
-                className={`w-full bg-transparent outline-0 border ${errors.password ? "border-red-500" : "border-[#303033]"} rounded-lg px-4 py-3 `} />
-              {errors.password && <p className='text-red-500'>{errors.password}</p>}
+                className={`w-full bg-transparent outline-0 border ${(errors.password && touched.password) ? "border-red-500" : "border-[#303033]"} rounded-lg px-4 py-3 `} />
+              {(errors.password && touched.password) && <p className='text-red-500'>{errors.password}</p>}
             </div>
 
             <div className="relative">
               <label className='text-[#AEAEB0] font-semibold inline-block mb-2'>User Name</label>
               <input type="text" name="username" value={form.username} onChange={handleChange}
-                className={`w-full bg-transparent outline-0 border ${errors.username ? "border-red-500" : "border-[#303033]"} rounded-lg px-4 py-3 `} />
-              {errors.username && <p className='text-red-500'>{errors.username}</p>}
+                className={`w-full bg-transparent outline-0 border ${errors.username && touched.username ? "border-red-500" : "border-[#303033]"} rounded-lg px-4 py-3 `} />
+              {(errors.username && touched.username) && <p className='text-red-500'>{errors.username}</p>}
             </div>
             <label className='text-[#AEAEB0] font-semibold inline-block mb-2'>Select Country</label>
             <div className='w-full -ml-2'>

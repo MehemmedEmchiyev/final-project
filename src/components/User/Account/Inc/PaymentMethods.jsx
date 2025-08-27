@@ -13,7 +13,7 @@ export default function PaymentMethods() {
     const [savePayment, setSavePayment] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
     const dispatch = useDispatch()
-    const { values, errors, handleChange, handleSubmit, resetForm } = useFormik({
+    const { values, errors, handleChange, handleSubmit, resetForm ,touched } = useFormik({
         initialValues: {
             cardNumber: '',
             nameOfCard: '',
@@ -81,7 +81,7 @@ export default function PaymentMethods() {
                                                 name='cardNumber'
                                                 onChange={handleChange}
                                             />
-                                            {errors.cardNumber && <p className='text-red-500'>{errors.cardNumber}</p>}
+                                            {(errors.cardNumber && touched.cardNumber) && <p className='text-red-500'>{errors.cardNumber}</p>}
                                         </div>
 
                                         <div>
@@ -95,7 +95,7 @@ export default function PaymentMethods() {
                                                 name='nameOfCard'
                                                 onChange={handleChange}
                                             />
-                                            {errors.nameOfCard && <p className='text-red-500'>{errors.nameOfCard}</p>}
+                                            {(errors.nameOfCard && touched.nameOfCard) && <p className='text-red-500'>{errors.nameOfCard}</p>}
 
                                         </div>
 
@@ -112,7 +112,7 @@ export default function PaymentMethods() {
                                                     name='expration'
                                                     onChange={handleChange}
                                                 />
-                                                {errors.expration && <p className='text-red-500'>{errors.expration}</p>}
+                                                {(errors.expration && touched.expration) && <p className='text-red-500'>{errors.expration}</p>}
 
                                             </div>
 
@@ -130,7 +130,7 @@ export default function PaymentMethods() {
                                                     onChange={handleChange}
                                                     placeholder='Enter PIN' />
 
-                                                {errors.cvv && <p className='text-red-500'>{errors.cvv}</p>}
+                                                {(errors.cvv && touched.cvv) && <p className='text-red-500'>{errors.cvv}</p>}
 
                                             </div>
                                         </div>

@@ -51,7 +51,7 @@ function PaymentSettings() {
             </div>}
             <div className="mt-4  ">
                 <h2 className="text-2xl font-semibold lg:text-3xl">Balance</h2>
-                <div className="py-3 text-5xl tracking-[2px]">{isLoading ? <Loader property={'text-blue-400'}/> : `$${data?.balance}`}</div>
+                <div className="py-3 text-5xl tracking-[2px]">{isLoading ? <Loader property={'text-blue-400'}/> : `$${data?.balance?.toFixed(2)}`}</div>
                 <div className="flex gap-3 items-center flex-col mt-3 w-full lg:w-max lg:flex-row">
                     <button onClick={() => setFlag(true)} className="bg-sky-500 flex items-center justify-center gap-3 hover:bg-sky-400 w-full md:w-max duration-300 cursor-pointer text-black font-medium py-3 px-4 rounded-md">
                         <GoPlus />

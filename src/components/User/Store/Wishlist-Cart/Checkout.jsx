@@ -30,7 +30,7 @@ function Checkout({ flag, setFlag }) {
             navigator('/account/payment-settings')
         }
         else {
-            toast.success(res?.message)
+            toast.success(res?.data.message || "Succes")
             navigator('/store/browse')
             setFlag(false)
             await clear()

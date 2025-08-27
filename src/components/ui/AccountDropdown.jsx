@@ -6,7 +6,8 @@ export default function AccountDropdown({path,  setPath }) {
     const [flag, setFlag] = useState("All")
     const menuItem = [
         { title: "All" },
-        { title: 'Alphabetical', name: 'name', order: 'ASC' },
+        { title: 'Alphabetical A-Z', name: 'name', order: 'ASC' },
+        { title: 'Alphabetical Z-A', name: 'name', order: 'DESC' },
         { title: "Price : High to Low", name: 'price', order: 'DESC' },
         { title: "Price : Low to High", name: 'price', order: 'ASC' },
         { title: "Newest First", name: 'createdAt', order: 'DESC' },

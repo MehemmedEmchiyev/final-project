@@ -6,6 +6,7 @@ import { changeFlag } from "../../../store/hamMenuSlice"
 import { useLazyGetUserByIdQuery } from "../../../store/services/epicApi"
 import { ArrowLeft } from "lucide-react"
 import toast from "react-hot-toast"
+import LanguageSelector from "../../Language/LanguageSelector"
 
 function HamMenu() {
     const { flag } = useSelector(store => store.bars)
@@ -78,7 +79,10 @@ function HamMenu() {
                                             }
                                         </div>
                                         :
-                                        <button onClick={goToLogin} className="rounded-[6px] cursor-pointer duration-200 py-1 px-3 bg-[#ffffff26] text-white hover:bg-[#636366]">Sign in</button>
+                                        <div className="flex items-center gap-3 justify-end">
+                                            <LanguageSelector />
+                                            <button onClick={goToLogin} className="rounded-[6px] cursor-pointer duration-200 py-1 px-3 bg-[#ffffff26] text-white hover:bg-[#636366]">Sign in</button>
+                                        </div>
                                 }
                             </div>
                             <div className="p-4">

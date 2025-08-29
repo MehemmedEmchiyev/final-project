@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useLazyGetUserByIdQuery } from "../../../store/services/epicApi";
 import toast from "react-hot-toast";
 import { SiEpicgames } from "react-icons/si";
+import LanguageSelector from "../../Language/LanguageSelector";
 export const menuItems = [
   { title: "Store", href: "/store", location: 'store' },
   { title: "News", href: "store/news", location: '' },
@@ -22,7 +23,7 @@ function Header() {
   const [scroll, setScroll] = useState(false)
   const [user, setUser] = useState({})
   const { pathname } = useLocation()
-  const [getUser, { isLoading  , isFetching}] = useLazyGetUserByIdQuery()
+  const [getUser, { isLoading, isFetching }] = useLazyGetUserByIdQuery()
   useEffect(() => {
     const onScroll = () => {
       !pathname.includes('/store') && setScroll(window.scrollY > 50)
@@ -45,7 +46,7 @@ function Header() {
     }
     checkUser()
   }, [isFetching])
-  
+
   const [open, setOpen] = useState(false)
   const signOut = () => {
     localStorage.clear()
@@ -56,7 +57,6 @@ function Header() {
   useEffect(() => {
     open && setOpen(false)
   }, [pathname])
-
 
   return (
 
@@ -83,6 +83,7 @@ function Header() {
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
+            <LanguageSelector />
             {
               userId && user ?
                 <div className="">

@@ -5,7 +5,7 @@ import { RiUnpinFill } from "react-icons/ri";
 import { useCreateProductMutation, useDeleteMediaFromAllMediasMutation, useDeleteProductMutation, useGetAllMediasQuery, useGetEventsQuery, useGetFeaturesQuery, useGetGenresQuery, useGetPlatformsQuery, useGetProductsQuery, useGetSubscriptionQuery, useGetTypesQuery, useUpdateProductMutation, useUploadMediaMutation } from "../../../store/services/epicApi"
 import { MdDeleteOutline } from "react-icons/md";
 import { GrUpdate } from "react-icons/gr";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ModalContain from "../../../components/ui/ModalContain";
 import toast from "react-hot-toast";
 import Pagination from "../../../components/User/Store/Browse/Pagination";
@@ -17,12 +17,11 @@ import LoaderModal from "../../../components/Admin/LoaderModal";
 
 function Products() {
     const [page, setPage] = useState(1)
-    const { data, isLoading } = useGetProductsQuery({ page })
+    const { data, isLoading , isFetching } = useGetProductsQuery({ page })
 
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
     const [isFree, setIsFree] = useState(false)
-    const [isTopSeller, setIsTopSeller] = useState(false)
     const [price, setPrice] = useState(0)
     const [discount, setDiscount] = useState(0)
     const [developer, setDeveloper] = useState("")
@@ -515,7 +514,7 @@ function Products() {
                     </div>
                 </ModalContain>}
                 <div className="p-4 overflow-x-auto">
-                    {isLoading || deletLoader || updateLoad ? (
+                    { isLoading || isFetching || deletLoader || updateLoad ? (
                         <div className="flex justify-center items-center py-12">
                             <LoaderModal />
                         </div>

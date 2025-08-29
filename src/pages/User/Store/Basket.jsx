@@ -73,7 +73,7 @@ function Basket() {
                 <ul className="text-white border-b py-3 border-[#343437]">
                   <li className="flex py-2 items-center justify-between">
                     <span className="">Price</span>
-                    <span className="font-light">$ {price}</span>
+                    <span className="font-light">$ {price.toFixed(2)}</span>
                   </li>
                   <li className="flex py-2 items-center justify-between">
                     <span className="">Sale Discount</span>

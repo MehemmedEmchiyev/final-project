@@ -22,7 +22,7 @@ export default function Pagination({ location , page, totalPages, path ,onChange
         setPage(1)
     }, [path]);
     useEffect(() => {
-        window.scrollTo(450,450)
+        location == "Admin" ? window.scrollTo(0,0) : window.scrollTo(450,450)
     },[page])
     return (
         <nav className="flex items-center  justify-center gap-3 p-4" aria-label="Pagination">

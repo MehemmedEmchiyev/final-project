@@ -86,7 +86,7 @@ function Card({ item }) {
 
                     <div>
                         {item?.discount ? (
-                            <h2 className="space-x-2 flex items-center">
+                            <h2 className="space-x-2 flex flex-wrap items-center">
                                 <span className="px-2 text-sm flex items-center justify-center w-max text-black bg-[#26BBFF] rounded-full">
                                     - {item?.discount}%
                                 </span>

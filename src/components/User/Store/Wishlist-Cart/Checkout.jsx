@@ -99,7 +99,7 @@ function Checkout({ flag, setFlag }) {
                                     </div>
                                     <div>
                                         <span className="font-medium">Account Balance </span>
-                                        <span className="text-gray-600">${user?.balance}</span>
+                                        <span className="text-gray-600">${user?.balance?.toFixed(2)}</span>
                                     </div>
                                 </div>
                             </div>
@@ -136,7 +136,7 @@ function Checkout({ flag, setFlag }) {
                                                     <span className={`${game?.product?.discount ? 'inline-block' : 'hidden'} px-2 text-[12px] bg-blue-500 text-white  rounded`}>{game?.product?.discount ? `-${game?.product?.discount}%` : ""}</span>
                                                     <div className='flex items-center gap-1'>
                                                         <p className={`${game?.product?.discount ? 'line-through text-[#505050]' : ""} text-sm`}>
-                                                            {game?.product?.isFree ? 'Free' : `$ ${game?.product?.price}`}
+                                                            {game?.product?.isFree ? 'Free' : `$ ${game?.product?.price.toFixed(2)}`}
                                                         </p>
                                                         <span>
                                                             {game?.product?.discount ? `$ ${game?.product?.discountedPrice}` : ""}
@@ -153,7 +153,7 @@ function Checkout({ flag, setFlag }) {
                             <div className="space-y-2 mb-6 pb-4 border-b border-gray-200">
                                 <div className="flex justify-between text-sm">
                                     <span className="text-gray-600">Price</span>
-                                    <span>${price}</span>
+                                    <span>${price.toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm">
                                     <span className="text-gray-600">Sale Discount</span>
@@ -197,7 +197,7 @@ function Checkout({ flag, setFlag }) {
                                         </div>
                                         <div className="flex-1">
                                             <span className="text-sm font-medium">Account Balance </span>
-                                            <span className="text-sm text-gray-600">${user?.balance}</span>
+                                            <span className="text-sm text-gray-600">${user?.balance?.toFixed(2)}</span>
                                         </div>
                                     </div>
                                 </div>

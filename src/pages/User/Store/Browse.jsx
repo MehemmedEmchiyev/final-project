@@ -126,7 +126,7 @@ function Browse() {
               }
             </div>
           </div>
-          <div className={`fixed overflow-auto ${mobileFilter ? "block" : "hidden"} lg:block lg:static top-0 px-3 pt-7 lg:px-0 lg:py-0 left-0 w-full h-full lg:h-max z-100 bg-[#18181C] lg:bg-transparent lg:w-1/5`}>
+          <div className={`fixed overflow-auto ${mobileFilter ? "block" : "hidden"} lg:block lg:static top-0 px-3 pt-7 lg:px-0 lg:py-0 left-0 w-full h-full lg:h-max z-10000 bg-[#18181C] lg:bg-transparent lg:w-1/5`}>
             <div className='flex flex-col cursor-pointer'>
               <div className='flex lg:hidden items-center justify-between w-full pb-3'>
                 <h2 className='text-white font-bold  whitespace-nowrap'>Filters {path.length ? `(${path.length})` : ""}</h2>

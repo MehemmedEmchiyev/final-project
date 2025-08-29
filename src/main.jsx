@@ -10,7 +10,12 @@ createRoot(document.getElementById('root')).render(
     <Provider store={store}>
         <BrowserRouter>
             <ScrollToTop />
-            <Toaster />
+            <Toaster toastOptions={{
+                style: {
+                    background: '#333',
+                    color: '#fff',
+                },
+            }} />
             <Router />
         </BrowserRouter>
     </Provider>

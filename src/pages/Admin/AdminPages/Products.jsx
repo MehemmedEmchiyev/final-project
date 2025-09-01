@@ -12,13 +12,15 @@ import Pagination from "../../../components/User/Store/Browse/Pagination";
 import { RiFileExcel2Fill } from "react-icons/ri";
 import XLSX from 'xlsx-js-style';
 import { GiSpeaker } from "react-icons/gi";
+import { IoMdMore } from "react-icons/io";
 
 import LoaderModal from "../../../components/Admin/LoaderModal";
 
 function Products() {
     const [page, setPage] = useState(1)
-    const { data, isLoading , isFetching } = useGetProductsQuery({ page })
-
+    const [path, setPath] = useState([])
+    const params = path.join('')
+    const { data, isLoading, isFetching } = useGetProductsQuery({ page, params })
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
     const [isFree, setIsFree] = useState(false)
@@ -136,7 +138,7 @@ function Products() {
             }
         }
     }
-    
+
     const [errors, setErrors] = useState({})
     const close = () => {
         setOpen(false)
@@ -239,10 +241,28 @@ function Products() {
     const handleSpeak = (arg) => {
         const text = new SpeechSynthesisUtterance(arg)
         text.lang = lang,
-        window.speechSynthesis.speak(text)
+            window.speechSynthesis.speak(text)
     }
-
-    
+    const [menuStatue, setMenuStatue] = useState(false)
+    const [priceStatue, setPriceStatue] = useState(false)
+    const menuItem = [
+        { title: "All", elem: 'name' },
+        { title: 'Alphabetical A-Z', name: 'name', order: 'ASC', elem: "name" },
+        { title: 'Alphabetical Z-A', name: 'name', order: 'DESC', elem: "name" },
+        { title: "Price : High to Low", name: 'price', order: 'DESC', elem: 'price' },
+        { title: "Price : Low to High", name: 'price', order: 'ASC', elem: 'price' },
+    ]
+    const filterTable = (title, name, order) => {
+        if (title == "All") {
+            setPath([])
+            setMenuStatue(false)
+        }
+        else {
+            const path = `sortBy=${name}&order=${order}`;
+            setPath(prev => [...prev.filter(item => !item.startsWith("sortBy=")), path])
+            menuStatue ? setMenuStatue(false) : priceStatue ? setPriceStatue(false) : ''
+        }
+    }
 
     const validateForm = () => {
         let newErrors = {}
@@ -318,7 +338,7 @@ function Products() {
 
                                     className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
                                 />
-                                 {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+                                {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
                             </div>
 
                             <div className="space-y-2">
@@ -330,7 +350,7 @@ function Products() {
                                     placeholder="Product description"
                                     className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[100px] ${errors.description ? 'border-red-500' : 'border-gray-300'}`}
                                 />
-                                 {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
+                                {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
                             </div>
 
                             <div className="space-y-2">
@@ -377,7 +397,7 @@ function Products() {
                                     required
                                     className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.developer ? 'border-red-500' : 'border-gray-300'}`}
                                 />
-                                 {errors.developer && <p className="text-red-500 text-sm">{errors.developer}</p>}
+                                {errors.developer && <p className="text-red-500 text-sm">{errors.developer}</p>}
                             </div>
 
                             <div className="space-y-2">
@@ -389,7 +409,7 @@ function Products() {
                                     required
                                     className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.publisher ? 'border-red-500' : 'border-gray-300'}`}
                                 />
-                                 {errors.publisher && <p className="text-red-500 text-sm">{errors.publisher}</p>}
+                                {errors.publisher && <p className="text-red-500 text-sm">{errors.publisher}</p>}
                             </div>
 
                             <div className="space-y-2">
@@ -402,7 +422,7 @@ function Products() {
                                     required
                                     className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.age ? 'border-red-500' : 'border-gray-300'}`}
                                 />
-                                 {errors.age && <p className="text-red-500 text-sm">{errors.age}</p>}
+                                {errors.age && <p className="text-red-500 text-sm">{errors.age}</p>}
                             </div>
 
                             <div className="space-y-2">
@@ -449,7 +469,7 @@ function Products() {
                                 <div className="w-full flex items-center flex-wrap gap-3">
                                     {
                                         filteredMedias?.map((item, index) => <div key={index} className="w-15 h-15 relative">
-                                            {item?.type == "IMAGE" ? <img className="w-full h-full  object-cover" src={item?.url}  /> : <video className="w-full h-full object-cover" controls><source src={item?.url} /> </video>}
+                                            {item?.type == "IMAGE" ? <img className="w-full h-full  object-cover" src={item?.url} /> : <video className="w-full h-full object-cover" controls><source src={item?.url} /> </video>}
                                             <Trash onClick={() => deletImage(item?.id)} className="absolute bottom-[80%] left-[80%] w-5 h-5 bg-black p-1 rounded-full text-red-600" />
                                         </div>)
                                     }
@@ -514,18 +534,39 @@ function Products() {
                     </div>
                 </ModalContain>}
                 <div className="p-4 overflow-x-auto">
-                    { isLoading || isFetching || deletLoader || updateLoad ? (
+                    {isLoading || isFetching || deletLoader || updateLoad ? (
                         <div className="flex justify-center items-center py-12">
                             <LoaderModal />
                         </div>
                     ) : (
                         <div className="shadow overflow-hidden border border-gray-200 rounded-lg">
                             <table className="min-w-full divide-y divide-gray-200">
-                                <thead className="bg-gray-50">
-                                    <tr>
+                                <thead className="bg-gray-50 w-full ">
+                                    <tr className="w-full">
                                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                                        <th scope="col" className="relative  flex items-center justify-between px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            <span onClick={() => setSearch(true)}>Name</span>
+                                            <IoMdMore onClick={() => setMenuStatue((prev) => !prev)} className="text-[18px] cursor-pointer hover:bg-[#eee] rounded-full " />
+                                            {
+                                                menuStatue && <ul className="absolute shadow-md bg-white border-1 border-[#eee] p-2 rounded top-full right-0">
+                                                    {
+                                                        menuItem.filter(elem => elem.elem == "name").map((item, index) => <li onClick={() => filterTable(item.title, item.name, item.order)} className="cursor-pointer rounded-md hover:bg-[#eee] p-1" key={index}>{item.title}</li>)
+                                                    }
+                                                </ul>
+                                            }
+                                        </th>
+                                        <th scope="col" className=" relative px-6 py-3 text-xs font-medium text-gray-500 text-start uppercase tracking-wider">
+                                            <span>Price</span>
+
+                                            <IoMdMore onClick={() => setPriceStatue((prev) => !prev)} className="text-[18px]   inline-block mt-[-5px] ml-3 cursor-pointer hover:bg-[#eee] rounded-full " />
+                                            {
+                                                priceStatue && <ul className="absolute shadow-md bg-white border-1  border-[#eee] p-2 rounded top-full right-0">
+                                                    {
+                                                        menuItem.filter(elem => elem.elem == 'price').map((item, index) => <li onClick={() => filterTable(item.title, item.name, item.order)} className="cursor-pointer whitespace-nowrap rounded-md hover:bg-[#eee] p-1" key={index}>{item.title}</li>)
+                                                    }
+                                                </ul>
+                                            }
+                                        </th>
                                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Discount</th>
                                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Free</th>
                                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cover</th>

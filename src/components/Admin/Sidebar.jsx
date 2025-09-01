@@ -1,10 +1,11 @@
-import { Link, useNavigate } from "react-router"
+import { Link, useLocation, useNavigate } from "react-router"
 import { CgWebsite } from "react-icons/cg";
 import { FaUsersCog, FaRegNewspaper, FaChartBar, FaProductHunt } from "react-icons/fa";
 import { LuTickets, LuSwords } from "react-icons/lu";
 import { MdOutlineTypeSpecimen, MdFeaturedPlayList, MdEmojiEvents } from "react-icons/md";
 import { GiPlatform } from "react-icons/gi";
 import { SiEpicgames } from "react-icons/si";
+import { useState } from "react";
 
 function Sidebar() {
   const menuItems = [
@@ -24,6 +25,11 @@ function Sidebar() {
     localStorage.clear()
     navigator('/adminlogin')
   }
+  const {pathname} = useLocation()
+  const path = pathname.replace("/admin/",'')
+  console.log(path);
+  
+  
   return (
     <>
       <div className="min-h-screen p-3 space-y-2 w-60 dark:bg-gray-50 dark:text-gray-800">
@@ -34,8 +40,8 @@ function Sidebar() {
         <div className="flex flex-col justify-between h-max divide-y dark:divide-gray-300">
           <ul className=" pt-2 pb-4 space-y-1 text-sm">
             {
-              menuItems.map((item, index) => <li key={index} className="dark:bg-gray-100 dark:text-gray-900">
-                <Link to={item.href} className="flex items-center p-2 space-x-3 rounded-md">
+              menuItems.map((item, index) => <li key={index} className="dark:bg-gray-100 rounded-md hover:bg-gray-700 hover:text-white duration-300 dark:text-gray-900">
+                <Link to={item.href} className={`flex items-center p-2 space-x-3 rounded-md ${path == item.href ? "bg-gray-700 text-white" : ""}`}>
                   {item.icons}
                   <span>{item.title}</span>
                 </Link>
@@ -43,9 +49,10 @@ function Sidebar() {
             }
 
           </ul>
-          <ul className="pt-4 pb-2 space-y-1 text-sm">
+          <ul className="pt-4  pb-2 space-y-1 text-sm">
+            
             <li>
-              <Link rel="noopener noreferrer" to='/' className="flex items-center p-2 space-x-3 rounded-md">
+              <Link rel="noopener noreferrer" to='/store' className="flex items-center p-2 space-x-3 rounded-md">
                 <CgWebsite />
                 <span>Go To WebSite</span>
               </Link>

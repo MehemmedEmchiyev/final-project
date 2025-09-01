@@ -8,7 +8,6 @@ import { useForgotPasswordMutation, useLoginByGoogleMutation, useLoginMutation }
 import Loader from "../../../components/ui/Loader"
 import { auth, googleProvider } from "../../../store/services/firebaseConfig"
 import { signInWithPopup } from "firebase/auth";
-
 function Login() {
     const [login, { isLoading }] = useLoginMutation()
     const navigator = useNavigate()
@@ -28,7 +27,7 @@ function Login() {
 
             if (res.error) {
                 toast.error(res?.error?.data?.message)
-            } 
+            }
             else {
                 toast.success(res?.data?.message)
                 const payload = JSON.parse(atob(res?.data?.token.accessToken.split('.')[1]));
@@ -54,8 +53,16 @@ function Login() {
         const result = await signInWithPopup(auth, googleProvider);
         const user = result.user;
         const token = user.accessToken
-        const response = await loginGoogle({token : token})
-        
+        const response = await loginGoogle({ token })
+        if (response?.error) toast.error("Somethings went wrong ! ")
+        else {
+            toast.success(response.data.message)
+            const payload = JSON.parse(atob(response?.data?.token.split('.')[1]));
+            localStorage.setItem("userId", payload.userId)
+            localStorage.setItem("accesToken", response?.data?.token)
+            navigator('/store')
+        }
+
     }
     const [forgotPassword, { isLoading: forgetLoader }] = useForgotPasswordMutation()
     const forgetPassword = async () => {

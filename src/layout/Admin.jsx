@@ -5,7 +5,7 @@ import Contain from '../components/ui/Contain'
 
 function Admin() {
     return (
-        <div className='flex text-white'>
+        <div className='flex  text-white'>
             <Sidebar />
             <Contain>
                 <Outlet />

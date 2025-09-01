@@ -17,7 +17,7 @@ export const epicApi = createApi({
       query: (token) => ({
         url: 'auth/firebase',
         method: 'POST',
-        body: { token },
+        body: token ,
       })
     }),
     register: builder.mutation({

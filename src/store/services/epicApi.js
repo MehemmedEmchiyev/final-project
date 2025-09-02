@@ -13,13 +13,6 @@ export const epicApi = createApi({
         body: patch,
       }),
     }),
-    loginByGoogle: builder.mutation({
-      query: (token) => ({
-        url: 'auth/firebase',
-        method: 'POST',
-        body: token ,
-      })
-    }),
     register: builder.mutation({
       query: (patch) => ({
         url: 'auth/register',

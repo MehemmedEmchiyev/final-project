@@ -76,7 +76,7 @@ export default function Register() {
             </p>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex justify-between items-center gap-4">
             <div className='flex flex-col max-w-24 w-full items-center gap-1'>
               <label htmlFor="">Month</label>
               <Forms data={months} value={month} change={setMonth} lable="month-select-label" />

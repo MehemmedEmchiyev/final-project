@@ -45,7 +45,7 @@ function Header() {
       }
     }
     checkUser()
-  }, [isFetching])
+  }, [])
 
   const [open, setOpen] = useState(false)
   const signOut = () => {

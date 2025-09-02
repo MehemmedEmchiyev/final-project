@@ -1,14 +1,15 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/query";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://localhost:3000/api',
+  baseUrl: "https://epic-games.ramazanismayilovh.me/api",
+  withCredentials: true,
   prepareHeaders: (headers, { endpoint }) => {
     const token = localStorage.getItem("accessToken");
-    if (token && endpoint !== 'loginGoogle') {
-      headers.set('authorization', `Bearer ${token}`);
+    if (token && endpoint !== "loginGoogle") {
+      headers.set("authorization", `Bearer ${token}`);
     }
     return headers;
-  }
+  },
 });
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {

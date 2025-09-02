@@ -3,12 +3,19 @@ import { useLazyGetUserByIdQuery, useLoginMutation } from "../../../store/servic
 import { adminLoginSchema } from "../../../validation/adminLoginSchema"
 import Loader from "../../../components/ui/Loader"
 import toast from "react-hot-toast"
-import { useNavigate } from "react-router"
+import {  useNavigate } from "react-router"
+import { useEffect } from "react"
+
 
 function AdminLogin() {
   const navigator = useNavigate()
   const [login, { isLoading }] = useLoginMutation()
   const [getUser] = useLazyGetUserByIdQuery()
+  useEffect(() => {
+    localStorage.clear()
+  },[])
+  
+  
   const { values, errors, handleChange, handleSubmit } = useFormik({
     initialValues: {
       email: '',
@@ -17,7 +24,7 @@ function AdminLogin() {
     validationSchema: adminLoginSchema,
     onSubmit: async () => {
       const res = await login(values)
-      if(res?.error) toast.error(res?.error.data.message)
+      if (res?.error) toast.error(res?.error.data.message)
 
       if (res) {
         localStorage.setItem('accessToken', res?.data?.token.accessToken)
@@ -26,14 +33,15 @@ function AdminLogin() {
 
       const payload = JSON.parse(atob(res?.data?.token.accessToken.split('.')[1]));
       const user = await getUser(payload.userId)
-      if(user?.data.role.name == "ADMIN") {
+      if (user?.data.role.name == "ADMIN") {
         toast.success("Succes Login")
+        localStorage.setItem("userId", payload.userId)
         navigator('/admin')
       }
       else toast.error("Only admin can enter")
     }
   })
-
+  
   return (
     <div className='h-screen flex items-center justify-center text-white'>
       <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 dark:bg-gray-50 dark:text-gray-800">
@@ -63,9 +71,7 @@ function AdminLogin() {
                 isLoading ? <Loader /> : "Sign in"
               }</button>
             </div>
-            <p className="px-6 text-sm text-center dark:text-gray-600">Don't have an account yet?
-              <a rel="noopener noreferrer" href="#" className="hover:underline dark:text-red-600">Sign up</a>.
-            </p>
+
           </div>
         </form>
       </div>

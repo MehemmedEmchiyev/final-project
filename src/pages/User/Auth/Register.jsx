@@ -77,15 +77,15 @@ export default function Register() {
           </div>
 
           <div className="flex items-center gap-4">
-            <div className='flex flex-col w-full items-center gap-1'>
+            <div className='flex flex-col max-w-24 w-full items-center gap-1'>
               <label htmlFor="">Month</label>
               <Forms data={months} value={month} change={setMonth} lable="month-select-label" />
             </div>
-            <div className='flex w-full flex-col items-center'>
+            <div className='flex w-full flex-col max-w-24 items-center'>
               <label htmlFor="">Days</label>
               <Forms data={days} value={day} change={setDay} lable="day-select-label" />
             </div>
-            <div className='flex flex-col items-center w-full gap-1'>
+            <div className='flex flex-col items-center max-w-24 w-full gap-1'>
               <label htmlFor="">Years</label>
               <Forms data={years} value={year} change={setYear} lable="year-select-label" />
             </div>

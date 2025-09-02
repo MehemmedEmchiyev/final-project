@@ -54,18 +54,6 @@ function NewEmail({ open, setOpen }) {
             }
         },
     })
-    const [resentOtp, { isLoading : resendLoader }] = useResendOtpMutation()
-    // const handleReset = async () => {
-    //     console.log(values.email);
-        
-    //     const data = {
-    //         "email": values.email
-    //     }
-    //     const res = await resentOtp(data)
-    //     if (res?.error) toast.error(res?.error.data.message)
-    //     else toast.success(res?.data?.message)
-
-    // }
     const handleClose = () => {
         resetForm()
         setOpen(false)

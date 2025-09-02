@@ -68,7 +68,7 @@ function Login() {
     const forgetPassword = async () => {
         const data = {
             "email": values.email,
-            "callbackURL": "http://localhost:3000/forget-password.html"
+            "callbackURL": "https://epic-games.ramazanismayilovh.me/forget-password.html"
         }
         const res = await forgotPassword(data)
         if (res?.error) toast.error(res?.error.data.message)

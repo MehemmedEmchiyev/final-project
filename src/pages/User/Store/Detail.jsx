@@ -91,6 +91,16 @@ function Detail() {
         { title: 'Genre', data: genres },
         { title: 'Features', data: features },
     ]
+    const handleShare = () => {
+        if(navigator.share) {
+            navigator.share({
+                url : window.location.href
+            })
+        }
+        else {
+            toast.error("Somethings went wrong !")
+        }
+    }
     return (
         isLoading ? <DetailSkelton /> :
             <div className="text-white py-10">
@@ -155,7 +165,7 @@ function Detail() {
                             }
                         </div>
                         <div className="pt-2 flex items-center gap-3">
-                            <button className="w-full bg-[#343437] py-1 flex items-center justify-center gap-2 cursor-pointer rounded-md hover:bg-[#636366] text-sm text-white font-semibold"><IoShareSocialOutline /> Share</button>
+                            <button onClick={handleShare} className="w-full bg-[#343437] py-1 flex items-center justify-center gap-2 cursor-pointer rounded-md hover:bg-[#636366] text-sm text-white font-semibold"><IoShareSocialOutline /> Share</button>
                             <button className="w-full bg-[#343437] py-1 flex items-center justify-center gap-2 cursor-pointer rounded-md hover:bg-[#636366] text-sm text-white font-semibold"><TbFlag3 /> Report</button>
                         </div>
                     </div>

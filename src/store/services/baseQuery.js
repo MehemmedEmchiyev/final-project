@@ -1,7 +1,7 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/query";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://epic-games-nestjs.vercel.app/api",
+  baseUrl: "https://www.epic-games.ramazanismayilov.me/api",
   withCredentials: true,
   prepareHeaders: (headers, { endpoint }) => {
     const token = localStorage.getItem("accessToken");
